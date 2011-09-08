@@ -254,10 +254,10 @@ public class GoogleMapUtil {
      */
     public native static JavaScriptObject createMarker(Map marker) /*-{
 
-        var markerTitle = markerMap.@java.util.Map::get(Ljava/lang/Object;)('TITLE');
-        var markerLat = markerMap.@java.util.Map::get(Ljava/lang/Object;)('LAT');
-        var markerLng = markerMap.@java.util.Map::get(Ljava/lang/Object;)('LNG');
-        var contents = markerMap.@java.util.Map::get(Ljava/lang/Object;)('CONTENTS');
+        var markerTitle = marker.@java.util.Map::get(Ljava/lang/Object;)('TITLE');
+        var markerLat = marker.@java.util.Map::get(Ljava/lang/Object;)('LAT');
+        var markerLng = marker.@java.util.Map::get(Ljava/lang/Object;)('LNG');
+        var contents = marker.@java.util.Map::get(Ljava/lang/Object;)('CONTENTS');
 
         var latLng = new $wnd.google.maps.LatLng(markerLat, markerLng);
 
