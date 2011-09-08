@@ -169,17 +169,15 @@ public class MapmakerMapViewImpl extends ViewWithUiHandlers<MapPanelUiHandlers>
 
         var that = this;
 
-        $wnd.getLocationDescriptions =$entry(function(lng, lat) {
+        $wnd.getLocationDescriptions =function(lng, lat) {
             that.@org.jason.mapmaker.client.view.MapmakerMapViewImpl::getLocationDescriptions(DD)(lng, lat);
-        });
+        };
 
         $wnd.google.maps.event.addListener(map, 'click', function(event) {
             var lat = event.latLng.lat();
             var lng = event.latLng.lng();
             alert("(" + lat + ", " + lng + ")");
-            @com.google.gwt.core.client.GWT::log(Ljava/lang/String;)("calling $wnd.getLocationDescriptions()");
             $wnd.getLocationDescriptions(lng, lat);
-            @com.google.gwt.core.client.GWT::log(Ljava/lang/String;)("called $wnd.getLocationDescriptions()");
         });
     }-*/;
 
