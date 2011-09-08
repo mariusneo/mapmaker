@@ -147,7 +147,7 @@ public class MapmakerMapViewImpl extends ViewWithUiHandlers<MapPanelUiHandlers>
             map.fitBounds(bounds);
         }
 
-        // set the polgon for the borders
+        // set the polygon for the borders
         if (border != null) {
             border.setMap(map);
         }
@@ -176,7 +176,6 @@ public class MapmakerMapViewImpl extends ViewWithUiHandlers<MapPanelUiHandlers>
         $wnd.google.maps.event.addListener(map, 'click', function(event) {
             var lat = event.latLng.lat();
             var lng = event.latLng.lng();
-            alert("(" + lat + ", " + lng + ")");
             $wnd.getLocationDescriptions(map, lng, lat);
         });
     }-*/;
