@@ -261,9 +261,11 @@ public class GoogleMapUtil {
 
         var latLng = new $wnd.google.maps.LatLng(markerLat, markerLng);
 
-        var marker = new $wnd.google.maps.Marker();
-        marker.setPosition(latLng);
+        var m = new $wnd.google.maps.Marker();
+        m.setTitle(markerTitle);
+        m.setPosition(latLng);
+        m.content = contents;
 
-        return marker;
+        return m;
     }-*/;
 }
