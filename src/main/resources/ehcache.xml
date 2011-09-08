@@ -15,13 +15,5 @@
     <cache name="org.jason.mapmaker.shared.model.BorderPoint" maxElementsInMemory="10000" eternal="false"
            overflowToDisk="false" diskPersistent="false" timeToLiveSeconds="600" timeToIdleSeconds="0"
            memoryStoreEvictionPolicy="LRU" />
-    <!--<cache name="weatherCache" eternal="false"-->
-        <!--maxElementsInMemory="100" overflowToDisk="false" diskPersistent="false"-->
-        <!--timeToIdleSeconds="0" timeToLiveSeconds="300"-->
-        <!--memoryStoreEvictionPolicy="LRU" />-->
 
-    <!--<cache name="locationSearchCache" eternal="false"-->
-        <!--maxElementsInMemory="100" overflowToDisk="false" diskPersistent="false"-->
-        <!--timeToIdleSeconds="0" timeToLiveSeconds="300"-->
-        <!--memoryStoreEvictionPolicy="LRU" />-->
 </ehcache>
