@@ -91,6 +91,7 @@ public class HibernateLocationRepository extends HibernateGenericRepository<Loca
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Location> getLocationDescriptionsForCoordinates(double lng, double lat) {
 
         String hql = "from Location L where L.minLat <= :lat AND L.maxLat >= :lat AND L.minLng <= :lng AND L.maxLng >= :lng";
