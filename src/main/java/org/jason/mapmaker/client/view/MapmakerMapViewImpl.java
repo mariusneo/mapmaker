@@ -168,9 +168,10 @@ public class MapmakerMapViewImpl extends ViewWithUiHandlers<MapPanelUiHandlers>
         }
 
         var that = this;
-        $wnd.getLocationDescriptions = function(lng, lat) {
-            $entry(that.@org.jason.mapmaker.client.view.MapmakerMapViewImpl::getLocationDescriptions(DD)(lng, lat));
-        }
+
+        $wnd.getLocationDescriptions =$entry(function(lng, lat) {
+            that.@org.jason.mapmaker.client.view.MapmakerMapViewImpl::getLocationDescriptions(DD)(lng, lat);
+        });
 
         $wnd.google.maps.event.addListener(map, 'click', function(event) {
             var lat = event.latLng.lat();
@@ -184,6 +185,7 @@ public class MapmakerMapViewImpl extends ViewWithUiHandlers<MapPanelUiHandlers>
 
     @Override
     public void getLocationDescriptions(double lng, double lat) {
+        GWT.log("Executing MapmakerMapViewImpl.getLocationDescriptions()");
         getUiHandlers().doGetLocationDescriptions(lng, lat);
     }
 
