@@ -1,0 +1,124 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder
+        xmlns:ui="urn:ui:com.google.gwt.uibinder"
+        xmlns:g="urn:import:com.google.gwt.user.client.ui"
+        >
+    <ui:style>
+
+        @sprite .stackHeader {
+            gwt-image: 'gradient';
+            background-color: #b4b6bc;
+            cursor: pointer;
+
+            text-shadow: rgba(255, 255, 255, 1) 0 1px 1px;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #000;
+            padding: .7em .5em 0 .6em;
+            border-top: 1px solid #888;
+        }
+
+        .shortcuts {
+            border-left: 1px solid #999;
+            border-right: 1px solid #999;
+            border-bottom: 1px solid #999;
+            text-align: center;
+            margin-left: auto;
+            margin-right: auto;
+            width: 180px;
+        }
+
+        td div.gwt-Label {
+            text-align: left;
+            margin: 0 5px;
+        }
+
+        td select.gwt-Listbox {
+            display: block;
+            vertical-align: middle;
+            margin: 0 5px;
+            width: 170px;
+        }
+
+        .gwt-Button {
+            display: block;
+            vertical-align: middle;
+            margin: 5px auto;
+        }
+
+        .horizontalPanel {
+            width: 180px;
+        }
+
+    </ui:style>
+
+    <ui:image field='gradient' src='gradient_bg_dark.png' repeatStyle='Horizontal'/>
+    <g:StackLayoutPanel styleName="{style.shortcuts}" unit="EM" height="500px" ui:field="mapmakerStackPanelView">
+        <g:stack>
+            <g:header size="3">
+                <div class='{style.stackHeader}'>
+                    <b>Features</b>
+                </div>
+            </g:header>
+            <g:FormPanel ui:field="stackFeaturesPanelView">
+                <g:VerticalPanel ui:field="stackFeaturesAlignmentPanel">
+                    <g:Label styleName="{style.gwt-Label}">Available Borders</g:Label>
+                    <g:ListBox ui:field="borderTypeListBox" addStyleNames="{style.gwt-Listbox}"/>
+                    <g:VerticalPanel ui:field="borderSelectors">
+                        <g:Label styleName="{style.gwt-Label}">State</g:Label>
+                        <g:ListBox ui:field="primaryListBox" addStyleNames="{style.gwt-Listbox}"/>
+                        <g:Label styleName="{style.gwt-Label}">County</g:Label>
+                        <g:ListBox ui:field="secondaryListBox" addStyleNames="{style.gwt-Listbox}"/>
+                        <g:Label styleName="{style.gwt-Label}">Specific Item</g:Label>
+                        <g:ListBox ui:field="tertiaryListBox" addStyleNames="{style.gwt-Listbox}"/>
+                    </g:VerticalPanel>
+                    <g:Label styleName="{style.gwt-Label}">Features</g:Label>
+                    <g:ListBox ui:field="featuresListBox" addStyleNames="{style.gwt-Listbox}"/>
+                    <g:VerticalPanel styleName="{style.horizontalPanel}">
+                        <g:Button ui:field="redrawMapButton" styleName="{style.gwt-Button}">Redraw Map</g:Button>
+                    </g:VerticalPanel>
+                </g:VerticalPanel>
+            </g:FormPanel>
+        </g:stack>
+        <g:stack>
+            <g:header size="3">
+                <div class="{style.stackHeader}">
+                    <b>Export</b>
+                </div>
+
+            </g:header>
+            <g:FormPanel ui:field="stackExportPanelView">
+                <g:VerticalPanel styleName="{style.horizontalPanel}">
+                    <g:Button ui:field="exportKMLButton" width="12em" styleName="{style.gwt-Button}">Export KML</g:Button>
+                    <g:Button ui:field="exportShapefileButton" width="12em" styleName="{style.gwt-Button}">Export Shapefile</g:Button>
+                </g:VerticalPanel>
+            </g:FormPanel>
+        </g:stack>
+        <g:stack>
+            <g:header size="3">
+                <div class="{style.stackHeader}">
+                    <b>Admin</b>
+                </div>
+            </g:header>
+            <g:FormPanel ui:field="stackAdminPanelView">
+                <g:VerticalPanel styleName="{style.horizontalPanel}">
+                    <g:Button ui:field="showBordersManagementButton" width="12em" styleName="{style.gwt-Button}">Manage Borders</g:Button>
+                    <g:Button ui:field="showFeaturesManagementButton" width="12em" styleName="{style.gwt-Button}">Manage Features</g:Button>
+                    <g:Button ui:field="showManageAvailableDataButton" width="12em" styleName="{style.gwt-Button}">App Settings</g:Button>
+                </g:VerticalPanel>
+            </g:FormPanel>
+        </g:stack>
+        <g:stack>
+            <g:header size="3">
+                <div class="{style.stackHeader}">
+                    <b>Help</b>
+                </div>
+            </g:header>
+            <g:FormPanel ui:field="stackHelpPanelView">
+                <g:Button ui:field="displayHelpButton" styleName="{style.gwt-Button}">Display Help</g:Button>
+            </g:FormPanel>
+        </g:stack>
+    </g:StackLayoutPanel>
+
+
+</ui:UiBinder>

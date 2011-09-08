@@ -1,0 +1,9 @@
+SET FOREIGN_KEY_CHECKS = 0;
+drop table GENERICSETTINGS;
+drop table BORDERPOINT;
+drop table LOCATION;
+drop table MTFCC;
+drop table FEATURE;
+drop table FEATURESMETADATA;
+drop table SHAPEFILEMETADATA;
+SET FOREIGN_KEY_CHECKS = 1;

@@ -1,0 +1,19 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder
+        xmlns:ui="urn:ui:com.google.gwt.uibinder"
+        xmlns:g="urn:import:com.google.gwt.user.client.ui"
+        >
+
+    <g:PopupPanel>
+        <g:VerticalPanel>
+            <g:HTMLPanel>
+                <p>This is where help will go.</p>
+            </g:HTMLPanel>
+            <g:HorizontalPanel>
+                <g:Button ui:field="closeButton">Close</g:Button>
+            </g:HorizontalPanel>
+        </g:VerticalPanel>
+
+    </g:PopupPanel>
+
+</ui:UiBinder>

@@ -1,0 +1,60 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder
+        xmlns:ui="urn:ui:com.google.gwt.uibinder"
+        xmlns:g="urn:import:com.google.gwt.user.client.ui">
+
+    <ui:style>
+        table.flextable {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid;
+        }
+
+        table.flextable td {
+            font-size: 10pt;
+            border: 1px solid;
+        }
+
+        table.horizontalPanel {
+            width: 600px;
+        }
+
+        .gwt-Button {
+            display: block;
+            vertical-align: middle;
+            margin: 0 auto;
+        }
+    </ui:style>
+
+    <g:PopupPanel ui:field="popupPanel" modal="true">
+        <g:VerticalPanel>
+            <g:HTMLPanel>
+                <h3>Manage Borders Data</h3>
+                <p>Warning: do not import state-based features without importing the state first, or county-based
+                features without importing the counties first!</p>
+                <table>
+                    <tr>
+                        <td>State</td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <g:ListBox ui:field="stateListBox"/>
+                        </td>
+                        <td>
+                            <g:Button ui:field="detailsButton" styleName="{style.gwt-Button}">Show Details</g:Button>
+                        </td>
+                    </tr>
+                </table>
+            </g:HTMLPanel>
+            <g:ScrollPanel height="400px" width="600px">
+                <g:FlexTable ui:field="bordersFlexTable" styleName="{style.flextable}"/>
+            </g:ScrollPanel>
+
+            <g:HorizontalPanel styleName="{style.horizontalPanel}">
+                <g:Button ui:field="closeButton" styleName="{style.gwt-Button}">Close</g:Button>
+            </g:HorizontalPanel>
+        </g:VerticalPanel>
+
+    </g:PopupPanel>
+</ui:UiBinder>

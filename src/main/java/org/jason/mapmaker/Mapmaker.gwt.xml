@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module PUBLIC "-//Google Inc.//DTD Google Web Toolkit 2.3.0//EN"
+        "http://google-web-toolkit.googlecode.com/svn/tags/2.3.0/distro-source/core/src/gwt-module.dtd">
+<module rename-to='mapmaker'>
+    <!-- Inherit the core Web Toolkit stuff.                        -->
+    <inherits name='com.google.gwt.user.User'/>
+    <inherits name='com.google.gwt.user.theme.chrome.Chrome'/>
+    <inherits name="com.google.gwt.uibinder.GinUiBinder"/>
+    <inherits name="com.gwtplatform.mvp.Mvp"/>
+    <inherits name="com.gwtplatform.dispatch.Dispatch"/>
+    <inherits name="com.google.gwt.inject.Inject"/>
+    <inherits name="com.google.common.collect.Collect" />
+
+    <define-configuration-property name="gin.ginjector" is-multi-valued="false"/>
+    <set-configuration-property name="gin.ginjector" value="org.jason.mapmaker.client.ioc.MapmakerGinjector"/>
+
+    <define-configuration-property name="UiBinder.useSafeHtmlTemplates" is-multi-valued="false"/>
+    <set-configuration-property name="UiBinder.useSafeHtmlTemplates" value="true"/>
+    <entry-point class='org.jason.mapmaker.client.Mapmaker'/>
+
+    <!-- Specify the paths for translatable code                    -->
+    <source path='client'/>
+    <source path='shared'/>
+
+    <script src="http://maps.google.com/maps/api/js?sensor=false"/>
+
+</module>

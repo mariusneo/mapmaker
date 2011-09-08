@@ -1,0 +1,18 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder
+        xmlns:ui="urn:ui:com.google.gwt.uibinder"
+        xmlns:g="urn:import:com.google.gwt.user.client.ui"
+        xmlns:mapmaker="urn:import:org.jason.mapmaker.client.view">
+
+    <ui:style>
+        .centerText {text-align: center}
+    </ui:style>
+
+    <g:HTMLPanel addStyleNames="{style.centerText}" height="100" ui:field="mapmakerDisclaimerView">
+        <p>This project is copyright 2011 by Jason Ferguson. Code is released under the Apache 2.0 license and is
+            available via
+            <a href="https://github.com/dartmanx/mapmaker">GitHub</a>
+        </p>
+    </g:HTMLPanel>
+
+</ui:UiBinder>

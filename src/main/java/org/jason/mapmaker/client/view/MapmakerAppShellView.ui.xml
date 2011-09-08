@@ -1,0 +1,51 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder
+        xmlns:ui="urn:ui:com.google.gwt.uibinder"
+        xmlns:g="urn:import:com.google.gwt.user.client.ui"
+        xmlns:mapmaker="urn:import:org.jason.mapmaker.client.view">
+
+    <ui:style>
+
+        @sprite .stackHeader {
+            gwt-image: 'gradient';
+            background-color: #b4b6bc;
+            cursor: pointer;
+
+            text-shadow: rgba(255, 255, 255, 1) 0 1px 1px;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #000;
+            padding: .7em .5em 0 .6em;
+            border-top: 1px solid #888;
+        }
+    </ui:style>
+
+    <ui:image field='gradient' src='gradient_bg_dark.png' repeatStyle='Horizontal'/>
+    <g:DockLayoutPanel unit="PX" ui:field="mapmakerAppShellView">
+        <g:north size="100">
+            <g:VerticalPanel>
+                <!-- Logo -->
+                <!-- Login Link -->
+            </g:VerticalPanel>
+        </g:north>
+        <g:west size="200">
+            <!-- This workaround is needed because classes that extend GWTP's view* classes have to manually
+         implement isWidget. In the constructor of this class, I have to have gin inject the actual view,
+         then populate the uifield with that view's asWidget method. Stupid, but it's a workaround until
+         GWTP supports 2.3.0 -->
+            <g:Widget ui:field="stackPanel"/>
+        </g:west>
+        <g:center>
+            <!-- Display Map Here -->
+            <g:Widget ui:field="mapPanel" />
+            <!--<mapmaker:MapmakerMapViewImpl/>-->
+        </g:center>
+        <g:south size="100">
+            <!-- Display i18n disclaimer stuff here -->
+            <mapmaker:MapmakerDisclaimerViewImpl/>
+        </g:south>
+        <!--</g:DockLayoutPanel>-->
+
+    </g:DockLayoutPanel>
+
+</ui:UiBinder>

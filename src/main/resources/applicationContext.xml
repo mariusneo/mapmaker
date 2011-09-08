@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+
+    <context:annotation-config/>
+
+    <context:component-scan base-package="org.jason.mapmaker.server.service"/>
+    <context:component-scan base-package="org.jason.mapmaker.server.util"/>
+    <context:component-scan base-package="org.jason.mapmaker.server.repository.hibernate"/>
+    <context:component-scan base-package="org.jason.mapmaker.server.actionHandler"/>
+    <context:component-scan base-package="com.gwtplatform.dispatch.server.spring"/>
+
+    <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
+
+    <!-- MySQL Datasource -->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource" abstract="false"
+          lazy-init="default">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost/mapmaker"/>
+        <property name="username" value="mapmaker"/>
+        <property name="password" value="password"/>
+    </bean>
+
+    <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop>
+                <prop key="hibernate.show_sql">false</prop>
+                <prop key="hibernate.cache.use_second_level_cache">true</prop>
+                <prop key="hibernate.max_fetch_depth">4</prop>
+                <prop key="hibernate.cache.region.factory_class">net.sf.ehcache.hibernate.EhCacheRegionFactory</prop>
+            </props>
+        </property>
+        <property name="annotatedClasses">
+            <list>
+                <value>org.jason.mapmaker.shared.model.BorderPoint</value>
+                <value>org.jason.mapmaker.shared.model.Feature</value>
+                <value>org.jason.mapmaker.shared.model.FeaturesMetadata</value>
+                <value>org.jason.mapmaker.shared.model.GenericSettings</value>
+                <value>org.jason.mapmaker.shared.model.Location</value>
+                <value>org.jason.mapmaker.shared.model.MTFCC</value>
+                <value>org.jason.mapmaker.shared.model.ShapefileMetadata</value>
+            </list>
+        </property>
+        <property name="configurationClass" value="org.hibernate.cfg.AnnotationConfiguration"/>
+    </bean>
+
+    <tx:advice id="transactionAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="get*" read-only="true"/>
+            <tx:method name="query*" read-only="true" />
+            <tx:method name="save*" />
+            <tx:method name="update*" />
+            <tx:method name="delete*" />
+        </tx:attributes>
+    </tx:advice>
+
+    <!-- This is a shortcut to apply transactional to everything that is defined in the GenericRepository. Domain
+     specific methods at the repository level should be individually tagged w/ @Transactional -->
+    <!-- TODO: Move all transactional config here, not just the stuff defined in the generic repo -->
+    <aop:config>
+        <aop:pointcut id="genericServiceOperation" expression="execution(* org.jason.mapmaker.server.repository.GenericRepository2.*(..))" />
+        <aop:advisor advice-ref="transactionAdvice" pointcut-ref="genericServiceOperation" />
+    </aop:config>
+
+    <bean class="org.jason.mapmaker.server.ServerModule"/>
+
+    <!-- GWT-Platform requires a logger to be injected -->
+    <bean id="logger" class="com.gwtplatform.dispatch.server.spring.LoggerFactoryBean">
+        <constructor-arg>
+            <bean class="java.util.logging.Logger" factory-method="getAnonymousLogger">
+                <property name="level" value="FINEST" />
+            </bean>
+        </constructor-arg>
+    </bean>
+</beans>

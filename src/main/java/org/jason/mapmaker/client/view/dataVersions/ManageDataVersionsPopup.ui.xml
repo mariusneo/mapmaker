@@ -1,0 +1,31 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder
+        xmlns:ui="urn:ui:com.google.gwt.uibinder"
+        xmlns:g="urn:import:com.google.gwt.user.client.ui">
+
+    <ui:style>
+        .gwt-Label  { width: 15em; }
+    </ui:style>
+
+    <g:PopupPanel ui:field="popupPanel">
+        <g:VerticalPanel>
+            <g:HTMLPanel>
+                <h3>Manage Data Versions</h3>
+                <p>Use this screen to manage the versions of TIGER/Line, USGS Features, etc.</p>
+            </g:HTMLPanel>
+            <g:HorizontalPanel>
+                <g:Label styleName="{style.gwt-Label}">TIGER/Line Version (year only)</g:Label>
+                <g:TextBox ui:field="tigerLineYear" />
+                <g:Button ui:field="updateTigerYearButton">Update</g:Button>
+            </g:HorizontalPanel>
+            <g:HorizontalPanel>
+                <g:Label styleName="{style.gwt-Label}">USGS Features Version (yyyymmdd)</g:Label>
+                <g:TextBox ui:field="usgsFeaturesDate" />
+                <g:Button ui:field="updateUsgsDateButton">Update</g:Button>
+            </g:HorizontalPanel>
+            <g:HorizontalPanel>
+                <g:Button ui:field="closeButton">Close</g:Button>
+            </g:HorizontalPanel>
+        </g:VerticalPanel>
+    </g:PopupPanel>
+</ui:UiBinder>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+  <!-- Inherit our applications main module.                      -->
+  <inherits name='org.jason.mapmaker.mapmaker'/>
+
+  <!-- Specify the path to any remote services.                   -->
+  <!--<servlet path="/mapmaker/greet" class="org.jason.mapmaker.server.GreetingServiceImpl" />-->
+
+</module>
