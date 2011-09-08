@@ -20,11 +20,13 @@ import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
+import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
 import org.jason.mapmaker.client.event.EnableRedrawMapButtonEvent;
 import org.jason.mapmaker.client.event.RedrawMapEvent;
 import org.jason.mapmaker.client.event.RedrawMapHandler;
+import org.jason.mapmaker.client.view.MapPanelUiHandlers;
 import org.jason.mapmaker.shared.action.GetMapDataByGeoIdAction;
 import org.jason.mapmaker.shared.action.location.GetLocationDescriptionsAction;
 import org.jason.mapmaker.shared.model.Location;
@@ -34,13 +36,15 @@ import org.jason.mapmaker.shared.result.location.GetLocationDescriptionsResult;
 import java.util.Map;
 
 /**
- * MapmakerMapViewPresenter.java
+ * GWTP Presenter for the MapView section of the AppShell Presenter
  *
+ * @since 0.1
  * @author Jason Ferguson
  */
-public class MapmakerMapViewPresenter extends PresenterWidget<MapmakerMapViewPresenter.MyView> {
+public class MapmakerMapViewPresenter extends PresenterWidget<MapmakerMapViewPresenter.MyView>
+    implements MapPanelUiHandlers {
 
-    public interface MyView extends View {
+    public interface MyView extends View, HasUiHandlers<MapPanelUiHandlers> {
 
         /**
          * Prepares and draws the map by sorting the borderpoint list by unique id, then passing it and the bounding box to
@@ -63,6 +67,8 @@ public class MapmakerMapViewPresenter extends PresenterWidget<MapmakerMapViewPre
     public MapmakerMapViewPresenter(EventBus eventBus, MyView view, DispatchAsync dispatch) {
         super(eventBus, view);
         this.dispatch = dispatch;
+
+        getView().setUiHandlers(this);
     }
 
     @Override
@@ -100,7 +106,7 @@ public class MapmakerMapViewPresenter extends PresenterWidget<MapmakerMapViewPre
         dispatch.execute(new GetLocationDescriptionsAction(lng, lat), new AsyncCallback<GetLocationDescriptionsResult>() {
             @Override
             public void onFailure(Throwable caught) {
-                throw new UnsupportedOperationException();
+               caught.printStackTrace();
             }
 
             @Override
