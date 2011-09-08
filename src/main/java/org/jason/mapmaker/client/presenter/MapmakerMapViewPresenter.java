@@ -114,7 +114,7 @@ public class MapmakerMapViewPresenter extends PresenterWidget<MapmakerMapViewPre
                 Map<String, Location> resultMap = result.getResult();
                 StringBuffer message = new StringBuffer();
                 for (String key: resultMap.keySet()) {
-                    message.append(key).append(": ").append(resultMap.get(key));
+                    message.append(key).append(": ").append(resultMap.get(key)).append("\n");
                 }
 
                 getView().doAlertMessage(message.toString());
