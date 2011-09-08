@@ -1,5 +1,6 @@
 package org.jason.mapmaker.client.view;
 
+import com.google.gwt.core.client.JavaScriptObject;
 import com.gwtplatform.mvp.client.UiHandlers;
 
 /**
@@ -10,5 +11,5 @@ import com.gwtplatform.mvp.client.UiHandlers;
  */
 public interface MapPanelUiHandlers extends UiHandlers {
 
-    void doGetLocationDescriptions(double lng, double lat);
+    void doGetLocationDescriptions(JavaScriptObject map, double lng, double lat);
 }

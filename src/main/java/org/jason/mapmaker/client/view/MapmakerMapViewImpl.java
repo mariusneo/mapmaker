@@ -169,22 +169,38 @@ public class MapmakerMapViewImpl extends ViewWithUiHandlers<MapPanelUiHandlers>
 
         var that = this;
 
-        $wnd.getLocationDescriptions =function(lng, lat) {
-            that.@org.jason.mapmaker.client.view.MapmakerMapViewImpl::getLocationDescriptions(DD)(lng, lat);
+        $wnd.getLocationDescriptions =function(map, lng, lat) {
+            that.@org.jason.mapmaker.client.view.MapmakerMapViewImpl::getLocationDescriptions(Lcom/google/gwt/core/client/JavaScriptObject;DD)(map, lng, lat);
         };
 
         $wnd.google.maps.event.addListener(map, 'click', function(event) {
             var lat = event.latLng.lat();
             var lng = event.latLng.lng();
             alert("(" + lat + ", " + lng + ")");
-            $wnd.getLocationDescriptions(lng, lat);
+            $wnd.getLocationDescriptions(map, lng, lat);
         });
     }-*/;
 
     @Override
-    public void getLocationDescriptions(double lng, double lat) {
+    public native void addMarkerToMap(JavaScriptObject map, JavaScriptObject marker) /*-{
+
+        marker.setMap(map);
+
+        var infoWindow = new $wnd.google.maps.InfoWindow({
+                content:marker.contents
+            });
+
+        $wnd.google.maps.event.addListener(marker, 'click', function() {
+            infoWindow.setContent(marker.content);
+            infoWindow.open(map, marker);
+        });
+
+    }-*/;
+
+    @Override
+    public void getLocationDescriptions(JavaScriptObject map, double lng, double lat) {
         GWT.log("Executing MapmakerMapViewImpl.getLocationDescriptions()");
-        getUiHandlers().doGetLocationDescriptions(lng, lat);
+        getUiHandlers().doGetLocationDescriptions(map, lng, lat);
     }
 
     public native void doAlertMessage(String alertMessage) /*-{

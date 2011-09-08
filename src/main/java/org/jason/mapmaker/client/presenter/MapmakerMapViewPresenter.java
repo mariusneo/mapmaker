@@ -15,6 +15,7 @@
  */
 package org.jason.mapmaker.client.presenter;
 
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -26,6 +27,7 @@ import com.gwtplatform.mvp.client.View;
 import org.jason.mapmaker.client.event.EnableRedrawMapButtonEvent;
 import org.jason.mapmaker.client.event.RedrawMapEvent;
 import org.jason.mapmaker.client.event.RedrawMapHandler;
+import org.jason.mapmaker.client.util.GoogleMapUtil;
 import org.jason.mapmaker.client.view.MapPanelUiHandlers;
 import org.jason.mapmaker.shared.action.GetMapDataByGeoIdAction;
 import org.jason.mapmaker.shared.action.location.GetLocationDescriptionsAction;
@@ -33,6 +35,7 @@ import org.jason.mapmaker.shared.model.Location;
 import org.jason.mapmaker.shared.result.GetMapDataByGeoIdResult;
 import org.jason.mapmaker.shared.result.location.GetLocationDescriptionsResult;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -56,9 +59,12 @@ public class MapmakerMapViewPresenter extends PresenterWidget<MapmakerMapViewPre
          */
         void prepareAndInitializeMap(Location location, Map<String, Double> boundingBox, Element e);
 
-        void getLocationDescriptions(double lng, double lat);
+        void getLocationDescriptions(JavaScriptObject map, double lng, double lat);
 
         void doAlertMessage(String alertMessage);
+
+        void addMarkerToMap(JavaScriptObject map, JavaScriptObject marker);
+
     }
 
     private DispatchAsync dispatch;
@@ -101,7 +107,7 @@ public class MapmakerMapViewPresenter extends PresenterWidget<MapmakerMapViewPre
         }));
     }
 
-    public void doGetLocationDescriptions(double lng, double lat) {
+    public void doGetLocationDescriptions(final JavaScriptObject gmap, final double lng, final double lat) {
 
         dispatch.execute(new GetLocationDescriptionsAction(lng, lat), new AsyncCallback<GetLocationDescriptionsResult>() {
             @Override
@@ -117,7 +123,14 @@ public class MapmakerMapViewPresenter extends PresenterWidget<MapmakerMapViewPre
                     message.append(key).append(": ").append(resultMap.get(key)).append("\n");
                 }
 
-                getView().doAlertMessage(message.toString());
+                Map map = new HashMap();
+                map.put("TITLE","Location Details");
+                map.put("LNG", lng);
+                map.put("LAT", lat);
+                map.put("CONTENTS", message.toString());
+
+                JavaScriptObject marker = GoogleMapUtil.createMarker(map);
+                getView().addMarkerToMap(gmap, marker);
             }
         });
     }
