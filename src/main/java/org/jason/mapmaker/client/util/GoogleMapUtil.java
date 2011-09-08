@@ -206,6 +206,7 @@ public class GoogleMapUtil {
      * - TITLE (String)
      * - LAT (Double)
      * - LNG (Double)
+     * - CONTENTS (String)
      * <p/>
      * Client code will still have to loop through the array and set the map:
      * <p/>
@@ -238,4 +239,31 @@ public class GoogleMapUtil {
 
     }-*/;
 
+    /**
+     * Create and return a single Google Maps marker
+     *
+     * The method accepts a List of Map objects which must must contain certain mandatory keys:
+     * <p/>
+     * - TITLE (String)
+     * - LAT (Double)
+     * - LNG (Double)
+     * - CONTENTS (String)
+     *
+     * @param marker    Map object containing data to popuplate Marker object with
+     * @return      JavaScriptObject representing the Marker to display on the map
+     */
+    public native static JavaScriptObject createMarker(Map marker) /*-{
+
+        var markerTitle = markerMap.@java.util.Map::get(Ljava/lang/Object;)('TITLE');
+        var markerLat = markerMap.@java.util.Map::get(Ljava/lang/Object;)('LAT');
+        var markerLng = markerMap.@java.util.Map::get(Ljava/lang/Object;)('LNG');
+        var contents = markerMap.@java.util.Map::get(Ljava/lang/Object;)('CONTENTS');
+
+        var latLng = new $wnd.google.maps.LatLng(markerLat, markerLng);
+
+        var marker = new $wnd.google.maps.Marker();
+        marker.setPosition(latLng);
+
+        return marker;
+    }-*/;
 }
