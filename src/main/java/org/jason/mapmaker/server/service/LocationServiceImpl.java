@@ -294,18 +294,23 @@ public class LocationServiceImpl implements LocationService, PersistenceService<
 
         // create an empty map for all of the MTFCCs
         Map<String, List<Location>> locationDescriptionMap = new LinkedHashMap<String, List<Location>>();
+
+        // create a map with only a single slot per mtfcc code
+        Map<String, Location> locationMap = new LinkedHashMap<String, Location>();
+
         for (String key : GeographyUtils.nameToMtfccMap.inverse().keySet()) {
             locationDescriptionMap.put(key, new ArrayList<Location>());
+            locationMap.put(key, null);
         }
 
+        if (locationList.isEmpty()) {
+            return locationMap;
+        }
         // assign the location result to their slots in the map
         for (Location l : locationList) {
             String locationMtfccCode = l.getMtfcc().getMtfccCode();
             locationDescriptionMap.get(locationMtfccCode).add(l);
         }
-
-        // create a map with only a single slot per mtfcc code
-        Map<String, Location> locationMap = new LinkedHashMap<String, Location>();
 
         for (String mtfccCode : locationDescriptionMap.keySet()) {
             List<Location> candidateLocationList = locationDescriptionMap.get(mtfccCode);
