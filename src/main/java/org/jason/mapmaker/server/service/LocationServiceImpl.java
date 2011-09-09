@@ -351,6 +351,14 @@ public class LocationServiceImpl implements LocationService, PersistenceService<
                 }
             }
         }
+
+        for (String key : locationMap.keySet()) {
+            Location l = locationMap.get(key);
+            if (l != null) {
+                l.setBorderPointList(null);
+                locationMap.put(key, l);
+            }
+        }
         return locationMap;
     }
 }
