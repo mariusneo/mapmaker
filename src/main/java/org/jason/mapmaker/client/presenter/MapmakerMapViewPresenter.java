@@ -34,6 +34,7 @@ import org.jason.mapmaker.shared.action.location.GetLocationDescriptionsAction;
 import org.jason.mapmaker.shared.model.Location;
 import org.jason.mapmaker.shared.result.GetMapDataByGeoIdResult;
 import org.jason.mapmaker.shared.result.location.GetLocationDescriptionsResult;
+import org.jason.mapmaker.shared.util.GeographyUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -120,7 +121,13 @@ public class MapmakerMapViewPresenter extends PresenterWidget<MapmakerMapViewPre
                 Map<String, Location> resultMap = result.getResult();
                 StringBuffer message = new StringBuffer();
                 for (String key: resultMap.keySet()) {
-                    message.append(key).append(": ").append(resultMap.get(key).getName()).append("\n");
+                    Location l = resultMap.get(key);
+                    message.append(GeographyUtils.getNameForMtfcc(key)).append(": ");
+                    if (l == null) {
+                        message.append("Feature not loaded<br />");
+                    } else {
+                        message.append(resultMap.get(key).getName()).append("<br />");
+                    }
                 }
 
                 Map map = new HashMap();
