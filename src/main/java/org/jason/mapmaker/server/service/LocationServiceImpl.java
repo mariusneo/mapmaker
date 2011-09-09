@@ -15,21 +15,22 @@
  */
 package org.jason.mapmaker.server.service;
 
+import com.vividsolutions.jts.geom.*;
 import org.apache.commons.lang.StringUtils;
 import org.jason.mapmaker.server.repository.LocationRepository;
+import org.jason.mapmaker.server.util.ShapefileUtil;
 import org.jason.mapmaker.shared.exceptions.ServiceException;
+import org.jason.mapmaker.shared.model.BorderPoint;
 import org.jason.mapmaker.shared.model.Location;
 import org.jason.mapmaker.shared.model.MTFCC;
+import org.jason.mapmaker.shared.model.comparator.BorderPointIdComparator;
 import org.jason.mapmaker.shared.util.GeographyUtils;
 import org.opengis.feature.simple.SimpleFeature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Implementation of the LocationService interface
@@ -288,19 +289,63 @@ public class LocationServiceImpl implements LocationService, PersistenceService<
     @Override
     public Map<String, Location> getLocationDescriptionsForCoordinates(double lng, double lat) {
 
-        List<Location> locationList = locationRepository.getLocationDescriptionsForCoordinates(lng, lat);
+        List<Location> locationList = locationRepository.getLocationsByCoordinates(lng, lat);
 
-        // set up the empty map
-        Map<String, Location> resultMap = new HashMap<String, Location>();
+        // create an empty map for all of the MTFCCs
+        Map<String, List<Location>> locationDescriptionMap = new HashMap<String, List<Location>>();
         for (String key: GeographyUtils.nameToMtfccMap.inverse().keySet()) {
-            resultMap.put(key, null);
+            locationDescriptionMap.put(key, new ArrayList<Location>());
         }
 
+        // assign the location result to their slots in the map
         for (Location l: locationList) {
-            String mtfccCode = l.getMtfcc().getMtfccCode();
-            resultMap.put(mtfccCode, l);
+            String locationMtfccCode = l.getMtfcc().getMtfccCode();
+            locationDescriptionMap.get(locationMtfccCode).add(l);
         }
 
-        return resultMap;
+        // create a map with only a single slot per mtfcc code
+        Map<String, Location> locationMap = new HashMap<String, Location>();
+
+        for (String mtfccCode: locationDescriptionMap.keySet()) {
+            List<Location> candidateLocationList = locationDescriptionMap.get(mtfccCode);
+
+
+            if (candidateLocationList.size() == 0) {               // if there is no location for the mtfcc, put in a null
+                locationMap.put(mtfccCode, null);
+            } else if (candidateLocationList.size() == 1) {        // if there is one location for the mtfcc, lucky us...
+                locationMap.put(mtfccCode, candidateLocationList.get(0));
+            } else {                                 // otherwise, we have to create and test the geometries
+
+                // create a geometry factory (TODO: should I be using the JTS factory finder?)
+                GeometryFactory geometryFactory = new GeometryFactory();
+                Coordinate candidateCoordinate = new Coordinate(lng, lat);
+
+                locationMap.put(mtfccCode, null);       // default value
+                for (Location l: candidateLocationList) {
+                    // get and sort the Location's border points
+                    List<BorderPoint> borderPointList = l.getBorderPointList();
+                    Collections.sort(borderPointList, new BorderPointIdComparator());
+
+                    // convert the border points to an array of Coordinates (Geotools doesn't like collections)
+                    Coordinate[] locationCoordinates = ShapefileUtil.getCoordinatesFromBorderPointList(borderPointList);
+
+                    // create a linear ring representing the border
+                    LinearRing border = geometryFactory.createLinearRing(locationCoordinates);
+
+                    // create the polygon from the linear ring. Pass null as second argument since we don't have any holes in the polygon
+                    Polygon polygon = geometryFactory.createPolygon(border, null);
+
+                    // create the point to check
+                    Point candidatePoint = geometryFactory.createPoint(candidateCoordinate);
+
+                    // check if the polygon contains the point. If so, put it in the map of what we are returning
+                    if (polygon.contains(candidatePoint)) {
+                        locationMap.put(mtfccCode, l);
+                        break;
+                    }
+                }
+            }
+        }
+        return locationMap;
     }
 }
