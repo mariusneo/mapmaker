@@ -54,7 +54,7 @@ public class GetStateBasedLocationsHandler extends AbstractActionHandler<GetStat
         String mtfcc = action.getMtfcc();
         String stateFP = action.getStateFP();
 
-        Map<String, String> result = locationService.getLocationsByStateAndMtfcc(mtfcc, stateFP);
+        Map<String, String> result = locationService.getLocationsByStateAndMtfcc(stateFP, mtfcc);
 
         return new GetStateBasedLocationsResult(result);
     }
