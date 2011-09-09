@@ -120,7 +120,7 @@ public class MapmakerMapViewPresenter extends PresenterWidget<MapmakerMapViewPre
                 Map<String, Location> resultMap = result.getResult();
                 StringBuffer message = new StringBuffer();
                 for (String key: resultMap.keySet()) {
-                    message.append(key).append(": ").append(resultMap.get(key)).append("\n");
+                    message.append(key).append(": ").append(resultMap.get(key).getName()).append("\n");
                 }
 
                 Map map = new HashMap();
