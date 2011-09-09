@@ -120,16 +120,19 @@ public class MapmakerMapViewPresenter extends PresenterWidget<MapmakerMapViewPre
             public void onSuccess(GetLocationDescriptionsResult result) {
                 Map<String, Location> resultMap = result.getResult();
                 StringBuffer message = new StringBuffer();
+                message.append("<table>\n");
                 for (String key: resultMap.keySet()) {
                     Location l = resultMap.get(key);
-                    message.append(GeographyUtils.getNameForMtfcc(key)).append(": ");
+                    message.append("<tr>\n");
+                    message.append("<td><b>").append(GeographyUtils.getPrettyNameForMtfcc(key)).append("</b></td>\n");
                     if (l == null) {
-                        message.append("Feature not loaded<br />");
+                        message.append("<td>Feature not available</td>\n");
                     } else {
-                        message.append(resultMap.get(key).getName()).append("<br />");
+                        message.append("<td>").append(resultMap.get(key).getName()).append("<td>\n");
                     }
+                    message.append("</tr>\n");
                 }
-
+                message.append("</table>\n");
                 Map map = new HashMap();
                 map.put("TITLE","Location Details");
                 map.put("LNG", lng);
