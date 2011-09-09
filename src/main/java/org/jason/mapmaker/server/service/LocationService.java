@@ -24,12 +24,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * LocationService.java
- *
  * Defines operations for implementations of the LocationService
  *
- * @since 0.1
  * @author Jason Ferguson
+ * @since 0.1
  */
 @SuppressWarnings("unused")
 public interface LocationService {
@@ -41,45 +39,61 @@ public interface LocationService {
     /**
      * Delete all items in the Location repository
      *
-     * @throws ServiceException     something went wrong...
+     * @throws ServiceException something went wrong...
      */
     void deleteAll() throws ServiceException;
 
     /**
      * Update a Location object
-     *
+     * <p/>
      * TODO: Do we need this???
      *
-     * @param l     Location object to update
+     * @param l Location object to update
      */
     void update(Location l);
 
     /**
      * Save (persist) an entire List of Location objects
      *
-     * @param locationList      List of location objects to persist
-     * @throws ServiceException     something went wrong...
+     * @param locationList List of location objects to persist
+     * @throws ServiceException something went wrong...
      */
     void saveList(List<Location> locationList) throws ServiceException;
 
     /**
      * Remove a Location
-     *
+     * <p/>
      * TODO: Switch usages over to generic repo delete method
      *
-     * @param l     Location to remove
+     * @param l Location to remove
      * @throws ServiceException
      */
     @Deprecated
     void remove(Location l) throws ServiceException;
 
+    /**
+     * Delete locations by a given MTFCC code
+     *
+     * @param mtfccCode String representing the mtfccCode code for the location
+     */
+    void deleteByMtfcc(String mtfccCode);
+
+    /**
+     * Remove locations with a given state geoid code and mtfcc code
+     *
+     * @param stateGeoId String representing the state geoid (usually the same as the FIPS55 code)
+     * @param mtfcc      String representing the mtfcc code for the location type to remove
+     * @return int representing number of items removed
+     * @throws ServiceException
+     */
+    int removeByStateGeoIdAndMtfcc(String stateGeoId, String mtfcc) throws ServiceException;
 
     /* Non-persistence methods */
 
     /**
      * Get number of Locations for each MTFCC type. Returns a Map in MTFCC Code->Count format.
      *
-     * @return  a Map<String,Integer> containing the counts for each Location type
+     * @return a Map<String,Integer> containing the counts for each Location type
      */
     Map<String, Long> getLocationCounts();
 
@@ -87,54 +101,47 @@ public interface LocationService {
      * Get the list of states/equivalents that have a given MTFCC type. For example, Nebraska does not have a
      * lower state congressional district
      *
-     * @param mtfccCode     a String representing the MTFCC to hunt for (i.e. "G4020")
+     * @param mtfccCode a String representing the MTFCC to hunt for (i.e. "G4020")
      * @return a List<Map<String, String>> containing a list of maps containing stateFP->(state FIPS55 code),
-     *          name->(state name)
+     *         name->(state name)
      */
     List<Map<String, String>> getStateAndEquivalentListForMtfcc(String mtfccCode);
 
     /**
      * Get the locations available for a State and MTFCC
      *
-     * @param stateFP   a String representing the state FIPS55 code
-     * @param mtfcc     a String representing the MTFCC to hunt for (i.e. "G4020")
-     * @return          a Map<String, String> in MTFCC->Name format
+     * @param stateFP a String representing the state FIPS55 code
+     * @param mtfcc   a String representing the MTFCC to hunt for (i.e. "G4020")
+     * @return a Map<String, String> in MTFCC->Name format
      */
     Map<String, String> getLocationsByStateAndMtfcc(String stateFP, String mtfcc);
 
     /**
      * get the locations available for a state, county, and MTFCC
      *
-     * @param stateFP   a string representing the state FIPS55 code
-     * @param countyFP  a string representing the county FIPS 55 code
-     * @param mtfcc     a String representing the MTFCC to hunt for (i.e. "G4020")
-     * @return          a Map<String, String> in MTFCC->Name format
+     * @param stateFP  a string representing the state FIPS55 code
+     * @param countyFP a string representing the county FIPS 55 code
+     * @param mtfcc    a String representing the MTFCC to hunt for (i.e. "G4020")
+     * @return a Map<String, String> in MTFCC->Name format
      */
     Map<String, String> getLocationsByStateAndCountyAndMtfcc(String stateFP, String countyFP, String mtfcc);
 
     /**
      * Get a Map of county-based locations in MTFCC->Name format
      *
-     * @param mtfccCode     MTFCC code
-     * @param stateFP       State FIPS55 code
-     * @param countyFP      County FIPS55 code
-     * @return              A Map<String, String>
+     * @param mtfccCode MTFCC code
+     * @param stateFP   State FIPS55 code
+     * @param countyFP  County FIPS55 code
+     * @return A Map<String, String>
      */
     Map<String, String> getCountyBasedLocations(String mtfccCode, String stateFP, String countyFP);
-
-    /**
-     * Delete locations by a given MTFCC code
-     *
-     * @param mtfccCode     String representing the mtfccCode code for the location
-     */
-    void deleteByMtfcc(String mtfccCode);
 
     /**
      * Get a location by its COMPLETE geoid. This differs from getByGeoIdAndMtfcc because in that case, only a
      * partial (state or state+county) may be available. Do not use this method to retrieve a State or County!!!
      *
-     * @param geoId     String representing the COMPLETE geoId
-     * @return      a Location object with the given geoid
+     * @param geoId String representing the COMPLETE geoId
+     * @return a Location object with the given geoid
      */
     Location getByCompleteGeoId(String geoId);
 
@@ -143,37 +150,34 @@ public interface LocationService {
      *
      * @param geoId     String representing geoId of Location
      * @param mtfccCode String representing mtfccCode code of Location
-     * @return  a Location with the given GeoId and MTFCC code
+     * @return a Location with the given GeoId and MTFCC code
      */
     Location getByGeoIdAndMtfcc(String geoId, String mtfccCode);
 
     /**
      * Populate a Location object with information from a simpleFeature taken from the TIGER/Line download site
      *
-     * @param location          Location object to populate
-     * @param simpleFeature     SimpleFeature object with information to populate the Location object
+     * @param location      Location object to populate
+     * @param simpleFeature SimpleFeature object with information to populate the Location object
      */
     void populateLocationFromFeature(Location location, SimpleFeature simpleFeature);
 
     /**
      * Return a Map<String, String> containing the FP->Name mappings for counties with a given state geoid
-     * @param stateGeoId    String representing the State GeoID (usually the same as the FIPS55 code)
+     *
+     * @param stateGeoId String representing the State GeoID (usually the same as the FIPS55 code)
      * @return
      */
     Map<String, String> getCountiesForState(String stateGeoId);
 
-
-
     /**
-     * Remove locations with a given state geoid code and mtfcc code
+     * Return a Map<String, Location> containing the String MTFCC mapped to the Location for that MTFCC
+     * (or null if no locations are in the repository for that MTFCC)
      *
-     * @param stateGeoId    String representing the state geoid (usually the same as the FIPS55 code)
-     * @param mtfcc     String representing the mtfcc code for the location type to remove
-     * @return      int representing number of items removed
-     * @throws ServiceException
+     * @param lng       double representing the longitude
+     * @param lat       double representing the latitude
+     * @return          Map<String, Location>
      */
-    int removeByStateGeoIdAndMtfcc(String stateGeoId, String mtfcc) throws ServiceException;
-
-
     Map<String, Location> getLocationDescriptionsForCoordinates(double lng, double lat);
+
 }
