@@ -58,10 +58,6 @@ public class HibernateLocationRepository extends HibernateGenericRepository<Loca
         return new LinkedHashMap(resultMap);
     }
 
-    public Map<String, String> getCountiesForState(String stateGeoId) {
-        return null;
-    }
-
     @SuppressWarnings("unchecked")
     @Transactional(readOnly = true)
     public List<Map<String, String>> getStateAndEquivalentListForMtfcc(MTFCC mtfcc) {

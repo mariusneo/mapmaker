@@ -38,15 +38,6 @@ public interface LocationRepository extends GenericRepository2<Location> {
      */
     Map<String, Long> getLocationCounts();
 
-
-    /**
-     * Convenience method to return a Map of county ids mapped to the county name for a given state
-     *
-     * @param stateGeoId
-     * @return
-     */
-    Map<String, String> getCountiesForState(String stateGeoId);
-
     /**
      * Return a list of Map<String, String> results containing maps of State->(state name) and StateFP->(state FIPS55)
      *
