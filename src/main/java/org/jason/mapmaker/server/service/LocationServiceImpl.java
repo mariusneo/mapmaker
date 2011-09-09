@@ -293,7 +293,7 @@ public class LocationServiceImpl implements LocationService, PersistenceService<
         List<Location> locationList = locationRepository.getLocationsByCoordinates(lng, lat);
 
         // create an empty map for all of the MTFCCs
-        Map<String, List<Location>> locationDescriptionMap = new HashMap<String, List<Location>>();
+        Map<String, List<Location>> locationDescriptionMap = new LinkedHashMap<String, List<Location>>();
         for (String key : GeographyUtils.nameToMtfccMap.inverse().keySet()) {
             locationDescriptionMap.put(key, new ArrayList<Location>());
         }
@@ -305,7 +305,7 @@ public class LocationServiceImpl implements LocationService, PersistenceService<
         }
 
         // create a map with only a single slot per mtfcc code
-        Map<String, Location> locationMap = new HashMap<String, Location>();
+        Map<String, Location> locationMap = new LinkedHashMap<String, Location>();
 
         for (String mtfccCode : locationDescriptionMap.keySet()) {
             List<Location> candidateLocationList = locationDescriptionMap.get(mtfccCode);
@@ -327,6 +327,7 @@ public class LocationServiceImpl implements LocationService, PersistenceService<
                     List<BorderPoint> borderPointList = l.getBorderPointList();
                     Collections.sort(borderPointList, new BorderPointIdComparator());
 
+                    // close the ring by appending the starting point to the end
                     BorderPoint startPoint = borderPointList.get(0);
                     borderPointList.add(startPoint);
 
