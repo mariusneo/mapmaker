@@ -27,6 +27,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.Map;
 
 /**
+ * GWTP ActionHandler for getting location descriptions for a given point.
+ *
+ * @since 0.5.0
  * @author Jason Ferguson
  */
 public class GetLocationDescriptionsHandler extends AbstractActionHandler<GetLocationDescriptionsAction, GetLocationDescriptionsResult>{
