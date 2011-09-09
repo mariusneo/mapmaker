@@ -46,6 +46,7 @@ public class GeographyUtils {
     public static final BiMap<String, String> stateAbbreviations;
     public static final BiMap<String, String> mangledNamesMap;
     public static final BiMap<String, String> nameToMtfccMap;
+    public static final BiMap<String, String> prettyNameToMtfccMap;
     public static final Set<String> stateBasedMtfccs;
     public static final Set<String> countyBasedMtfccs;
     public static final Set<String> allMtfccs;
@@ -196,6 +197,23 @@ public class GeographyUtils {
                 .put("VOTING_DISTRICT", MTFCC.VOTING_DISTRICT)
                 .build();
 
+        prettyNameToMtfccMap = new ImmutableBiMap.Builder<String, String>()
+                .put("State", MTFCC.STATE)
+                .put("County", MTFCC.COUNTY)
+                .put("Congressional District", MTFCC.CD111)
+                .put("Consolidated City", MTFCC.CONSOLIDATED_CITY)
+                .put("Elementary School District", MTFCC.ELEMENTARY_DISTRICT)
+                .put("Secondary School District", MTFCC.SECONDARY_DISTRICT)
+                .put("Unified School District", MTFCC.UNIFIED_DISTRICT)
+                .put("State Legislative Dist (Upper)", MTFCC.STATE_UPPER_DISTRICT)
+                .put("State Legislative Dist (Lower)", MTFCC.STATE_LOWER_DISTRICT)
+                .put("Subminor Civil Division", MTFCC.SUBMINOR_CIVIL_DIVISION)
+                .put("Incorporated Place", MTFCC.INCORPORATED_PLACE)
+                .put("County Subdivision", MTFCC.COUNTY_SUBDIVISION)
+                .put("Census Tract", MTFCC.CENSUS_TRACT)
+                .put("Voting District", MTFCC.VOTING_DISTRICT)
+                .build();
+
         stateBasedMtfccs = new ImmutableSet.Builder<String>()
                 .add(MTFCC.STATE)
                 .add(MTFCC.COUNTY)
@@ -279,6 +297,13 @@ public class GeographyUtils {
         return nameToMtfccMap.get(name);
     }
 
+    public static String getPrettyNameForMtfcc(String mtfcc) {
+        return prettyNameToMtfccMap.inverse().get(mtfcc);
+    }
+
+    public static String getMtfccForPrettyName(String prettyName) {
+        return prettyNameToMtfccMap.get(prettyName);
+    }
     /**
      * Simplify a Geometry by reducing the number of points (technically, by increasing the distance between points to
      * whatever the tolerance is).
