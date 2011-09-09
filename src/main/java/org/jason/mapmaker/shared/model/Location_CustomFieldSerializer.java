@@ -60,7 +60,11 @@ public class Location_CustomFieldSerializer {
         writer.writeLong(instance.getWaterArea());
         writer.writeDouble(instance.getInternalLat());
         writer.writeDouble(instance.getInternalLng());
-        writer.writeObject(new ArrayList<BorderPoint>(instance.getBorderPointList()));
+        if (instance.getBorderPointList() == null) {
+            writer.writeObject(new ArrayList<BorderPoint>());
+        } else {
+            writer.writeObject(new ArrayList<BorderPoint>(instance.getBorderPointList()));
+        }
         writer.writeString(instance.getTigerVersion());
         if (instance.getFeatureList() == null) {
             writer.writeObject(new ArrayList<Feature>());
