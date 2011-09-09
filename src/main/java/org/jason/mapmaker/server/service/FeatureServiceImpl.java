@@ -185,7 +185,7 @@ public class FeatureServiceImpl implements FeatureService {
     @Override
     public void importFromUrl(String url, FeaturesMetadata fm) throws ServiceException {
 
-        URL u = null;
+        URL u;
         try {
             u = new URL(url);
         } catch (MalformedURLException ex) {
