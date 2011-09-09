@@ -91,7 +91,7 @@ public class ShapefileUtil {
         }
 
 
-        List<File> unzippedFileList = null;
+        List<File> unzippedFileList;
         try {
             unzippedFileList = ZipUtil.decompress(u);
         } catch (ArchiveException e) {
@@ -184,8 +184,6 @@ public class ShapefileUtil {
     }
 
     private List<BorderPoint> getBorderPointsFromSimpleFeature(SimpleFeature feature) throws UtilityClassException {
-
-        List<BorderPoint> result;
 
         String geoId = (String) feature.getAttribute("GEOID10");
         String mtfcc = (String) feature.getAttribute("MTFCC10");
