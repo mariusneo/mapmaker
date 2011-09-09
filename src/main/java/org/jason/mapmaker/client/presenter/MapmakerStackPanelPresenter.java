@@ -468,7 +468,7 @@ public class MapmakerStackPanelPresenter extends PresenterWidget<MapmakerStackPa
         }
         String mtfcc = getView().getBorderTypeListBox().getValue(mtfccValue);
 
-        String generatedGeoId = null;
+        String generatedGeoId;
         if (mtfcc.equals(GeographyUtils.MTFCC.STATE)) {
             generatedGeoId = getPLBValue();
         } else if (mtfcc.equals(GeographyUtils.MTFCC.COUNTY)) {
