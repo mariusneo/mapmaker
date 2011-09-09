@@ -13,7 +13,11 @@
         timeToLiveSeconds="600" memoryStoreEvictionPolicy="LRU"/>
 
     <cache name="org.jason.mapmaker.shared.model.BorderPoint" maxElementsInMemory="10000" eternal="false"
-           overflowToDisk="false" diskPersistent="false" timeToLiveSeconds="600" timeToIdleSeconds="0"
+           overflowToDisk="false" diskPersistent="false" timeToLiveSeconds="600" timeToIdleSeconds="600"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="org.jason.mapmaker.shared.model.Location" maxElementsInMemory="10" eternal="false"
+           overflowToDisk="false" diskPersistent="false" timeToIdleSeconds="600" timeToLiveSeconds="600"
            memoryStoreEvictionPolicy="LRU" />
 
 </ehcache>
