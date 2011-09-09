@@ -223,7 +223,7 @@ public class ShapefileUtil {
         return new ArrayList<BorderPoint>(borderPointSet);
     }
 
-    public Coordinate[] getCoordinatesFromBorderPointList(List<BorderPoint> borderPointList) {
+    public static Coordinate[] getCoordinatesFromBorderPointList(List<BorderPoint> borderPointList) {
 
         List<Coordinate> coordinateList = new ArrayList<Coordinate>();
         for (BorderPoint bp : borderPointList) {
