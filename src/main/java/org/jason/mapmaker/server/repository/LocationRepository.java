@@ -41,11 +41,17 @@ public interface LocationRepository extends GenericRepository2<Location> {
     /**
      * Return a list of Map<String, String> results containing maps of State->(state name) and StateFP->(state FIPS55)
      *
-     * @param mtfcc
-     * @return
+     * @param mtfcc     String representing the MTFCC code to query for
+     * @return      a List of Map objects
      */
     List<Map<String, String>> getStateAndEquivalentListForMtfcc(MTFCC mtfcc);
 
+    /**
+     * Return a Location object using a complete GeoId code, not just a state FP or state and county FP
+     *
+     * @param geoId     String representing the unique geoid for the Location
+     * @return          Location with the given unique geoid
+     */
     Location getByCompleteGeoId(String geoId);
 
     /**
