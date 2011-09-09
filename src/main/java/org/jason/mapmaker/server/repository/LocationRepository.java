@@ -57,7 +57,15 @@ public interface LocationRepository extends GenericRepository2<Location> {
 
     Location getByCompleteGeoId(String geoId);
 
-    List<Location> getLocationDescriptionsForCoordinates(double lng, double lat);
+    /**
+     * Return a list of Location objects whose bounding box contains the given coordinates. This method
+     * may return multiple Locations for a given MTFCC; other methods need to weed out any duplicates
+     *
+     * @param lng       double representing the longitude
+     * @param lat       double representing the latitude
+     * @return      a List of Location object
+     */
+    List<Location> getLocationsByCoordinates(double lng, double lat);
 
     /**
      * Return a list of locations with a given mtfcc code and a given state and (optional) county FP code
