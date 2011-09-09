@@ -359,6 +359,22 @@ public class LocationServiceImpl implements LocationService, PersistenceService<
                 locationMap.put(key, l);
             }
         }
+
+        // some miscellaneous removals from the returned results
+        // you either get a unified district for a location, or a elementary and secondary
+        if (locationMap.get(GeographyUtils.MTFCC.UNIFIED_DISTRICT) != null) {
+            locationMap.remove(GeographyUtils.MTFCC.ELEMENTARY_DISTRICT);
+            locationMap.remove(GeographyUtils.MTFCC.SECONDARY_DISTRICT);
+        }
+
+        if (locationMap.get(GeographyUtils.MTFCC.ELEMENTARY_DISTRICT) != null || locationMap.get(GeographyUtils.MTFCC.SECONDARY_DISTRICT) != null) {
+            locationMap.remove(GeographyUtils.MTFCC.UNIFIED_DISTRICT);
+        }
+
+        // Nebraska doesn't have a state house
+        if (locationMap.get(GeographyUtils.MTFCC.STATE).getName().equalsIgnoreCase("Nebraska")) {
+            locationMap.remove(GeographyUtils.MTFCC.STATE_LOWER_DISTRICT);
+        }
         return locationMap;
     }
 }
