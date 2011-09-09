@@ -36,22 +36,45 @@ public interface LocationService {
 
     void setLocationRepository(LocationRepository locationRepository);
 
+    /* Persistence Methods */
+
+    /**
+     * Delete all items in the Location repository
+     *
+     * @throws ServiceException     something went wrong...
+     */
+    void deleteAll() throws ServiceException;
+
+    /**
+     * Update a Location object
+     *
+     * TODO: Do we need this???
+     *
+     * @param l     Location object to update
+     */
+    void update(Location l);
+
+    /**
+     * Save (persist) an entire List of Location objects
+     *
+     * @param locationList      List of location objects to persist
+     * @throws ServiceException     something went wrong...
+     */
     void saveList(List<Location> locationList) throws ServiceException;
 
     /**
-     * Get the number of Locations stored by the application
+     * Remove a Location
      *
-     * @return  Integer
+     * TODO: Switch usages over to generic repo delete method
+     *
+     * @param l     Location to remove
+     * @throws ServiceException
      */
-    Long getLocationCount();
+    @Deprecated
+    void remove(Location l) throws ServiceException;
 
-    /**
-     * Get number of Locations for a given MTFCC code
-     *
-     * @param mtfccCode `String representing the MTFCC code (i.e. 'G4000' for a State/Equivalent)
-     * @return  an Integer representing the count of Location object for the given MTFCC code
-     */
-    Long getLocationCountByMtfccCode(String mtfccCode);
+
+    /* Non-persistence methods */
 
     /**
      * Get number of Locations for each MTFCC type. Returns a Map in MTFCC Code->Count format.
@@ -139,13 +162,7 @@ public interface LocationService {
      */
     Map<String, String> getCountiesForState(String stateGeoId);
 
-    /**
-     * Remove a Location
-     *
-     * @param l     Location to remove
-     * @throws ServiceException
-     */
-    void remove(Location l) throws ServiceException;
+
 
     /**
      * Remove locations with a given state geoid code and mtfcc code
@@ -157,9 +174,6 @@ public interface LocationService {
      */
     int removeByStateGeoIdAndMtfcc(String stateGeoId, String mtfcc) throws ServiceException;
 
-    void deleteAll() throws ServiceException;
-
-    void update(Location l);
 
     Map<String, Location> getLocationDescriptionsForCoordinates(double lng, double lat);
 }

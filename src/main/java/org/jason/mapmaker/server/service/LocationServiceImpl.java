@@ -94,19 +94,6 @@ public class LocationServiceImpl implements LocationService, PersistenceService<
         }
     }
 
-    public Long getLocationCount() {
-        return locationRepository.getCount();
-    }
-
-    public Long getLocationCountByMtfccCode(String mtfccCode) {
-
-        MTFCC m = mtfccService.get(mtfccCode);
-        Location example = new Location();
-        example.setMtfcc(m);
-
-        return locationRepository.getCountByExample(example);
-    }
-
     public Map<String, Long> getLocationCounts() {
         return locationRepository.getLocationCounts();
     }
