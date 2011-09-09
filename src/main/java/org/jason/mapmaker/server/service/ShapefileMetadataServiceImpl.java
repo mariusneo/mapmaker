@@ -37,6 +37,7 @@ import java.util.List;
  * @author Jason Ferguson
  * @since 0.4
  */
+@SuppressWarnings({"FieldCanBeLocal"})
 @Service("shapefileMetadataService")
 public class ShapefileMetadataServiceImpl implements ShapefileMetadataService {
 
@@ -170,7 +171,6 @@ public class ShapefileMetadataServiceImpl implements ShapefileMetadataService {
         FTPClient ftp = new FTPClient();
         List<String> filenameList = new ArrayList<String>();
 
-        boolean error = false;
         try {
             int reply;
             ftp.connect(url);
@@ -221,8 +221,7 @@ public class ShapefileMetadataServiceImpl implements ShapefileMetadataService {
         example.setMtfccCode(m.getMtfccCode());
 
         List<ShapefileMetadata> resultList = shapefileMetadataRepository.queryByExample(example);
-        ShapefileMetadata sm = resultList.get(0);
 
-        return sm;
+        return resultList.get(0);
     }
 }
