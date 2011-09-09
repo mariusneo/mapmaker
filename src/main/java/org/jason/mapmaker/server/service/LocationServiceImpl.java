@@ -17,6 +17,7 @@ package org.jason.mapmaker.server.service;
 
 import com.vividsolutions.jts.geom.*;
 import org.apache.commons.lang.StringUtils;
+import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.jason.mapmaker.server.repository.LocationRepository;
 import org.jason.mapmaker.server.util.ShapefileUtil;
 import org.jason.mapmaker.shared.exceptions.ServiceException;
@@ -80,7 +81,7 @@ public class LocationServiceImpl implements LocationService, PersistenceService<
 
         List<Location> resultList = locationRepository.getByExample(example);
         int affectedRows = resultList.size();
-        for (Location l:resultList) {
+        for (Location l : resultList) {
             locationRepository.delete(l);
         }
 
@@ -132,7 +133,7 @@ public class LocationServiceImpl implements LocationService, PersistenceService<
 
         List<Location> locationList = locationRepository.getLocations(mtfcc, stateFP);
         Map<String, String> resultMap = new LinkedHashMap<String, String>();
-        for (Location l: locationList) {
+        for (Location l : locationList) {
             resultMap.put(l.getGeoId(), l.getName());
         }
 
@@ -168,8 +169,8 @@ public class LocationServiceImpl implements LocationService, PersistenceService<
         }
 
         resultMap.remove(stateFP.concat(countyFP)); // bugfix, the county is showing up in the list of its subfeatures
-                                                    // quickfix is to do a quick and dirty generation of the county
-                                                    // geoid and remove it
+        // quickfix is to do a quick and dirty generation of the county
+        // geoid and remove it
         return resultMap;
 
     }
@@ -181,7 +182,7 @@ public class LocationServiceImpl implements LocationService, PersistenceService<
         example.setMtfcc(m);
 
         List<Location> locationList = locationRepository.getByExample(example);
-        for (Location l: locationList) {
+        for (Location l : locationList) {
             locationRepository.delete(l);
         }
     }
@@ -265,7 +266,7 @@ public class LocationServiceImpl implements LocationService, PersistenceService<
 
         List<Location> resultList = locationRepository.getByExample(example);
         Map<String, String> resultMap = new LinkedHashMap<String, String>();
-        for (Location l: resultList) {
+        for (Location l : resultList) {
             resultMap.put(l.getCountyFP(), l.getName());
         }
 
@@ -293,12 +294,12 @@ public class LocationServiceImpl implements LocationService, PersistenceService<
 
         // create an empty map for all of the MTFCCs
         Map<String, List<Location>> locationDescriptionMap = new HashMap<String, List<Location>>();
-        for (String key: GeographyUtils.nameToMtfccMap.inverse().keySet()) {
+        for (String key : GeographyUtils.nameToMtfccMap.inverse().keySet()) {
             locationDescriptionMap.put(key, new ArrayList<Location>());
         }
 
         // assign the location result to their slots in the map
-        for (Location l: locationList) {
+        for (Location l : locationList) {
             String locationMtfccCode = l.getMtfcc().getMtfccCode();
             locationDescriptionMap.get(locationMtfccCode).add(l);
         }
@@ -306,7 +307,7 @@ public class LocationServiceImpl implements LocationService, PersistenceService<
         // create a map with only a single slot per mtfcc code
         Map<String, Location> locationMap = new HashMap<String, Location>();
 
-        for (String mtfccCode: locationDescriptionMap.keySet()) {
+        for (String mtfccCode : locationDescriptionMap.keySet()) {
             List<Location> candidateLocationList = locationDescriptionMap.get(mtfccCode);
 
 
@@ -316,15 +317,18 @@ public class LocationServiceImpl implements LocationService, PersistenceService<
                 locationMap.put(mtfccCode, candidateLocationList.get(0));
             } else {                                 // otherwise, we have to create and test the geometries
 
-                // create a geometry factory (TODO: should I be using the JTS factory finder?)
-                GeometryFactory geometryFactory = new GeometryFactory();
+                // create a geometry factory
+                GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory(null);
                 Coordinate candidateCoordinate = new Coordinate(lng, lat);
 
                 locationMap.put(mtfccCode, null);       // default value
-                for (Location l: candidateLocationList) {
+                for (Location l : candidateLocationList) {
                     // get and sort the Location's border points
                     List<BorderPoint> borderPointList = l.getBorderPointList();
                     Collections.sort(borderPointList, new BorderPointIdComparator());
+
+                    BorderPoint startPoint = borderPointList.get(0);
+                    borderPointList.add(startPoint);
 
                     // convert the border points to an array of Coordinates (Geotools doesn't like collections)
                     Coordinate[] locationCoordinates = ShapefileUtil.getCoordinatesFromBorderPointList(borderPointList);
