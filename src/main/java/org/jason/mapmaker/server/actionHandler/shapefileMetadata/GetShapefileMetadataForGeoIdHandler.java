@@ -51,6 +51,11 @@ public class GetShapefileMetadataForGeoIdHandler extends
     public GetShapefileMetadataForGeoIdResult execute(GetShapefileMetadataForGeoIdAction action, ExecutionContext executionContext) throws ActionException {
 
         List<ShapefileMetadata> smList = shapefileMetadataService.getByGeoId(action.getGeoId());
+        if (!action.isIncludeLocationList()) {
+            for (ShapefileMetadata sm: smList) {
+                sm.setLocationList(null);
+            }
+        }
         return new GetShapefileMetadataForGeoIdResult(smList);
 
     }

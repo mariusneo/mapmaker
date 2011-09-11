@@ -19,21 +19,30 @@ import com.gwtplatform.dispatch.shared.UnsecuredActionImpl;
 import org.jason.mapmaker.shared.result.shapefileMetadata.GetShapefileMetadataForGeoIdResult;
 
 /**
+ * GWTP Action class used for getting the ShapefileMetadata for a given Geoid
+ *
+ * @since 0.3
  * @author Jason Ferguson
  */
 public class GetShapefileMetadataForGeoIdAction extends UnsecuredActionImpl<GetShapefileMetadataForGeoIdResult> {
 
     private String geoId;
+    private boolean includeLocationList;
 
     // for serialization only, do not use
     public GetShapefileMetadataForGeoIdAction() {
     }
 
-    public GetShapefileMetadataForGeoIdAction(String geoId) {
+    public GetShapefileMetadataForGeoIdAction(String geoId, boolean includeLocationList) {
         this.geoId = geoId;
+        this.includeLocationList = includeLocationList;
     }
 
     public String getGeoId() {
         return geoId;
+    }
+
+    public boolean isIncludeLocationList() {
+        return includeLocationList;
     }
 }
