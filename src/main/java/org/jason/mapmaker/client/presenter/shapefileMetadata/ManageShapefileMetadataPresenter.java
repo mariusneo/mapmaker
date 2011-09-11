@@ -157,7 +157,7 @@ public class ManageShapefileMetadataPresenter extends PresenterWidget<ManageShap
         int index = getView().getStateListBox().getSelectedIndex();
         String geoId = getView().getStateListBox().getValue(index);
 
-        dispatchAsync.execute(new GetShapefileMetadataForGeoIdAction(geoId), new AsyncCallback<GetShapefileMetadataForGeoIdResult>() {
+        dispatchAsync.execute(new GetShapefileMetadataForGeoIdAction(geoId, false), new AsyncCallback<GetShapefileMetadataForGeoIdResult>() {
             @Override
             public void onFailure(Throwable caught) {
                 caught.printStackTrace();
