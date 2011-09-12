@@ -30,12 +30,6 @@ import java.util.Map;
 public interface FeatureRepository extends GenericRepository2<Feature> {
 
     /**
-     * Return a List of just the feature class names
-     * @return
-     */
-    List<String> getFeatureClasses();
-
-    /**
      * Return a list of features of a given type within a bounding box defined by a Map<String, Double>.
      *
      * @param boundingBox       Map<String, Double> defining the bounding box to return the features for

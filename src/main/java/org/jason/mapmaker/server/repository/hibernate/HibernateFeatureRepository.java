@@ -39,17 +39,6 @@ public class HibernateFeatureRepository extends HibernateGenericRepository<Featu
     }
 
     @Override
-    @Transactional
-    @SuppressWarnings("unchecked")
-    public List<String> getFeatureClasses() {
-
-        String strQuery = "SELECT DISTINCT F.featureClass FROM Feature F ORDER BY F.featureClass";
-        Query query = sessionFactory.getCurrentSession().createQuery(strQuery);
-
-        return (List<String>) query.list();
-    }
-
-    @Override
     @Transactional(readOnly = true)
     public List<Feature> getFeaturesByBoxAndFeatureClassName(Map<String, Double> boundingBox, String featureClassName) {
 
