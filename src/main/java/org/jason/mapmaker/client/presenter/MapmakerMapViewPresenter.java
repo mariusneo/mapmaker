@@ -90,9 +90,10 @@ public class MapmakerMapViewPresenter extends PresenterWidget<MapmakerMapViewPre
             public void onRedrawMap(RedrawMapEvent event) {
 
                 String geoId = event.getGeoId();
+                String mtfccCode = event.getMtfccCode();
                 String featureClassName = event.getFeatureClassType(); // might be null
 
-                dispatch.execute(new GetMapDataByGeoIdAction(geoId, featureClassName), new AsyncCallback<GetMapDataByGeoIdResult>() {
+                dispatch.execute(new GetMapDataByGeoIdAction(geoId, mtfccCode, featureClassName), new AsyncCallback<GetMapDataByGeoIdResult>() {
                     @Override
                     public void onFailure(Throwable throwable) {
                         throwable.printStackTrace();
