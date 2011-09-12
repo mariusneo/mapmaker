@@ -3,7 +3,7 @@
 -- clear the tables
 truncate BORDERPOINT;
 delete from LOCATION;
-delete from FEATURE;
+truncate FEATURE;
 delete from FEATURESMETADATA;
 delete from SHAPEFILEMETADATA;
 
