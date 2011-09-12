@@ -32,8 +32,6 @@ import java.util.ArrayList;
 @SuppressWarnings("unused")
 public class Location_CustomFieldSerializer {
 
-    public static int countD = 0;
-
     public static void serialize(SerializationStreamWriter writer, Location instance) throws SerializationException {
         writer.writeLong(instance.getId());
         writer.writeString(instance.getGeoId());
