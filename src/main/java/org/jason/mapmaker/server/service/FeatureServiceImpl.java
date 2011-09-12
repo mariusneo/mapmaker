@@ -144,11 +144,6 @@ public class FeatureServiceImpl implements FeatureService {
         return filteredList;
     }
 
-    @Override
-    public Map<String, Long> getFeatureCounts() {
-        return featureRepository.getFeatureCounts();
-    }
-
     public void deleteByFeaturesMetadata(FeaturesMetadata fm) throws ServiceException {
 
         String validatedGeoId = StringUtils.left(fm.getStateGeoId(), 2);

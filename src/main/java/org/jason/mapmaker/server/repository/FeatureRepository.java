@@ -45,15 +45,11 @@ public interface FeatureRepository extends GenericRepository2<Feature> {
     List<Feature> getFeaturesByBoxAndFeatureClassName(Map<String, Double> boundingBox, String featureClassName);
 
     /**
-     * Return feature class names mapped to a Integer containing how many instances of that Feature are persisted.
-     * @return
-     */
-    Map<String, Long> getFeatureCounts();
-
-    /**
      * Delete all features given a state geoid
      *
      * @param stateGeoId    String representing the state geoid
+     * @return          int representing number of records in the repository affected
+     * @throws          RepositoryException when something goes wrong
      */
     int deleteByStateGeoId(String stateGeoId) throws RepositoryException;
 }

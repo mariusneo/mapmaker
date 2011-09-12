@@ -70,11 +70,6 @@ public class HibernateFeatureRepository extends HibernateGenericRepository<Featu
     }
 
     @Override
-    public Map<String, Long> getFeatureCounts() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
     @Transactional
     public int deleteByStateGeoId(String stateGeoId) throws RepositoryException {
 

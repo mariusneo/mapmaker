@@ -109,13 +109,6 @@ public interface FeatureService extends PersistenceService<Feature> {
     List<Feature> getFeatures(Location location, String featureClassName);
 
     /**
-     * Return a Map of feature class names and the count of Feature objects with that particular feature class name
-     *
-     * @return
-     */
-    Map<String, Long> getFeatureCounts();
-
-    /**
      * Generate a URL
      *
      * @param geoId
