@@ -19,6 +19,7 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Represents the MAF/TIGER Feature Class Code for a Location.
@@ -40,6 +41,8 @@ public class MTFCC implements Serializable, IsSerializable {
     private boolean linear;
     private boolean areal;
     private String featureClassDescription;
+
+    private List<Location> locationList;
 
     public MTFCC() {
     }
@@ -119,6 +122,15 @@ public class MTFCC implements Serializable, IsSerializable {
 
     public void setFeatureClassDescription(String featureClassDescription) {
         this.featureClassDescription = featureClassDescription;
+    }
+
+    @OneToMany(mappedBy = "mtfcc")
+    public List<Location> getLocationList() {
+        return locationList;
+    }
+
+    public void setLocationList(List<Location> locationList) {
+        this.locationList = locationList;
     }
 
     @Override
