@@ -20,4 +20,6 @@
            overflowToDisk="false" diskPersistent="false" timeToIdleSeconds="600" timeToLiveSeconds="600"
            memoryStoreEvictionPolicy="LRU" />
 
+    <cache name="org.jason.mapmaker.shared.model.MTFCC" maxElementsInMemory="175" eternal="true" overflowToDisk="true"
+           diskPersistent="true" memoryStoreEvictionPolicy="LRU" />
 </ehcache>
