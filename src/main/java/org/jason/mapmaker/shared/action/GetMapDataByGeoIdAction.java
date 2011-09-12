@@ -19,9 +19,16 @@ package org.jason.mapmaker.shared.action;
 import com.gwtplatform.dispatch.shared.UnsecuredActionImpl;
 import org.jason.mapmaker.shared.result.GetMapDataByGeoIdResult;
 
+/**
+ * GWTP Action class for getting Map Data for display
+ *
+ * @since 0.1
+ * @author Jason Ferguson
+ */
 public class GetMapDataByGeoIdAction extends UnsecuredActionImpl<GetMapDataByGeoIdResult> {
 
     private String geoId;
+    private String mtfccCode;
     private String featureClassName;
 
     // for serialization only, do not use
@@ -29,17 +36,23 @@ public class GetMapDataByGeoIdAction extends UnsecuredActionImpl<GetMapDataByGeo
 
     }
 
-    public GetMapDataByGeoIdAction(String geoId) {
+    public GetMapDataByGeoIdAction(String geoId, String mtfccCode) {
         this.geoId = geoId;
+        this.mtfccCode = mtfccCode;
     }
 
-    public GetMapDataByGeoIdAction(String geoId, String featureClassName) {
+    public GetMapDataByGeoIdAction(String geoId, String mtfccCode, String featureClassName) {
         this.geoId = geoId;
+        this.mtfccCode = mtfccCode;
         this.featureClassName = featureClassName;
     }
 
     public String getGeoId() {
         return geoId;
+    }
+
+    public String getMtfccCode() {
+        return mtfccCode;
     }
 
     public String getFeatureClassName() {
