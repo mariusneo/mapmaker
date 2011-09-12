@@ -57,7 +57,8 @@ public class GetMapDataByGeoIdHandler extends AbstractActionHandler<GetMapDataBy
     @Override
     public GetMapDataByGeoIdResult execute(GetMapDataByGeoIdAction action, ExecutionContext context) throws ActionException {
 
-        Location location = locationService.getByCompleteGeoId(action.getGeoId());
+        //Location location = locationService.getByCompleteGeoId(action.getGeoId());
+        Location location = locationService.getByGeoIdAndMtfcc(action.getGeoId(), action.getMtfccCode());
         if (location == null) {
             throw new ActionException("Location is null");
         }
