@@ -121,6 +121,7 @@ public class HibernateLocationRepository extends HibernateGenericRepository<Loca
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Location getByGeoIdAndMtfcc(String geoId, String mtfccCode) {
 
         Criteria locationCriteria = sessionFactory.getCurrentSession().createCriteria(Location.class);
