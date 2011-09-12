@@ -21,8 +21,9 @@ public class RedrawMapEvent extends GwtEvent<RedrawMapHandler> {
         RedrawMapEvent.TYPE = TYPE;
     }
 
-    public RedrawMapEvent(String geoId) {
+    public RedrawMapEvent(String geoId, String mtfccCode) {
         this.geoId = geoId;
+        this.mtfccCode = mtfccCode;
     }
 
     public RedrawMapEvent(String geoId, String mtfccCode, String featureClassType) {
