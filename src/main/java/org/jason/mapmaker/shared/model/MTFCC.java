@@ -21,10 +21,9 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 /**
- * MTFCC.java
- * <p/>
  * Represents the MAF/TIGER Feature Class Code for a Location.
  *
+ * @since 0.1
  * @author Jason Ferguson
  */
 @Entity
