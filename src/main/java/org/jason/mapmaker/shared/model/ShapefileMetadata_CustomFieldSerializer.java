@@ -27,8 +27,8 @@ import java.util.List;
  * GWT CustomFieldSerializer class for serializing/deserializing ShapefileMetadata objects. The idea is to
  * get around the Hibernate PersistentBag issue w/o complicated external libraries (Gilead/Dozer/etc)
  *
- * @since 0.4.3
  * @author Jason Ferguson
+ * @since 0.4.3
  */
 @SuppressWarnings("unused")
 public class ShapefileMetadata_CustomFieldSerializer extends CustomFieldSerializer<ShapefileMetadata> {
@@ -70,7 +70,11 @@ public class ShapefileMetadata_CustomFieldSerializer extends CustomFieldSerializ
         writer.writeString(instance.getVersion());
         writer.writeString(instance.getCurrentStatus());
 
-        writer.writeObject(new ArrayList<Location>(instance.getLocationList()));
+        if (instance.getLocationList() == null) {
+            writer.writeObject(new ArrayList<Location>());
+        } else {
+            writer.writeObject(new ArrayList<Location>(instance.getLocationList()));
+        }
     }
 
     public static void serialize(SerializationStreamWriter writer, ShapefileMetadata instance) throws SerializationException {
@@ -80,7 +84,11 @@ public class ShapefileMetadata_CustomFieldSerializer extends CustomFieldSerializ
         writer.writeString(instance.getUrl());
         writer.writeString(instance.getVersion());
         writer.writeString(instance.getCurrentStatus());
-        writer.writeObject(new ArrayList<Location>(instance.getLocationList()));
+        if (instance.getLocationList() == null) {
+            writer.writeObject(new ArrayList<Location>());
+        } else {
+            writer.writeObject(new ArrayList<Location>(instance.getLocationList()));
+        }
     }
 
     public static void deserialize(SerializationStreamReader reader, ShapefileMetadata instance) throws SerializationException {
