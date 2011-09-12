@@ -122,6 +122,10 @@ public class FeatureServiceImpl implements FeatureService {
         // get everything of the given feature class within the general bounding box of the location
         List<Feature> initialList = featureRepository.getFeaturesByBoxAndFeatureClassName(location.getBoundingBox(), featureClassName);
 
+        if (initialList.size() == 0) {
+            return initialList;
+        }
+
         // create a polygon of the border points
         int numBorderPoints = location.getBorderPointList().size();
         Coordinate[] coordinates = new Coordinate[numBorderPoints + 1];
