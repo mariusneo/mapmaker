@@ -192,6 +192,7 @@ public class GeographyUtils {
                 .put("STATE_LOWER_DISTRICT", MTFCC.STATE_LOWER_DISTRICT)
                 .put("SUBMINOR_CIVIL_DIVISION", MTFCC.SUBMINOR_CIVIL_DIVISION)
                 .put("INCORPORATED_PLACE", MTFCC.INCORPORATED_PLACE)
+                .put("CENSUS_DESIGNATED_PLACE", MTFCC.CENSUS_DESIGNATED_PLACE)
                 .put("COUNTY_SUBDIVISION", MTFCC.COUNTY_SUBDIVISION)
                 .put("CENSUS_TRACT", MTFCC.CENSUS_TRACT)
                 .put("VOTING_DISTRICT", MTFCC.VOTING_DISTRICT)
@@ -209,6 +210,7 @@ public class GeographyUtils {
                 .put("State Legislative Dist (Lower)", MTFCC.STATE_LOWER_DISTRICT)
                 .put("Subminor Civil Division", MTFCC.SUBMINOR_CIVIL_DIVISION)
                 .put("Incorporated Place", MTFCC.INCORPORATED_PLACE)
+                .put("Census Designated Place", MTFCC.CENSUS_DESIGNATED_PLACE)
                 .put("County Subdivision", MTFCC.COUNTY_SUBDIVISION)
                 .put("Census Tract", MTFCC.CENSUS_TRACT)
                 .put("Voting District", MTFCC.VOTING_DISTRICT)
@@ -226,6 +228,7 @@ public class GeographyUtils {
                 .add(MTFCC.STATE_LOWER_DISTRICT)
                 .add(MTFCC.SUBMINOR_CIVIL_DIVISION)
                 .add(MTFCC.INCORPORATED_PLACE)
+                .add(MTFCC.CENSUS_DESIGNATED_PLACE)
                 .build();
 
         countyBasedMtfccs = new ImmutableSet.Builder<String>()
@@ -331,6 +334,7 @@ public class GeographyUtils {
         public static final String STATE_LOWER_DISTRICT = "G5220";
         public static final String SUBMINOR_CIVIL_DIVISION = "G4060";
         public static final String INCORPORATED_PLACE = "G4110";
+        public static final String CENSUS_DESIGNATED_PLACE = "G4210";
 
         // County-based features
         public static final String COUNTY_SUBDIVISION = "G4040";
