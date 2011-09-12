@@ -188,7 +188,6 @@ public class LocationServiceImpl implements LocationService, PersistenceService<
         }
     }
 
-    @Transactional(readOnly = true)
     public Location getByGeoIdAndMtfcc(String geoId, String mtfccCode) {
         return locationRepository.getByGeoIdAndMtfcc(geoId, mtfccCode);
     }
