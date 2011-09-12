@@ -132,6 +132,7 @@ public class LocationServiceImpl implements LocationService, PersistenceService<
     public Map<String, String> getLocationsByStateAndMtfcc(String stateFP, String mtfcc) {
 
         List<Location> locationList = locationRepository.getLocations(mtfcc, stateFP);
+        //Collections.sort(locationList, new LocationNameAlphanumComparator());
         Map<String, String> resultMap = new LinkedHashMap<String, String>();
         for (Location l : locationList) {
             resultMap.put(l.getGeoId(), l.getName());
@@ -360,8 +361,11 @@ public class LocationServiceImpl implements LocationService, PersistenceService<
         for (String key : locationMap.keySet()) {
             Location l = locationMap.get(key);
             if (l != null) {
-                l.setBorderPointList(null);
-                locationMap.put(key, l);
+                // if the feature type is not available, don't pass it on for display
+                //if (!l.getShapefileMetadata().getCurrentStatus().equals(GeographyUtils.Status.NOT_AVAILABLE)) {
+                    l.setBorderPointList(null);
+                    locationMap.put(key, l);
+                //}
             }
         }
 
@@ -376,10 +380,6 @@ public class LocationServiceImpl implements LocationService, PersistenceService<
             locationMap.remove(GeographyUtils.MTFCC.UNIFIED_DISTRICT);
         }
 
-        // Nebraska doesn't have a state house
-        if (locationMap.get(GeographyUtils.MTFCC.STATE).getName().equalsIgnoreCase("Nebraska")) {
-            locationMap.remove(GeographyUtils.MTFCC.STATE_LOWER_DISTRICT);
-        }
         return locationMap;
     }
 }
