@@ -24,10 +24,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * MtfccServiceImpl.java
- *
  * Implementation of MtfccService interface
  *
+ * @since 0.1
  * @author Jason Ferguson
  */
 @Service("mtfccService")
