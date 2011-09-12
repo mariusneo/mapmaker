@@ -137,15 +137,6 @@ public interface LocationService {
     Map<String, String> getCountyBasedLocations(String mtfccCode, String stateFP, String countyFP);
 
     /**
-     * Get a location by its COMPLETE geoid. This differs from getByGeoIdAndMtfcc because in that case, only a
-     * partial (state or state+county) may be available. Do not use this method to retrieve a State or County!!!
-     *
-     * @param geoId String representing the COMPLETE geoId
-     * @return a Location object with the given geoid
-     */
-    Location getByCompleteGeoId(String geoId);
-
-    /**
      * Get a location by its geoId and mtfccCode code
      *
      * @param geoId     String representing geoId of Location
