@@ -94,7 +94,6 @@ public class ServerModule extends HandlerModule {
         bindHandler(GetAvailableLocationsCountAction.class, GetAvailableFeaturesCountHandler.class);
         bindHandler(GetCountyBasedLocationsAction.class, GetCountyBasedLocationsHandler.class);
         bindHandler(GetFeatureClassesAction.class, GetFeatureClassesHandler.class);
-        bindHandler(GetFeatureCountAction.class, GetFeatureCountHandler.class);
         bindHandler(GetLocationsAction.class, GetLocationsHandler.class);
         bindHandler(GetLocationsByStateAndMtfccAction.class, GetLocationsByStateAndMtfccHandler.class);
         bindHandler(GetMapDataByGeoIdAction.class, GetMapDataByGeoIdHandler.class);
@@ -204,12 +203,6 @@ public class ServerModule extends HandlerModule {
     public GetFeatureClassesHandler getGetFeatureClassesHandler() {
         return new GetFeatureClassesHandler();
     }
-
-    @Bean
-    public GetFeatureCountHandler getGetFeatureCountHandler() {
-        return new GetFeatureCountHandler();
-    }
-
 
     @Bean
     public GetLocationsHandler getGetLocationsHandler() {
