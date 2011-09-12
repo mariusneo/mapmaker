@@ -10,6 +10,7 @@ public class RedrawMapEvent extends GwtEvent<RedrawMapHandler> {
     public static Type<RedrawMapHandler> TYPE = new Type<RedrawMapHandler>();
 
     private String geoId;
+    private String mtfccCode;
     private String featureClassType;
 
     public static Type<RedrawMapHandler> getTYPE() {
@@ -24,8 +25,9 @@ public class RedrawMapEvent extends GwtEvent<RedrawMapHandler> {
         this.geoId = geoId;
     }
 
-    public RedrawMapEvent(String geoId, String featureClassType) {
+    public RedrawMapEvent(String geoId, String mtfccCode, String featureClassType) {
         this.geoId = geoId;
+        this.mtfccCode = mtfccCode;
         this.featureClassType = featureClassType;
     }
 
@@ -35,6 +37,10 @@ public class RedrawMapEvent extends GwtEvent<RedrawMapHandler> {
 
     public String getFeatureClassType() {
         return featureClassType;
+    }
+
+    public String getMtfccCode() {
+        return mtfccCode;
     }
 
     @Override
