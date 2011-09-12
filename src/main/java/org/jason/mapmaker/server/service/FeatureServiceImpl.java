@@ -18,7 +18,6 @@ package org.jason.mapmaker.server.service;
 import com.vividsolutions.jts.geom.*;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.jason.mapmaker.server.repository.FeatureRepository;
 import org.jason.mapmaker.server.util.ZipUtil;
@@ -30,18 +29,21 @@ import org.jason.mapmaker.shared.model.FeaturesMetadata;
 import org.jason.mapmaker.shared.model.Location;
 import org.jason.mapmaker.shared.util.FeatureUtil;
 import org.jason.mapmaker.shared.util.GeographyUtils;
-import org.opengis.filter.FilterFactory2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import static org.apache.commons.lang.StringUtils.split;
 
@@ -104,7 +106,14 @@ public class FeatureServiceImpl implements FeatureService {
 
     @Override
     public List<String> getFeatureClasses() {
-        return featureRepository.getFeatureClasses();
+
+        SortedSet<String> results = new TreeSet<String>();
+        List<Feature> featureList = featureRepository.getAll();
+
+        for (Feature f: featureList) {
+            results.add(f.getFeatureClass());
+        }
+        return new ArrayList<String>(results);
     }
 
     @Override
