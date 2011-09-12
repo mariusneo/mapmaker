@@ -47,14 +47,6 @@ public interface LocationRepository extends GenericRepository2<Location> {
     List<Map<String, String>> getStateAndEquivalentListForMtfcc(MTFCC mtfcc);
 
     /**
-     * Return a Location object using a complete GeoId code, not just a state FP or state and county FP
-     *
-     * @param geoId     String representing the unique geoid for the Location
-     * @return          Location with the given unique geoid
-     */
-    Location getByCompleteGeoId(String geoId);
-
-    /**
      * Return a list of Location objects whose bounding box contains the given coordinates. This method
      * may return multiple Locations for a given MTFCC; other methods need to weed out any duplicates
      *

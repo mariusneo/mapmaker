@@ -76,16 +76,6 @@ public class HibernateLocationRepository extends HibernateGenericRepository<Loca
 
     }
 
-    @Transactional(readOnly = true)
-    public Location getByCompleteGeoId(String geoId) {
-
-        String hql1 = "from Location as L where L.geoId = :geoId";
-        Query query = sessionFactory.getCurrentSession().createQuery(hql1);
-        query.setString("geoId", geoId);
-
-        return (Location) query.list().get(0);
-    }
-
     @Override
     @Transactional(readOnly = true)
     public List<Location> getLocationsByCoordinates(double lng, double lat) {
