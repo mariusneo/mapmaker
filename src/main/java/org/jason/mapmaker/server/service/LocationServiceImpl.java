@@ -197,18 +197,7 @@ public class LocationServiceImpl implements LocationService, PersistenceService<
 
     @Transactional(readOnly = true)
     public Location getByGeoIdAndMtfcc(String geoId, String mtfccCode) {
-
-        MTFCC m = mtfccService.get(mtfccCode);
-        Location example = new Location();
-        example.setGeoId(geoId);
-        example.setMtfcc(m);
-
-        List<Location> resultList = locationRepository.getByExample(example);
-        if (resultList.size() == 0) {
-            return null;
-        }
-
-        return resultList.get(0);
+        return locationRepository.getByGeoIdAndMtfcc(geoId, mtfccCode);
     }
 
     public void populateLocationFromFeature(Location location, SimpleFeature feature) {
