@@ -466,16 +466,16 @@ public class MapmakerStackPanelPresenter extends PresenterWidget<MapmakerStackPa
             getView().displayAngryMessage("You must select a border type!");
             return;
         }
-        String mtfcc = getView().getBorderTypeListBox().getValue(mtfccValue);
+        String mtfccCode = getView().getBorderTypeListBox().getValue(mtfccValue);
 
         String generatedGeoId;
-        if (mtfcc.equals(GeographyUtils.MTFCC.STATE)) {
+        if (mtfccCode.equals(GeographyUtils.MTFCC.STATE)) {
             generatedGeoId = getPLBValue();
-        } else if (mtfcc.equals(GeographyUtils.MTFCC.COUNTY)) {
+        } else if (mtfccCode.equals(GeographyUtils.MTFCC.COUNTY)) {
             generatedGeoId = getSLBValue();
-        } else if (!mtfcc.equals(GeographyUtils.MTFCC.STATE) && GeographyUtils.isStateBasedMtfcc(mtfcc)) {
+        } else if (!mtfccCode.equals(GeographyUtils.MTFCC.STATE) && GeographyUtils.isStateBasedMtfcc(mtfccCode)) {
             generatedGeoId = getTLBValue();
-        } else if (!mtfcc.equals(GeographyUtils.MTFCC.COUNTY) && GeographyUtils.isCountyBasedMtfcc(mtfcc)) {
+        } else if (!mtfccCode.equals(GeographyUtils.MTFCC.COUNTY) && GeographyUtils.isCountyBasedMtfcc(mtfccCode)) {
             generatedGeoId = getTLBValue();
         } else {
             return;
@@ -486,9 +486,9 @@ public class MapmakerStackPanelPresenter extends PresenterWidget<MapmakerStackPa
         String featureClassName;
         if (fcnIndex != -1) {
             featureClassName = getView().getFeaturesListBox().getValue(fcnIndex);  // rot roh! throws arrayindexoutofbounds if no feature selected!
-            getEventBus().fireEvent(new RedrawMapEvent(generatedGeoId, featureClassName));
+            getEventBus().fireEvent(new RedrawMapEvent(generatedGeoId, mtfccCode, featureClassName));
         } else {
-            getEventBus().fireEvent(new RedrawMapEvent(generatedGeoId));
+            getEventBus().fireEvent(new RedrawMapEvent(generatedGeoId, mtfccCode));
         }
 
     }
