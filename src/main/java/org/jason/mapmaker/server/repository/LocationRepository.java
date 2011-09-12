@@ -72,4 +72,13 @@ public interface LocationRepository extends GenericRepository2<Location> {
      * @return  List of locations with the given FP code(s)
      */
     List<Location> getLocations(String mtfccCode, String... fpCodes);
+
+    /**
+     * Return a Location by it's geoid and mtfcc. Not passing the GeoId can result in multiple results being returned!
+     *
+     * @param geoId     String representing the geoid of the feature
+     * @param mtfccCode MTFCC code for the Location to return
+     * @return      a Location object with the given geoId and Mtfcc code
+     */
+    Location getByGeoIdAndMtfcc(String geoId, String mtfccCode);
 }

@@ -119,4 +119,16 @@ public class HibernateLocationRepository extends HibernateGenericRepository<Loca
 
         return locationCriteria.list();
     }
+
+    @Override
+    public Location getByGeoIdAndMtfcc(String geoId, String mtfccCode) {
+
+        Criteria locationCriteria = sessionFactory.getCurrentSession().createCriteria(Location.class);
+        Criteria mtfccCriteria = locationCriteria.createCriteria("mtfcc");
+        mtfccCriteria.add(Restrictions.eq("mtfccCode", mtfccCode));
+        locationCriteria.add(Restrictions.eq("geoId", geoId));
+
+        List<Location> results = locationCriteria.list();
+        return results.get(0);
+    }
 }
