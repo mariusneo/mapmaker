@@ -42,11 +42,12 @@ import java.util.Map;
 /**
  * GWTP Presenter for the MapView section of the AppShell Presenter
  *
- * @since 0.1
  * @author Jason Ferguson
+ * @since 0.1
  */
+@SuppressWarnings({"unused", "unchecked"})
 public class MapmakerMapViewPresenter extends PresenterWidget<MapmakerMapViewPresenter.MyView>
-    implements MapPanelUiHandlers {
+        implements MapPanelUiHandlers {
 
     public interface MyView extends View, HasUiHandlers<MapPanelUiHandlers> {
 
@@ -88,23 +89,7 @@ public class MapmakerMapViewPresenter extends PresenterWidget<MapmakerMapViewPre
         registerHandler(getEventBus().addHandler(RedrawMapEvent.TYPE, new RedrawMapHandler() {
             @Override
             public void onRedrawMap(RedrawMapEvent event) {
-
-                String geoId = event.getGeoId();
-                String mtfccCode = event.getMtfccCode();
-                String featureClassName = event.getFeatureClassType(); // might be null
-
-                dispatch.execute(new GetMapDataByGeoIdAction(geoId, mtfccCode, featureClassName), new AsyncCallback<GetMapDataByGeoIdResult>() {
-                    @Override
-                    public void onFailure(Throwable throwable) {
-                        throwable.printStackTrace();
-                    }
-
-                    @Override
-                    public void onSuccess(GetMapDataByGeoIdResult result) {
-                        getView().prepareAndInitializeMap(result.getLocation(), result.getBoundingBox(), getView().asWidget().getElement());
-                        getEventBus().fireEvent(new EnableRedrawMapButtonEvent());
-                    }
-                });
+                doRedrawMap(event.getGeoId(), event.getMtfccCode(), event.getFeatureClassType());
             }
         }));
     }
@@ -114,7 +99,7 @@ public class MapmakerMapViewPresenter extends PresenterWidget<MapmakerMapViewPre
         dispatch.execute(new GetLocationDescriptionsAction(lng, lat), new AsyncCallback<GetLocationDescriptionsResult>() {
             @Override
             public void onFailure(Throwable caught) {
-               caught.printStackTrace();
+                caught.printStackTrace();
             }
 
             @Override
@@ -122,7 +107,7 @@ public class MapmakerMapViewPresenter extends PresenterWidget<MapmakerMapViewPre
                 Map<String, Location> resultMap = result.getResult();
                 StringBuffer message = new StringBuffer();
                 message.append("<table>\n");
-                for (String key: resultMap.keySet()) {
+                for (String key : resultMap.keySet()) {
                     Location l = resultMap.get(key);
                     message.append("<tr>\n");
                     message.append("<td><b>").append(GeographyUtils.getPrettyNameForMtfcc(key)).append("</b></td>\n");
@@ -134,14 +119,30 @@ public class MapmakerMapViewPresenter extends PresenterWidget<MapmakerMapViewPre
                     message.append("</tr>\n");
                 }
                 message.append("</table>\n");
-                Map map = new HashMap();
-                map.put("TITLE","Location Details");
+                Map map = new HashMap();   // this is a non-generified Map, I need to store Strings and Doubles in it
+                map.put("TITLE", "Location Details");
                 map.put("LNG", lng);
                 map.put("LAT", lat);
                 map.put("CONTENTS", message.toString());
 
                 JavaScriptObject marker = GoogleMapUtil.createMarker(map);
                 getView().addMarkerToMap(gmap, marker);
+            }
+        });
+    }
+
+    private void doRedrawMap(String geoId, String mtfccCode, String featureClassName) {
+
+        dispatch.execute(new GetMapDataByGeoIdAction(geoId, mtfccCode, featureClassName), new AsyncCallback<GetMapDataByGeoIdResult>() {
+            @Override
+            public void onFailure(Throwable throwable) {
+                throwable.printStackTrace();
+            }
+
+            @Override
+            public void onSuccess(GetMapDataByGeoIdResult result) {
+                getView().prepareAndInitializeMap(result.getLocation(), result.getBoundingBox(), getView().asWidget().getElement());
+                getEventBus().fireEvent(new EnableRedrawMapButtonEvent());
             }
         });
     }
