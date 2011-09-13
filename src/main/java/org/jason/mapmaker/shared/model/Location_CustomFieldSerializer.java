@@ -58,19 +58,19 @@ public class Location_CustomFieldSerializer {
         writer.writeLong(instance.getWaterArea());
         writer.writeDouble(instance.getInternalLat());
         writer.writeDouble(instance.getInternalLng());
-        if (instance.getShapefileMetadata() == null) {
-            // set the ShapefileMetadata's Location list to include the instance
-            ShapefileMetadata sm = new ShapefileMetadata();
-            sm.setLocationList(new ArrayList<Location>());
-            sm.getLocationList().add(instance);
-            instance.setShapefileMetadata(sm);
-        } else {
-            // clear out the shapefilemetadata's location list except for this instance (prevent having to send a huge
-            // list over the wire
-            ShapefileMetadata sm = instance.getShapefileMetadata();
-            sm.setLocationList(new ArrayList<Location>());
-            sm.getLocationList().add(instance);
-        }
+//        if (instance.getShapefileMetadata() == null) {
+//            // set the ShapefileMetadata's Location list to include the instance
+//            ShapefileMetadata sm = new ShapefileMetadata();
+//            sm.setLocationList(new ArrayList<Location>());
+//            sm.getLocationList().add(instance);
+//            instance.setShapefileMetadata(sm);
+//        } else {
+//            // clear out the shapefilemetadata's location list except for this instance (prevent having to send a huge
+//            // list over the wire
+//            ShapefileMetadata sm = instance.getShapefileMetadata();
+//            sm.setLocationList(new ArrayList<Location>());
+//            sm.getLocationList().add(instance);
+//        }
 
         if (instance.getBorderPointList() == null) {
             writer.writeObject(new ArrayList<BorderPoint>());
@@ -112,7 +112,7 @@ public class Location_CustomFieldSerializer {
         instance.setWaterArea(reader.readLong());
         instance.setInternalLat(reader.readDouble());
         instance.setInternalLng(reader.readDouble());
-        instance.setShapefileMetadata((ShapefileMetadata) reader.readObject());
+        //instance.setShapefileMetadata((ShapefileMetadata) reader.readObject());
         instance.setBorderPointList((ArrayList<BorderPoint>) reader.readObject());
         instance.setTigerVersion(reader.readString());
         instance.setFeatureList((ArrayList<Feature>) reader.readObject());
