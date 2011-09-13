@@ -21,17 +21,15 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.PopupPanel;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.*;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.PopupViewWithUiHandlers;
 import org.jason.mapmaker.client.presenter.help.DisplayHelpPresenter;
 
 /**
- * MapmakerPopupView.java
+ * GWTP PopupView for displaying the application help
  *
+ * @since 0.1
  * @author Jason Ferguson
  */
 public class DisplayHelpPopup extends PopupViewWithUiHandlers<DisplayHelpUiHandlers>
@@ -41,6 +39,7 @@ public class DisplayHelpPopup extends PopupViewWithUiHandlers<DisplayHelpUiHandl
 
     private static Binder binder = GWT.create(Binder.class);
 
+    @UiField ScrollPanel scrollPanel;
     @UiField Button closeButton;
 
     private final PopupPanel widget;

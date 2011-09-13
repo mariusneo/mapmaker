@@ -5,15 +5,20 @@
         >
 
     <g:PopupPanel>
-        <g:VerticalPanel>
-            <g:HTMLPanel>
-                <p>This is where help will go.</p>
-            </g:HTMLPanel>
-            <g:HorizontalPanel>
-                <g:Button ui:field="closeButton">Close</g:Button>
-            </g:HorizontalPanel>
-        </g:VerticalPanel>
+        <g:ScrollPanel ui:field="scrollPanel">
+            <g:VerticalPanel>
+                <g:HTMLPanel>
+                    <h3>Selecting Map Features</h3>
 
+                    <h3>Export Functions</h3>
+
+                    <h3>Managing Borders, Features, and Administration</h3>
+                </g:HTMLPanel>
+                <g:HorizontalPanel>
+                    <g:Button ui:field="closeButton">Close</g:Button>
+                </g:HorizontalPanel>
+            </g:VerticalPanel>
+        </g:ScrollPanel>
     </g:PopupPanel>
 
 </ui:UiBinder>
