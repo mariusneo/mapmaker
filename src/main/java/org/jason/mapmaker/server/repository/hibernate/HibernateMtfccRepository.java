@@ -84,7 +84,7 @@ public class HibernateMtfccRepository extends HibernateGenericRepository<MTFCC> 
     public List<MTFCC> getAll() {
 
         Criteria mtfccCriteria = sessionFactory.getCurrentSession().createCriteria(MTFCC.class);
-        mtfccCriteria.add(Restrictions.eq("superclass","Tabulation Area"));
+        mtfccCriteria.add(Restrictions.eq("superClass","Tabulation Area"));
         mtfccCriteria.addOrder(Order.asc("mtfccCode"));
 
         return mtfccCriteria.list();
