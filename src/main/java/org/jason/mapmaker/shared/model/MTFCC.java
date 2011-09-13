@@ -30,7 +30,7 @@ import java.util.List;
 @Entity
 @Table(name = "MTFCC")
 @SuppressWarnings("unused")
-public class MTFCC implements Serializable, IsSerializable {
+public class MTFCC implements Serializable, IsSerializable, Comparable<MTFCC> {
 
     // Entity features
     private Long id;
@@ -148,5 +148,10 @@ public class MTFCC implements Serializable, IsSerializable {
     @Override
     public int hashCode() {
         return id != null ? id.hashCode() : 0;
+    }
+
+    @Override
+    public int compareTo(MTFCC o) {
+        return this.getMtfccCode().compareTo(o.getMtfccCode());
     }
 }
