@@ -30,11 +30,11 @@ import java.util.Map;
 /**
  * GWTP Action Handler for obtaining and returning a Map<MTFCC, Location>
  *
- * @since 0.5.1
  * @author Jason Ferguson
+ * @since 0.5.1
  */
 @SuppressWarnings("unused")
-public class GetLocationMapByCoordinatesHandler extends AbstractActionHandler<GetLocationMapByCoordinatesAction, GetLocationMapByCoordinatesResult>{
+public class GetLocationMapByCoordinatesHandler extends AbstractActionHandler<GetLocationMapByCoordinatesAction, GetLocationMapByCoordinatesResult> {
 
     private LocationService locationService;
 
@@ -53,10 +53,12 @@ public class GetLocationMapByCoordinatesHandler extends AbstractActionHandler<Ge
         Map<MTFCC, Location> resultMap = locationService.getLocationMapForCoordinates(action.getLongitude(), action.getLatitude());
 
         // clean up the Locations: we don't need the borderpoints or the shapefile
-        for (MTFCC m: resultMap.keySet()) {
-            Location l = resultMap.get(m);
-            l.setShapefileMetadata(null);
-            l.setBorderPointList(null);
+        for (MTFCC m : resultMap.keySet()) {
+            if (resultMap.get(m) != null) {
+                Location l = resultMap.get(m);
+                l.setShapefileMetadata(null);
+                l.setBorderPointList(null);
+            }
         }
         return new GetLocationMapByCoordinatesResult(resultMap);
     }
