@@ -29,7 +29,6 @@ import org.jason.mapmaker.shared.util.GeographyUtils;
 import org.opengis.feature.simple.SimpleFeature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -344,8 +343,8 @@ public class LocationServiceImpl implements LocationService, PersistenceService<
             if (l != null) {
                 // if the feature type is not available, don't pass it on for display
                 //if (!l.getShapefileMetadata().getCurrentStatus().equals(GeographyUtils.Status.NOT_AVAILABLE)) {
-                    l.setBorderPointList(null);
-                    locationMap.put(key, l);
+                l.setBorderPointList(null);
+                locationMap.put(key, l);
                 //}
             }
         }
@@ -362,5 +361,96 @@ public class LocationServiceImpl implements LocationService, PersistenceService<
         }
 
         return locationMap;
+    }
+
+    @Override
+    public Map<MTFCC, Location> getLocationMapForCoordinates(double lng, double lat) {
+
+        List<Location> locationList = locationRepository.getLocationsByCoordinates(lng, lat);
+        Map<MTFCC, Location> locationMap = getEmptyMtfccToLocationMap();
+        Map<MTFCC, List<Location>> locationListMap = getEmptyMtfccToLocationListMap();
+
+        if (locationList.isEmpty()) {
+            return locationMap;
+        }
+
+        // assign locations to their slots in the map
+        for (Location location : locationList) {
+            MTFCC m = location.getMtfcc();
+            locationListMap.get(m).add(location);
+        }
+
+        // start checking the points and kicking out candidate locations if there is more than one Location per slot
+        for (MTFCC m : locationListMap.keySet()) {
+            if (locationListMap.get(m).size() == 0) {
+                locationMap.put(m, null);
+            } else if (locationListMap.get(m).size() == 1) {
+                locationMap.put(m, locationListMap.get(m).get(0));
+            } else {
+                for (Location candidateLocation: locationListMap.get(m)) {
+                    if (isCoordinateInLocation(lng, lat, candidateLocation)) {
+                        locationMap.put(m, candidateLocation);
+                        break;
+                    }
+                }
+            }
+        }
+
+        return locationMap;
+    }
+
+    private Map<MTFCC, Location> getEmptyMtfccToLocationMap() {
+
+        List<MTFCC> mtfccList = mtfccService.getAll();
+
+        Map<MTFCC, Location> locationMap = new LinkedHashMap<MTFCC, Location>();
+        for (MTFCC m : mtfccList) {
+            locationMap.put(m, null);
+        }
+
+        return locationMap;
+
+    }
+
+    private Map<MTFCC, List<Location>> getEmptyMtfccToLocationListMap() {
+
+        List<MTFCC> mtfccList = mtfccService.getAll();
+
+        Map<MTFCC, List<Location>> locationMap = new LinkedHashMap<MTFCC, List<Location>>();
+        for (MTFCC m : mtfccList) {
+            locationMap.put(m, new ArrayList<Location>(mtfccList.size()));
+        }
+
+        return locationMap;
+
+    }
+
+    private boolean isCoordinateInLocation(double lng, double lat, Location l) {
+
+        // get the geometry factory
+        // TODO: make Geometry Factory a singleton
+        GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory(null);
+
+        // Create a Point geometry from the given coordinates
+        Point point = geometryFactory.createPoint(new Coordinate(lng, lat));
+
+        List<BorderPoint> borderPointList = l.getBorderPointList();
+        Collections.sort(borderPointList, new BorderPointIdComparator());
+
+        // close the ring by appending the starting point to the end
+        BorderPoint startPoint = borderPointList.get(0);
+        borderPointList.add(startPoint);
+
+        // convert the border points to an array of Coordinates (Geotools doesn't like collections)
+        Coordinate[] locationCoordinates = ShapefileUtil.getCoordinatesFromBorderPointList(borderPointList);
+
+        // create a linear ring representing the border
+        LinearRing border = geometryFactory.createLinearRing(locationCoordinates);
+
+        // create the polygon from the linear ring. Pass null as second argument since we don't have any holes in the polygon
+        Polygon polygon = geometryFactory.createPolygon(border, null);
+
+        return polygon.contains(point);
+
     }
 }

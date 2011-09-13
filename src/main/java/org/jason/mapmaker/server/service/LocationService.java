@@ -18,6 +18,7 @@ package org.jason.mapmaker.server.service;
 import org.jason.mapmaker.server.repository.LocationRepository;
 import org.jason.mapmaker.shared.exceptions.ServiceException;
 import org.jason.mapmaker.shared.model.Location;
+import org.jason.mapmaker.shared.model.MTFCC;
 import org.opengis.feature.simple.SimpleFeature;
 
 import java.util.List;
@@ -171,4 +172,5 @@ public interface LocationService {
      */
     Map<String, Location> getLocationDescriptionsForCoordinates(double lng, double lat);
 
+    Map<MTFCC, Location> getLocationMapForCoordinates(double lng, double lat);
 }
