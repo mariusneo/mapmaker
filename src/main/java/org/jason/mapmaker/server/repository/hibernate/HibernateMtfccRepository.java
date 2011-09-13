@@ -15,7 +15,10 @@
  */
 package org.jason.mapmaker.server.repository.hibernate;
 
+import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import org.jason.mapmaker.server.repository.MtfccRepository;
 import org.jason.mapmaker.shared.model.MTFCC;
 import org.springframework.stereotype.Repository;
@@ -31,6 +34,7 @@ import java.util.Map;
  * @since 0.4
  * @author Jason Ferguson
  */
+@SuppressWarnings("unused")
 @Repository("mtfccRepository")
 public class HibernateMtfccRepository extends HibernateGenericRepository<MTFCC> implements MtfccRepository{
 
@@ -73,6 +77,17 @@ public class HibernateMtfccRepository extends HibernateGenericRepository<MTFCC> 
         }
 
         return resultMap;
+    }
+
+    @Override
+    // TODO: have ehcache create a cache of this method call
+    public List<MTFCC> getAll() {
+
+        Criteria mtfccCriteria = sessionFactory.getCurrentSession().createCriteria(MTFCC.class);
+        mtfccCriteria.add(Restrictions.eq("superclass","Tabulation Area"));
+        mtfccCriteria.addOrder(Order.asc("mtfccCode"));
+
+        return mtfccCriteria.list();
     }
 
     @Override
