@@ -17,6 +17,7 @@ package org.jason.mapmaker.server.service;
 
 import org.jason.mapmaker.shared.model.MTFCC;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -44,4 +45,6 @@ public interface MtfccService {
     Map<String, String> getMtfccTypes();
 
     Map<MTFCC, Long> getMtfccFeatureCount();
+
+    List<MTFCC> getAll();
 }
