@@ -30,11 +30,11 @@ import org.jason.mapmaker.client.event.RedrawMapHandler;
 import org.jason.mapmaker.client.util.GoogleMapUtil;
 import org.jason.mapmaker.client.view.MapPanelUiHandlers;
 import org.jason.mapmaker.shared.action.GetMapDataByGeoIdAction;
-import org.jason.mapmaker.shared.action.location.GetLocationDescriptionsAction;
+import org.jason.mapmaker.shared.action.location.GetLocationMapByCoordinatesAction;
 import org.jason.mapmaker.shared.model.Location;
+import org.jason.mapmaker.shared.model.MTFCC;
 import org.jason.mapmaker.shared.result.GetMapDataByGeoIdResult;
-import org.jason.mapmaker.shared.result.location.GetLocationDescriptionsResult;
-import org.jason.mapmaker.shared.util.GeographyUtils;
+import org.jason.mapmaker.shared.result.location.GetLocationMapByCoordinatesResult;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -96,21 +96,22 @@ public class MapmakerMapViewPresenter extends PresenterWidget<MapmakerMapViewPre
 
     public void doGetLocationDescriptions(final JavaScriptObject gmap, final double lng, final double lat) {
 
-        dispatch.execute(new GetLocationDescriptionsAction(lng, lat), new AsyncCallback<GetLocationDescriptionsResult>() {
+        dispatch.execute(new GetLocationMapByCoordinatesAction(lng, lat), new AsyncCallback<GetLocationMapByCoordinatesResult>() {
             @Override
             public void onFailure(Throwable caught) {
                 caught.printStackTrace();
             }
 
             @Override
-            public void onSuccess(GetLocationDescriptionsResult result) {
-                Map<String, Location> resultMap = result.getResult();
+            public void onSuccess(GetLocationMapByCoordinatesResult result) {
+                Map<MTFCC, Location> resultMap = result.getResults();
+
                 StringBuffer message = new StringBuffer();
                 message.append("<table>\n");
-                for (String key : resultMap.keySet()) {
+                for (MTFCC key : resultMap.keySet()) {
                     Location l = resultMap.get(key);
                     message.append("<tr>\n");
-                    message.append("<td><b>").append(GeographyUtils.getPrettyNameForMtfcc(key)).append("</b></td>\n");
+                    message.append("<td><b>").append(key.getFeatureClass()).append("</b></td>\n");
                     if (l == null) {
                         message.append("<td>Feature not available</td>\n");
                     } else {
@@ -119,6 +120,7 @@ public class MapmakerMapViewPresenter extends PresenterWidget<MapmakerMapViewPre
                     message.append("</tr>\n");
                 }
                 message.append("</table>\n");
+
                 Map map = new HashMap();   // this is a non-generified Map, I need to store Strings and Doubles in it
                 map.put("TITLE", "Location Details");
                 map.put("LNG", lng);
@@ -129,6 +131,7 @@ public class MapmakerMapViewPresenter extends PresenterWidget<MapmakerMapViewPre
                 getView().addMarkerToMap(gmap, marker);
             }
         });
+
     }
 
     private void doRedrawMap(String geoId, String mtfccCode, String featureClassName) {
