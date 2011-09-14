@@ -7,6 +7,10 @@
         <g:ScrollPanel ui:field="scrollPanel">
             <g:VerticalPanel>
                 <g:HTMLPanel>
+                    <h3>Where am I? Feature</h3>
+                    <p>Clicking on the map will create a marker showing what imported features are associated with
+                    the coordinates that were clicked on.</p>
+
                     <h3>Selecting Map Features</h3>
                     <p>Users can select a map and associated features via the "Features" Stack Panel. Note that borders
                         must be imported
