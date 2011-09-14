@@ -59,10 +59,6 @@ public class MtfccServiceImpl implements MtfccService {
         return mtfccRepository.getMtfccTypes();
     }
 
-    public Map<MTFCC, Long> getMtfccFeatureCount() {
-        return mtfccRepository.getMtfccFeatureCount();
-    }
-
     @Override
     public List<MTFCC> getAll() {
         return mtfccRepository.getAll();
