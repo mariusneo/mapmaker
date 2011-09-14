@@ -210,18 +210,4 @@ public class ShapefileMetadataServiceImpl implements ShapefileMetadataService {
         shapefileMetadataRepository.deleteAll();
     }
 
-    @Override
-    public ShapefileMetadata getStateShapefileMetadata(String geoId) {
-
-        String stateGeoId = StringUtils.left(geoId, 2);     // no matter the feature type, the first two digits are always the state
-        MTFCC m = mtfccService.get(GeographyUtils.MTFCC.STATE);
-
-        ShapefileMetadata example = new ShapefileMetadata();
-        example.setGeoId(stateGeoId);
-        example.setMtfccCode(m.getMtfccCode());
-
-        List<ShapefileMetadata> resultList = shapefileMetadataRepository.queryByExample(example);
-
-        return resultList.get(0);
-    }
 }

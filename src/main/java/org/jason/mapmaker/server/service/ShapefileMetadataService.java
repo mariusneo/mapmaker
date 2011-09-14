@@ -82,5 +82,4 @@ public interface ShapefileMetadataService {
      */
     void deleteAll() throws ServiceException;
 
-    ShapefileMetadata getStateShapefileMetadata(String geoId);
 }
