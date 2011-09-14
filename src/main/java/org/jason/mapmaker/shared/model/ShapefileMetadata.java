@@ -16,8 +16,6 @@
 package org.jason.mapmaker.shared.model;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -101,10 +99,7 @@ public class ShapefileMetadata implements Serializable, IsSerializable {
         this.currentStatus = currentStatus;
     }
 
-    //@OneToMany(mappedBy = "shapefileMetadata")
-    @OneToMany
-    @JoinColumn(name="SHAPEFILEMETADATAID")
-    @LazyCollection(value = LazyCollectionOption.FALSE)
+    @OneToMany(mappedBy = "shapefileMetadata")
     public List<Location> getLocationList() {
         return locationList;
     }
