@@ -52,13 +52,15 @@ public class GetLocationMapByCoordinatesHandler extends AbstractActionHandler<Ge
 
         Map<MTFCC, Location> resultMap = locationService.getLocationMapForCoordinates(action.getLongitude(), action.getLatitude());
 
-        // clean up the Locations: we don't need the borderpoints or the shapefile
+        // clean up the Locations: we don't need the borderpoints or the ShapefileMetadata, and it will make the RPC
+        // call take ALOT longer. Luckily, CascadeType is set to ALL, which actually exlcudes DELETE, so this shouldn't
+        // cause anything bad to happen...
         for (MTFCC m : resultMap.keySet()) {
             if (resultMap.get(m) != null) {
                 Location l = resultMap.get(m);
-                l.setShapefileMetadata(null);
-                l.setBorderPointList(null);
-            }
+                    l.setShapefileMetadata(null);
+                    l.setBorderPointList(null);
+                }
         }
         return new GetLocationMapByCoordinatesResult(resultMap);
     }
