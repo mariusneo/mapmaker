@@ -21,7 +21,6 @@ import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
 import org.jason.mapmaker.server.repository.ShapefileMetadataRepository;
 import org.jason.mapmaker.shared.exceptions.ServiceException;
-import org.jason.mapmaker.shared.model.MTFCC;
 import org.jason.mapmaker.shared.model.ShapefileMetadata;
 import org.jason.mapmaker.shared.util.GeographyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
