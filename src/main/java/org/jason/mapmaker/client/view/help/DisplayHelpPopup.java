@@ -32,6 +32,7 @@ import org.jason.mapmaker.client.presenter.help.DisplayHelpPresenter;
  * @since 0.1
  * @author Jason Ferguson
  */
+@SuppressWarnings("unused")
 public class DisplayHelpPopup extends PopupViewWithUiHandlers<DisplayHelpUiHandlers>
         implements DisplayHelpPresenter.MyView, IsWidget {
 
@@ -42,12 +43,14 @@ public class DisplayHelpPopup extends PopupViewWithUiHandlers<DisplayHelpUiHandl
     @UiField ScrollPanel scrollPanel;
     @UiField Button closeButton;
 
-    private final PopupPanel widget;
+    private PopupPanel widget;
 
     @Inject
     public DisplayHelpPopup(EventBus eventBus) {
         super(eventBus);
         widget = binder.createAndBindUi(this);
+        widget.setWidth("600px");
+        widget.setHeight("400px");
     }
 
     @Override
