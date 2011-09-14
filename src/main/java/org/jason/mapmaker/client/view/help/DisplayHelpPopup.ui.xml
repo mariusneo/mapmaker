@@ -3,16 +3,50 @@
         xmlns:ui="urn:ui:com.google.gwt.uibinder"
         xmlns:g="urn:import:com.google.gwt.user.client.ui"
         >
-
     <g:PopupPanel>
         <g:ScrollPanel ui:field="scrollPanel">
             <g:VerticalPanel>
                 <g:HTMLPanel>
                     <h3>Selecting Map Features</h3>
+                    <p>Users can select a map and associated features via the "Features" Stack Panel. Note that borders
+                        must be imported
+                        from the Census Department before they can be displayed. Also, features must be imported from
+                        the USGS before they
+                        can be displayed on the map.
+                    </p>
 
+                    <p>The user must select which type of border they wish to view, then the state (and possibly county,
+                        depending on the
+                        border type). If not selecting to view a state or county, the user must select a specific item
+                        they wish to view
+                        from the Specific Item box.
+                    </p>
+
+                    <p>Next, the user has the option of selecting which type of USGS feature they wish to display within
+                        the borders they
+                        have selected. This is not mandatory. Currently, only one feature type at a time can be
+                        displayed. These features
+                        will be displayed as a Google Maps Marker, which can be clicked on for further information.
+                    </p>
                     <h3>Export Functions</h3>
 
+                    <p>Export functions are not currently implemented.</p>
+
                     <h3>Managing Borders, Features, and Administration</h3>
+
+                    <p>To import or delete a border, click the Manage Borders button in the Admin tab of the
+                    application stack panel. It is HIGHLY recommended that you import State and County features
+                    before importing features based on them.</p>
+
+                    <p>To import USGS features for a location, click the Manage Features, then select the state
+                    to display the features for. Currently, all USGS feature types for the state will be imported.</p>
+
+                    <p>To select the year of the TIGER/Line data used for displaying borders, or changing the date
+                    of the USGS data set, click the App Settings button. Changing either of these items will
+                    dump all data related to it (i.e. changing from 2010 to 2009 will dump all imported borders that
+                    were created from the 2010 data). Also, the USGS dataset is updated about every 2-3 months,
+                    and archives are not kept. To get the current version, visit http://geonames.usgs.gov/domestic/download_data.htm
+                    and look for the last updated date.</p>
                 </g:HTMLPanel>
                 <g:HorizontalPanel>
                     <g:Button ui:field="closeButton">Close</g:Button>
