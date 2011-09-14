@@ -55,7 +55,6 @@ public class MapmakerStackPanelView extends ViewWithUiHandlers<StackPanelUiHandl
     @UiField Button redrawMapButton;
     @UiField FormPanel stackExportPanelView;
     @UiField Button exportKMLButton;
-    @UiField Button exportShapefileButton;
     @UiField FormPanel stackAdminPanelView;
     @UiField Button showBordersManagementButton;
     @UiField Button showFeaturesManagementButton;

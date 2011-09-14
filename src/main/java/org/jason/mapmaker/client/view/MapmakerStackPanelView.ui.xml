@@ -90,7 +90,6 @@
             <g:FormPanel ui:field="stackExportPanelView">
                 <g:VerticalPanel styleName="{style.horizontalPanel}">
                     <g:Button ui:field="exportKMLButton" width="12em" styleName="{style.gwt-Button}">Export KML</g:Button>
-                    <g:Button ui:field="exportShapefileButton" width="12em" styleName="{style.gwt-Button}">Export Shapefile</g:Button>
                 </g:VerticalPanel>
             </g:FormPanel>
         </g:stack>
