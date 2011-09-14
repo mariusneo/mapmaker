@@ -22,6 +22,7 @@ import org.hibernate.criterion.Restrictions;
 import org.jason.mapmaker.server.repository.LocationRepository;
 import org.jason.mapmaker.shared.model.Location;
 import org.jason.mapmaker.shared.model.MTFCC;
+import org.jason.mapmaker.shared.util.GeographyUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -86,7 +87,12 @@ public class HibernateLocationRepository extends HibernateGenericRepository<Loca
         locationCriteria.add(Restrictions.le("minLng", lng));
         locationCriteria.add(Restrictions.ge("maxLng", lng));
 
-        return locationCriteria.list();
+        Criteria smCriteria = locationCriteria.createCriteria("shapefileMetadata");
+        smCriteria.add(Restrictions.ne("currentStatus", GeographyUtils.Status.NOT_AVAILABLE));
+
+        List<Location> results = locationCriteria.list();
+
+        return results;
 
     }
 
