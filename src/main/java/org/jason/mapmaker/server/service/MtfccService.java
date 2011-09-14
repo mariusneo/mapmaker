@@ -21,10 +21,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * MtfccService.java
- *
  * Defines operations for the MTFCC Service
  *
+ * @since 0.2
  * @author Jason Ferguson
  */
 public interface MtfccService {
@@ -44,7 +43,11 @@ public interface MtfccService {
      */
     Map<String, String> getMtfccTypes();
 
-    Map<MTFCC, Long> getMtfccFeatureCount();
-
+    /**
+     * Get "all" MTFCCs from the repository (by all, this currently means that all MTFCCs with the feature class of
+     * "Tabulation Area" will be retrieved.
+     *
+     * @return  a List<MTFCC> of all MTFCC objects with feature class type "Tabulation Area"
+     */
     List<MTFCC> getAll();
 }
