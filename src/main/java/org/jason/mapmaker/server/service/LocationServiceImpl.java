@@ -42,17 +42,22 @@ import java.util.*;
 public class LocationServiceImpl implements LocationService, PersistenceService<Location> {
 
     private MtfccService mtfccService;
+    private LocationRepository locationRepository;
+    private ShapefileMetadataService shapefileMetadataService;
 
     @Autowired
     public void setMtfccService(MtfccService mtfccService) {
         this.mtfccService = mtfccService;
     }
 
-    private LocationRepository locationRepository;
-
     @Autowired
     public void setLocationRepository(LocationRepository locationRepository) {
         this.locationRepository = locationRepository;
+    }
+
+    @Autowired
+    public void setShapefileMetadataService(ShapefileMetadataService shapefileMetadataService) {
+        this.shapefileMetadataService = shapefileMetadataService;
     }
 
     public void persist(Location object) throws ServiceException {
@@ -367,8 +372,11 @@ public class LocationServiceImpl implements LocationService, PersistenceService<
     public Map<MTFCC, Location> getLocationMapForCoordinates(double lng, double lat) {
 
         List<Location> locationList = locationRepository.getLocationsByCoordinates(lng, lat);
-        Map<MTFCC, Location> locationMap = getEmptyMtfccToLocationMap();
-        Map<MTFCC, List<Location>> locationListMap = getEmptyMtfccToLocationListMap();
+
+        // create 2 maps: one to hold the end-state map of one MTFCC to one Location, and one to hold a list of
+        // candidate Locations if a set of coordinates can belong to more than one Location.
+        Map<MTFCC, Location> locationMap = new LinkedHashMap<MTFCC, Location>();  // end state map
+        Map<MTFCC, List<Location>> locationListMap = getEmptyMtfccToLocationListMap(locationMap);  // map to flatten into end state
 
         if (locationList.isEmpty()) {
             return locationMap;
@@ -377,20 +385,26 @@ public class LocationServiceImpl implements LocationService, PersistenceService<
         // assign locations to their slots in the map
         for (Location location : locationList) {
             MTFCC m = location.getMtfcc();
+            if (!locationMap.containsKey(m)) {
+                locationListMap.put(m, new ArrayList<Location>());
+            }
             locationListMap.get(m).add(location);
         }
 
         // start checking the points and kicking out candidate locations if there is more than one Location per slot
         for (MTFCC m : locationListMap.keySet()) {
+            // if we don't have ANY results, just populate w/ null. (This probably shouldn't happen anymore)
             if (locationListMap.get(m).size() == 0) {
                 locationMap.put(m, null);
-            } else if (locationListMap.get(m).size() == 1) {
+            } else if (locationListMap.get(m).size() == 1) {    // no need to do the complicated geometry checks, just populate the end state map
                 locationMap.put(m, locationListMap.get(m).get(0));
             } else {
+                // hooo-boy, we have more than one potential Location the coordinates could fall into, so we have to do
+                // the geometry checks
                 for (Location candidateLocation: locationListMap.get(m)) {
                     if (isCoordinateInLocation(lng, lat, candidateLocation)) {
                         locationMap.put(m, candidateLocation);
-                        break;
+                        break;      // short-circuit remaining processing since we found the right one
                     }
                 }
             }
@@ -399,26 +413,11 @@ public class LocationServiceImpl implements LocationService, PersistenceService<
         return locationMap;
     }
 
-    private Map<MTFCC, Location> getEmptyMtfccToLocationMap() {
-
-        List<MTFCC> mtfccList = mtfccService.getAll();
-
-        Map<MTFCC, Location> locationMap = new LinkedHashMap<MTFCC, Location>();
-        for (MTFCC m : mtfccList) {
-            locationMap.put(m, null);
-        }
-
-        return locationMap;
-
-    }
-
-    private Map<MTFCC, List<Location>> getEmptyMtfccToLocationListMap() {
-
-        List<MTFCC> mtfccList = mtfccService.getAll();
+    private Map<MTFCC, List<Location>> getEmptyMtfccToLocationListMap(Map<MTFCC, Location> endResultMap) {
 
         Map<MTFCC, List<Location>> locationMap = new LinkedHashMap<MTFCC, List<Location>>();
-        for (MTFCC m : mtfccList) {
-            locationMap.put(m, new ArrayList<Location>(mtfccList.size()));
+        for (MTFCC m : endResultMap.keySet()) {
+            locationMap.put(m, new ArrayList<Location>());
         }
 
         return locationMap;
