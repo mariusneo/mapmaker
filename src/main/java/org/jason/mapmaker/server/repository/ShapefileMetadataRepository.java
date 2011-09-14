@@ -27,5 +27,12 @@ import java.util.List;
  */
 public interface ShapefileMetadataRepository extends GenericRepository2<ShapefileMetadata> {
 
+    /**
+     * Return a List of ShapefileMetadata objects by a given GeoId
+     *
+     * @param geoId GeoId for the ShapefileMetadata objects to return
+     * @return  a List of ShapefileMetadata objects for the given geoid
+     */
     List<ShapefileMetadata> getByGeoId(String geoId);
+
 }
