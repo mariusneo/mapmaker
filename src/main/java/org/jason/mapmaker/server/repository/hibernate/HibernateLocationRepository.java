@@ -80,12 +80,14 @@ public class HibernateLocationRepository extends HibernateGenericRepository<Loca
     @Transactional(readOnly = true)
     public List<Location> getLocationsByCoordinates(double lng, double lat) {
 
-        String hql = "from Location L where L.minLat <= :lat AND L.maxLat >= :lat AND L.minLng <= :lng AND L.maxLng >= :lng";
-        Query query = sessionFactory.getCurrentSession().createQuery(hql);
-        query.setDouble("lat", lat);
-        query.setDouble("lng", lng);
+        Criteria locationCriteria = sessionFactory.getCurrentSession().createCriteria(Location.class);
+        locationCriteria.add(Restrictions.le("minLat", lat));
+        locationCriteria.add(Restrictions.ge("maxLat", lat));
+        locationCriteria.add(Restrictions.le("minLng", lng));
+        locationCriteria.add(Restrictions.ge("maxLng", lng));
 
-        return query.list();
+        return locationCriteria.list();
+
     }
 
     @Override
