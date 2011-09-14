@@ -172,5 +172,12 @@ public interface LocationService {
      */
     Map<String, Location> getLocationDescriptionsForCoordinates(double lng, double lat);
 
+    /**
+     * Return a Map<MTFCC, Location> containing the MTFCC mapped to the location for a given set of coordinates
+     *
+     * @param lng       double representing longitude
+     * @param lat       double representing latitude
+     * @return          Map<MTFCC, Location>
+     */
     Map<MTFCC, Location> getLocationMapForCoordinates(double lng, double lat);
 }
