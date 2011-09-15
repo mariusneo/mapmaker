@@ -50,6 +50,15 @@ public class HibernateFeatureRepository extends HibernateGenericRepository<Featu
         }
     }
 
+    @Transactional(readOnly = true)
+    public List<String> getAvailableFeatureClasses() {
+
+        String hql = "SELECT DISTINCT F.featureClass from Feature F ORDER BY F.featureClass";
+        Query query = sessionFactory.getCurrentSession().createQuery(hql);
+
+        return query.list();
+    }
+
     @Override
     @Transactional(readOnly = true)
     public List<Feature> getFeaturesByBoxAndFeatureClassName(Map<String, Double> boundingBox, String featureClassName) {

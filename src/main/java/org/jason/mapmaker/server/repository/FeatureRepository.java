@@ -33,6 +33,13 @@ public interface FeatureRepository extends GenericRepository2<Feature> {
     Feature save(Feature object);
 
     /**
+     * Get a distinct list of Strings representing the types of features which have already been imported
+     *
+     * @return
+     */
+    List<String> getAvailableFeatureClasses();
+
+    /**
      * Return a list of features of a given type within a bounding box defined by a Map<String, Double>.
      *
      * @param boundingBox       Map<String, Double> defining the bounding box to return the features for
