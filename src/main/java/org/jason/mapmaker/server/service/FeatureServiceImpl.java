@@ -93,39 +93,14 @@ public class FeatureServiceImpl implements FeatureService {
     @Override
     public void saveList(List<Feature> featureList) throws ServiceException {
 
-        List<Feature> fixedFeatureList = removeDuplicates(featureList);
-
         try {
-            featureRepository.saveList(fixedFeatureList);
+            featureRepository.saveList(featureList);
         } catch (Exception ex) {
             log.debug("saveList() threw ServiceException", ex);
             throw new ServiceException(ex);
         }
     }
 
-    private List<Feature> removeDuplicates(List<Feature> featureList) {
-
-        // first, build a bitset corresponding to the list
-        final int listSize = featureList.size();
-        List<Feature> resultList = new ArrayList<Feature>();
-        BitSet bitSet = new BitSet(listSize + 1);
-        bitSet.set(0, listSize, false);
-
-        for (int i = 0; i < featureList.size(); i++) {
-            Feature f = featureList.get(i);
-            // check if the "slot" is already "filled". If not, fill it. If so, we've got a duplicate that needs
-            // to be removed from the original list anyways
-            if (bitSet.get(f.getId()) == false) {
-                bitSet.set(f.getId(), true);
-                resultList.add(f);
-            } else {
-                featureList.remove(f);
-                System.out.println("Found duplicate feature ID: " + f.getId());
-            }
-        }
-
-        return resultList;
-    }
 
     @Override
     public List<String> getFeatureClasses() {
