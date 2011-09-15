@@ -118,16 +118,6 @@ public interface LocationService {
     Map<String, String> getLocationsByStateAndMtfcc(String stateFP, String mtfcc);
 
     /**
-     * get the locations available for a state, county, and MTFCC
-     *
-     * @param stateFP  a string representing the state FIPS55 code
-     * @param countyFP a string representing the county FIPS 55 code
-     * @param mtfcc    a String representing the MTFCC to hunt for (i.e. "G4020")
-     * @return a Map<String, String> in MTFCC->Name format
-     */
-    Map<String, String> getLocationsByStateAndCountyAndMtfcc(String stateFP, String countyFP, String mtfcc);
-
-    /**
      * Get a Map of county-based locations in MTFCC->Name format
      *
      * @param mtfccCode MTFCC code

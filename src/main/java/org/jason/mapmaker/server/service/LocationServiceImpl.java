@@ -145,19 +145,6 @@ public class LocationServiceImpl implements LocationService, PersistenceService<
         return resultMap;
     }
 
-    public Map<String, String> getLocationsByStateAndCountyAndMtfcc(String stateFP, String countyFP, String mtfcc) {
-
-        MTFCC m = mtfccService.get(mtfcc);
-        Location example = new Location();
-        example.setStateFP(stateFP);
-        example.setCountyFP(countyFP);
-        example.setMtfcc(m);
-
-        List<Location> resultList = locationRepository.getByExample(example);
-        return createKeyValueMap(resultList);
-    }
-
-
     public Map<String, String> getCountyBasedLocations(String mtfccCode, String stateFP, String countyFP) {
 
         MTFCC mtfcc = mtfccService.get(mtfccCode);
