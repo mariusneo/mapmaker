@@ -19,10 +19,12 @@ import com.gwtplatform.dispatch.shared.UnsecuredActionImpl;
 import org.jason.mapmaker.shared.result.GetCountyBasedLocationsResult;
 
 /**
- * GetCountyBasedLocationsAction.java
+ * GWTP Action class for retrieving county-based locations
  *
+ * @since unknown
  * @author Jason Ferguson
  */
+@SuppressWarnings("unused")
 public class GetCountyBasedLocationsAction extends UnsecuredActionImpl<GetCountyBasedLocationsResult> {
 
     private String mtfccCode;
