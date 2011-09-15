@@ -105,13 +105,7 @@ public class FeatureServiceImpl implements FeatureService {
     @Override
     public List<String> getFeatureClasses() {
 
-        SortedSet<String> results = new TreeSet<String>();
-        List<Feature> featureList = featureRepository.getAll();
-
-        for (Feature f : featureList) {
-            results.add(f.getFeatureClass());
-        }
-        return new ArrayList<String>(results);
+        return featureRepository.getAvailableFeatureClasses();
     }
 
     @Override
