@@ -16,6 +16,7 @@ import org.jason.mapmaker.server.actionHandler.featuresMetadata.GetFeaturesMetad
 import org.jason.mapmaker.server.actionHandler.featuresMetadata.ImportFeaturesMetadataHandler;
 import org.jason.mapmaker.server.actionHandler.location.GetCountiesByStateHandler;
 import org.jason.mapmaker.server.actionHandler.location.GetLocationMapByCoordinatesHandler;
+import org.jason.mapmaker.server.actionHandler.location.GetLocationsByStateAndCountyAndMtfccHandler;
 import org.jason.mapmaker.server.actionHandler.location.GetLocationsByStateAndMtfccHandler;
 import org.jason.mapmaker.server.actionHandler.shapefile.DeleteSingleShapefileHandler;
 import org.jason.mapmaker.server.actionHandler.shapefile.ImportSingleShapefileHandler;
@@ -34,6 +35,7 @@ import org.jason.mapmaker.shared.action.featuresMetadata.GetFeaturesMetadataList
 import org.jason.mapmaker.shared.action.featuresMetadata.ImportFeaturesMetadataAction;
 import org.jason.mapmaker.shared.action.location.GetCountiesByStateAction;
 import org.jason.mapmaker.shared.action.location.GetLocationMapByCoordinatesAction;
+import org.jason.mapmaker.shared.action.location.GetLocationsByStateAndCountyAndMtfccAction;
 import org.jason.mapmaker.shared.action.location.GetLocationsByStateAndMtfccAction;
 import org.jason.mapmaker.shared.action.shapefile.DeleteSingleShapefileAction;
 import org.jason.mapmaker.shared.action.shapefile.ImportSingleShapefileAction;
@@ -94,7 +96,7 @@ public class ServerModule extends HandlerModule {
         bindHandler(GetLocationMapByCoordinatesAction.class, GetLocationMapByCoordinatesHandler.class);
 
         // TODO: Action cleanup... I know I'm not using all of these...
-        bindHandler(GetCountyBasedLocationsAction.class, GetCountyBasedLocationsHandler.class);
+        bindHandler(GetLocationsByStateAndCountyAndMtfccAction.class, GetLocationsByStateAndCountyAndMtfccHandler.class);
         bindHandler(GetFeatureClassesAction.class, GetFeatureClassesHandler.class);
         bindHandler(GetMapDataByGeoIdAction.class, GetMapDataByGeoIdHandler.class);
         bindHandler(GetMtfccTypesAction.class, GetMtfccTypesHandler.class);
@@ -178,8 +180,8 @@ public class ServerModule extends HandlerModule {
     }
 
     @Bean
-    public GetCountyBasedLocationsHandler getGetCountyBasedLocationsHandler() {
-        return new GetCountyBasedLocationsHandler();
+    public GetLocationsByStateAndCountyAndMtfccHandler getGetCountyBasedLocationsHandler() {
+        return new GetLocationsByStateAndCountyAndMtfccHandler();
     }
 
     // location

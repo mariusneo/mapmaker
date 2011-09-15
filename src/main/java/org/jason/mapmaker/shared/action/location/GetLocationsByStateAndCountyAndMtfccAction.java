@@ -13,10 +13,10 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.jason.mapmaker.shared.action;
+package org.jason.mapmaker.shared.action.location;
 
 import com.gwtplatform.dispatch.shared.UnsecuredActionImpl;
-import org.jason.mapmaker.shared.result.GetCountyBasedLocationsResult;
+import org.jason.mapmaker.shared.result.location.GetLocationsByStateAndCountyAndMtfccResult;
 
 /**
  * GWTP Action class for retrieving county-based locations
@@ -25,17 +25,17 @@ import org.jason.mapmaker.shared.result.GetCountyBasedLocationsResult;
  * @author Jason Ferguson
  */
 @SuppressWarnings("unused")
-public class GetCountyBasedLocationsAction extends UnsecuredActionImpl<GetCountyBasedLocationsResult> {
+public class GetLocationsByStateAndCountyAndMtfccAction extends UnsecuredActionImpl<GetLocationsByStateAndCountyAndMtfccResult> {
 
     private String mtfccCode;
     private String stateFP;
     private String countyFP;
 
     /* Serialization only */
-    GetCountyBasedLocationsAction() {
+    GetLocationsByStateAndCountyAndMtfccAction() {
     }
 
-    public GetCountyBasedLocationsAction(String mtfccCode, String stateFP, String countyFP) {
+    public GetLocationsByStateAndCountyAndMtfccAction(String mtfccCode, String stateFP, String countyFP) {
         this.mtfccCode = mtfccCode;
         this.stateFP = stateFP;
         this.countyFP = countyFP;

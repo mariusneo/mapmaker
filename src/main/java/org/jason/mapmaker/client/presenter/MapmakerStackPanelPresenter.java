@@ -35,8 +35,10 @@ import org.jason.mapmaker.client.presenter.help.DisplayHelpPresenter;
 import org.jason.mapmaker.client.presenter.shapefileMetadata.ManageShapefileMetadataPresenter;
 import org.jason.mapmaker.client.view.StackPanelUiHandlers;
 import org.jason.mapmaker.shared.action.*;
+import org.jason.mapmaker.shared.action.location.GetLocationsByStateAndCountyAndMtfccAction;
 import org.jason.mapmaker.shared.action.location.GetLocationsByStateAndMtfccAction;
 import org.jason.mapmaker.shared.result.*;
+import org.jason.mapmaker.shared.result.location.GetLocationsByStateAndCountyAndMtfccResult;
 import org.jason.mapmaker.shared.result.location.GetLocationsByStateAndMtfccResult;
 import org.jason.mapmaker.shared.util.GeographyUtils;
 import org.jason.mapmaker.shared.util.MtfccUtil;
@@ -321,14 +323,14 @@ public class MapmakerStackPanelPresenter extends PresenterWidget<MapmakerStackPa
                     String stateFP = geoId.substring(0,2);
                     String countyFP = geoId.substring(2);
 
-                    dispatch.execute(new GetCountyBasedLocationsAction(mtfcc, stateFP, countyFP), new AsyncCallback<GetCountyBasedLocationsResult>() {
+                    dispatch.execute(new GetLocationsByStateAndCountyAndMtfccAction(mtfcc, stateFP, countyFP), new AsyncCallback<GetLocationsByStateAndCountyAndMtfccResult>() {
                         @Override
                         public void onFailure(Throwable throwable) {
                             throwable.printStackTrace();
                         }
 
                         @Override
-                        public void onSuccess(GetCountyBasedLocationsResult result) {
+                        public void onSuccess(GetLocationsByStateAndCountyAndMtfccResult result) {
 
                             getView().getTertiaryListBox().clear();
                             getView().getTertiaryListBox().addItem("-- Select Feature --");

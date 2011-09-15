@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.jason.mapmaker.shared.result;
+package org.jason.mapmaker.shared.result.location;
 
 import com.gwtplatform.dispatch.shared.Result;
 
@@ -25,15 +25,15 @@ import java.util.Map;
  * @since 0.2
  * @author Jason Ferguson
  */
-public class GetCountyBasedLocationsResult implements Result {
+public class GetLocationsByStateAndCountyAndMtfccResult implements Result {
 
     private Map<String, String> result;
 
     /* serialization only */
-    GetCountyBasedLocationsResult() {
+    GetLocationsByStateAndCountyAndMtfccResult() {
     }
 
-    public GetCountyBasedLocationsResult(Map<String, String> result) {
+    public GetLocationsByStateAndCountyAndMtfccResult(Map<String, String> result) {
         this.result = result;
     }
 
