@@ -72,20 +72,6 @@ CREATE TABLE LOCATION(
         GEOID VARCHAR(20),
         STATEFP VARCHAR(2),
         COUNTYFP VARCHAR(3),
-        TRACTFP VARCHAR(6),
-        CD111FP VARCHAR(2),
-        consolidatedCityFP VARCHAR(5),
-        countySubdivisionFP VARCHAR(5),
-        elementaryDistrictFP VARCHAR(7),
-        secondaryDistrictFP VARCHAR(5),
-        unifiedDistrictFP VARCHAR(5),
-        subMinorFP VARCHAR(5),
-        placeFP VARCHAR(5),
-        stateUpperDistrictFP VARCHAR(3),
-        stateLowerDistrictFP VARCHAR(3),
-        SUBBARIOFP VARCHAR(5),
-        votingDistrictFP VARCHAR(6),
-        classFP VARCHAR(2),
         LOCATIONNAME VARCHAR(100),
         LSAD VARCHAR(2),
         MTFCCID INTEGER,
@@ -113,6 +99,9 @@ CREATE TABLE LOCATION(
 alter table LOCATION AUTO_INCREMENT=1000;
 create index idx_l_smid on LOCATION(SHAPEFILEMETADATAID);
 CREATE INDEX idx_l_mtfccid on LOCATION(MTFCCID);
+create index idx_l_geoid on LOCATION(GEOID);
+create index idx_l_statefp on LOCATION(STATEFP);
+create index idx_l_countyfp on LOCATION(COUNTYFP);
 
 CREATE TABLE BORDERPOINT(
         BORDERID    BIGINT AUTO_INCREMENT,
