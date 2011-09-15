@@ -110,29 +110,25 @@ public class MapmakerMapViewImpl extends ViewWithUiHandlers<MapPanelUiHandlers>
         // convert the features into markers
         List<Feature> featureList = location.getFeatureList();
         List<Map> featureMapList = new ArrayList<Map>();
-        Map<String, Object> feature = new HashMap<String, Object>();
 
-        if (featureList == null || featureList.isEmpty()) {
-            feature.put("CONTENTS", "<p>No features are currently loaded for the selected location</p>");
+        for (Feature f : featureList) {
+            Map<String, Object> feature = new HashMap<String, Object>();
+            // This needs to be a Map w/o parameters!
+            feature.put("TITLE", f.getName());
+            feature.put("LAT", f.getLat());
+            feature.put("LNG", f.getLng());
+
+            //var feature = f.@java.util.List::get(I)(i);
+            StringBuffer contents = new StringBuffer();
+            contents.append("<p><b>").append(f.getName()).append("</b></p>");
+            contents.append("<p><b>Type:</b> ").append(f.getFeatureClass()).append("</p>");
+            contents.append("<p><b>Coordinates (Lat, Lng): </b>(").append(f.getLat()).append(", ").append(f.getLng()).append(")</p>");
+
+            feature.put("CONTENTS", contents.toString());
+
             featureMapList.add(feature);
-        } else {
-            for (Feature f : featureList) {
-                // This needs to be a Map w/o parameters!
-                feature.put("TITLE", f.getName());
-                feature.put("LAT", f.getLat());
-                feature.put("LNG", f.getLng());
-
-                //var feature = f.@java.util.List::get(I)(i);
-                StringBuffer contents = new StringBuffer();
-                contents.append("<p><b>").append(f.getName()).append("</b></p>");
-                contents.append("<p><b>Type:</b> ").append(f.getFeatureClass()).append("</p>");
-                contents.append("<p><b>Coordinates (Lat, Lng): </b>(").append(f.getLat()).append(", ").append(f.getLng()).append(")</p>");
-
-                feature.put("CONTENTS", contents.toString());
-
-                featureMapList.add(feature);
-            }
         }
+
         JsArray markerArray = GoogleMapUtil.createMarkerArray(featureMapList);
 
         initMap(mapOptions, mapBounds, borderPolygon, markerArray, e);
