@@ -16,6 +16,7 @@ import org.jason.mapmaker.server.actionHandler.featuresMetadata.GetFeaturesMetad
 import org.jason.mapmaker.server.actionHandler.featuresMetadata.ImportFeaturesMetadataHandler;
 import org.jason.mapmaker.server.actionHandler.location.GetCountiesByStateHandler;
 import org.jason.mapmaker.server.actionHandler.location.GetLocationMapByCoordinatesHandler;
+import org.jason.mapmaker.server.actionHandler.location.GetLocationsByStateAndMtfccHandler;
 import org.jason.mapmaker.server.actionHandler.shapefile.DeleteSingleShapefileHandler;
 import org.jason.mapmaker.server.actionHandler.shapefile.ImportSingleShapefileHandler;
 import org.jason.mapmaker.server.actionHandler.shapefileMetadata.CountShapefileMetadataHandler;
@@ -33,6 +34,7 @@ import org.jason.mapmaker.shared.action.featuresMetadata.GetFeaturesMetadataList
 import org.jason.mapmaker.shared.action.featuresMetadata.ImportFeaturesMetadataAction;
 import org.jason.mapmaker.shared.action.location.GetCountiesByStateAction;
 import org.jason.mapmaker.shared.action.location.GetLocationMapByCoordinatesAction;
+import org.jason.mapmaker.shared.action.location.GetLocationsByStateAndMtfccAction;
 import org.jason.mapmaker.shared.action.shapefile.DeleteSingleShapefileAction;
 import org.jason.mapmaker.shared.action.shapefile.ImportSingleShapefileAction;
 import org.jason.mapmaker.shared.action.shapefileMetadata.CountShapefileMetadataAction;
@@ -88,12 +90,12 @@ public class ServerModule extends HandlerModule {
 
         // location
         bindHandler(GetCountiesByStateAction.class, GetCountiesByStateHandler.class);
+        bindHandler(GetLocationsByStateAndMtfccAction.class, GetLocationsByStateAndMtfccHandler.class);
         bindHandler(GetLocationMapByCoordinatesAction.class, GetLocationMapByCoordinatesHandler.class);
 
         // TODO: Action cleanup... I know I'm not using all of these...
         bindHandler(GetCountyBasedLocationsAction.class, GetCountyBasedLocationsHandler.class);
         bindHandler(GetFeatureClassesAction.class, GetFeatureClassesHandler.class);
-        bindHandler(GetLocationsByStateAndMtfccAction.class, GetLocationsByStateAndMtfccHandler.class);
         bindHandler(GetMapDataByGeoIdAction.class, GetMapDataByGeoIdHandler.class);
         bindHandler(GetMtfccTypesAction.class, GetMtfccTypesHandler.class);
         bindHandler(GetStatesByMtfccAction.class, GetStatesByMtfccHandler.class);
@@ -187,6 +189,11 @@ public class ServerModule extends HandlerModule {
     }
 
     @Bean
+    public GetLocationsByStateAndMtfccHandler getGetLocationsByStateAndMtfccHandler() {
+        return new GetLocationsByStateAndMtfccHandler();
+    }
+
+    @Bean
     public GetLocationMapByCoordinatesHandler getGetLocationMapByCoordinatesHandler() {
         return new GetLocationMapByCoordinatesHandler();
     }
@@ -194,11 +201,6 @@ public class ServerModule extends HandlerModule {
     @Bean
     public GetFeatureClassesHandler getGetFeatureClassesHandler() {
         return new GetFeatureClassesHandler();
-    }
-
-    @Bean
-    public GetLocationsByStateAndMtfccHandler getGetLocationsByStateAndMtfccHandler() {
-        return new GetLocationsByStateAndMtfccHandler();
     }
 
     @Bean
