@@ -203,19 +203,6 @@ public class LocationServiceImpl implements LocationService, PersistenceService<
 
         // these ones are more conditional, but it will either set the result or null
         location.setCountyFP((String) feature.getAttribute("COUNTYFP10"));
-        location.setTractFP((String) feature.getAttribute("TRACTFP10"));
-        location.setCd111FP((String) feature.getAttribute("CD111FP"));
-        location.setConsolidatedCityFP((String) feature.getAttribute("CONCTYFP10"));
-        location.setCountySubdivisionFP((String) feature.getAttribute("COUSUBFP10"));
-        location.setElementaryDistrictFP((String) feature.getAttribute("ELSDLEA10"));
-        location.setSecondaryDistrictFP((String) feature.getAttribute("SCSDLEA10"));
-        location.setUnifiedDistrictFP((String) feature.getAttribute("UNSDLEA10"));
-        location.setSubMinorFP((String) feature.getAttribute("SUBMCDFP10"));
-        location.setPlaceFP((String) feature.getAttribute("PLACEFP10"));
-        location.setStateUpperDistrictFP((String) feature.getAttribute("SLDUST10"));
-        location.setStateLowerDistrictFP((String) feature.getAttribute("SLDLST10"));
-        location.setVotingDistrictFP((String) feature.getAttribute("VTDST10"));
-        location.setClassFP((String) feature.getAttribute("CLASSFP10"));
 
         // set the basic information
 
@@ -274,101 +261,6 @@ public class LocationServiceImpl implements LocationService, PersistenceService<
     }
 
     @Override
-    public Map<String, Location> getLocationDescriptionsForCoordinates(double lng, double lat) {
-
-        List<Location> locationList = locationRepository.getLocationsByCoordinates(lng, lat);
-
-        // create an empty map for all of the MTFCCs
-        Map<String, List<Location>> locationDescriptionMap = new LinkedHashMap<String, List<Location>>();
-
-        // create a map with only a single slot per mtfcc code
-        Map<String, Location> locationMap = new LinkedHashMap<String, Location>();
-
-        for (String key : GeographyUtils.nameToMtfccMap.inverse().keySet()) {
-            locationDescriptionMap.put(key, new ArrayList<Location>());
-            locationMap.put(key, null);
-        }
-
-        if (locationList.isEmpty()) {
-            return locationMap;
-        }
-        // assign the location result to their slots in the map
-        for (Location l : locationList) {
-            String locationMtfccCode = l.getMtfcc().getMtfccCode();
-            locationDescriptionMap.get(locationMtfccCode).add(l);
-        }
-
-        for (String mtfccCode : locationDescriptionMap.keySet()) {
-            List<Location> candidateLocationList = locationDescriptionMap.get(mtfccCode);
-
-
-            if (candidateLocationList.size() == 0) {               // if there is no location for the mtfcc, put in a null
-                locationMap.put(mtfccCode, null);
-            } else if (candidateLocationList.size() == 1) {        // if there is one location for the mtfcc, lucky us...
-                locationMap.put(mtfccCode, candidateLocationList.get(0));
-            } else {                                 // otherwise, we have to create and test the geometries
-
-                // create a geometry factory
-                GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory(null);
-                Coordinate candidateCoordinate = new Coordinate(lng, lat);
-
-                locationMap.put(mtfccCode, null);       // default value
-                for (Location l : candidateLocationList) {
-                    // get and sort the Location's border points
-                    List<BorderPoint> borderPointList = l.getBorderPointList();
-                    Collections.sort(borderPointList, new BorderPointIdComparator());
-
-                    // close the ring by appending the starting point to the end
-                    BorderPoint startPoint = borderPointList.get(0);
-                    borderPointList.add(startPoint);
-
-                    // convert the border points to an array of Coordinates (Geotools doesn't like collections)
-                    Coordinate[] locationCoordinates = ShapefileUtil.getCoordinatesFromBorderPointList(borderPointList);
-
-                    // create a linear ring representing the border
-                    LinearRing border = geometryFactory.createLinearRing(locationCoordinates);
-
-                    // create the polygon from the linear ring. Pass null as second argument since we don't have any holes in the polygon
-                    Polygon polygon = geometryFactory.createPolygon(border, null);
-
-                    // create the point to check
-                    Point candidatePoint = geometryFactory.createPoint(candidateCoordinate);
-
-                    // check if the polygon contains the point. If so, put it in the map of what we are returning
-                    if (polygon.contains(candidatePoint)) {
-                        locationMap.put(mtfccCode, l);
-                        break;
-                    }
-                }
-            }
-        }
-
-        for (String key : locationMap.keySet()) {
-            Location l = locationMap.get(key);
-            if (l != null) {
-                // if the feature type is not available, don't pass it on for display
-                //if (!l.getShapefileMetadata().getCurrentStatus().equals(GeographyUtils.Status.NOT_AVAILABLE)) {
-                l.setBorderPointList(null);
-                locationMap.put(key, l);
-                //}
-            }
-        }
-
-        // some miscellaneous removals from the returned results
-        // you either get a unified district for a location, or a elementary and secondary
-        if (locationMap.get(GeographyUtils.MTFCC.UNIFIED_DISTRICT) != null) {
-            locationMap.remove(GeographyUtils.MTFCC.ELEMENTARY_DISTRICT);
-            locationMap.remove(GeographyUtils.MTFCC.SECONDARY_DISTRICT);
-        }
-
-        if (locationMap.get(GeographyUtils.MTFCC.ELEMENTARY_DISTRICT) != null || locationMap.get(GeographyUtils.MTFCC.SECONDARY_DISTRICT) != null) {
-            locationMap.remove(GeographyUtils.MTFCC.UNIFIED_DISTRICT);
-        }
-
-        return locationMap;
-    }
-
-    @Override
     public Map<MTFCC, Location> getLocationMapForCoordinates(double lng, double lat) {
 
         List<Location> locationList = locationRepository.getLocationsByCoordinates(lng, lat);
@@ -376,7 +268,7 @@ public class LocationServiceImpl implements LocationService, PersistenceService<
         // create 2 maps: one to hold the end-state map of one MTFCC to one Location, and one to hold a list of
         // candidate Locations if a set of coordinates can belong to more than one Location.
         Map<MTFCC, Location> locationMap = new LinkedHashMap<MTFCC, Location>();  // end state map
-        Map<MTFCC, List<Location>> locationListMap = getEmptyMtfccToLocationListMap(locationMap);  // map to flatten into end state
+        Map<MTFCC, List<Location>> locationListMap = getEmptyMtfccToLocationListMap(locationList);  // map to flatten into end state
 
         if (locationList.isEmpty()) {
             return locationMap;
@@ -385,9 +277,6 @@ public class LocationServiceImpl implements LocationService, PersistenceService<
         // assign locations to their slots in the map
         for (Location location : locationList) {
             MTFCC m = location.getMtfcc();
-            if (!locationMap.containsKey(m)) {
-                locationListMap.put(m, new ArrayList<Location>());
-            }
             locationListMap.get(m).add(location);
         }
 
@@ -412,12 +301,15 @@ public class LocationServiceImpl implements LocationService, PersistenceService<
         return locationMap;
     }
 
-    private Map<MTFCC, List<Location>> getEmptyMtfccToLocationListMap(Map<MTFCC, Location> endResultMap) {
+    private Map<MTFCC, List<Location>> getEmptyMtfccToLocationListMap(List<Location> locationList) {
 
         Map<MTFCC, List<Location>> locationMap = new LinkedHashMap<MTFCC, List<Location>>();
-        for (MTFCC m : endResultMap.keySet()) {
-            locationMap.put(m, new ArrayList<Location>());
+        for (Location l: locationList) {
+            locationMap.put(l.getMtfcc(), new ArrayList<Location>());
         }
+//        for (MTFCC m : endResultMap.keySet()) {
+//            locationMap.put(m, new ArrayList<Location>());
+//        }
 
         return locationMap;
 
