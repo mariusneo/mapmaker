@@ -49,7 +49,6 @@ CREATE TABLE FEATURE(
     FOREIGN KEY(FEATUREMETADATAID) REFERENCES FEATURESMETADATA(ID)
 ) ENGINE = InnoDB;
 
-alter table FEATURE AUTO_INCREMENT=1000;
 create index idx_featureclass on FEATURE(FEATURECLASS);
 create index idx_f_fmid on FEATURE(FEATUREMETADATAID);
 
@@ -126,8 +125,6 @@ CREATE TABLE BORDERPOINT(
 
 alter table BORDERPOINT AUTO_INCREMENT=1000;
 create index idx_bp_l on BORDERPOINT(LOCATIONID);
-
-ALTER TABLE LOCATION ADD CONSTRAINT FOREIGN KEY(SHAPEFILEMETADATAID) REFERENCES SHAPEFILEMETADATA(ID) ON UPDATE CASCADE;
 
 INSERT INTO MTFCC(MTFCCCODE,FEATURECLASS,SUPERCLASS,FEATURECLASSDESCRIPTION) VALUES ('C3022','Mountain Peak or Summit', 'Miscellaneous Topographic Features', 'A prominent elevation rising above the surrounding level of the Earths surface.');
 INSERT INTO MTFCC(MTFCCCODE,FEATURECLASS,SUPERCLASS,FEATURECLASSDESCRIPTION) VALUES ('C3023','Island', 'Miscellaneous Topographic Features', 'An area of dry or relatively dry land surrounded by water or low wetland. [including archipelago, atoll, cay, hammock, hummock, isla, isle, key, moku and rock]');
