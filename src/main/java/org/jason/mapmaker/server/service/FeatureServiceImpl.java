@@ -40,10 +40,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.*;
 
 import static org.apache.commons.lang.StringUtils.split;
 
@@ -96,12 +93,36 @@ public class FeatureServiceImpl implements FeatureService {
     @Override
     public void saveList(List<Feature> featureList) throws ServiceException {
 
+        List<Feature> fixedFeatureList = removeDuplicates(featureList);
+
         try {
-            featureRepository.saveList(featureList);
+            featureRepository.saveList(fixedFeatureList);
         } catch (Exception ex) {
             log.debug("saveList() threw ServiceException", ex);
             throw new ServiceException(ex);
         }
+    }
+
+    private List<Feature> removeDuplicates(List<Feature> featureList) {
+
+        // first, build a bitset corresponding to the list
+        final int listSize = featureList.size();
+        BitSet bitSet = new BitSet(listSize + 1);
+        bitSet.set(0, listSize, false);
+
+        for (int i=0; i<featureList.size(); i++) {
+            Feature f = featureList.get(i);
+            // check if the "slot" is already "filled". If not, fill it. If so, we've got a duplicate that needs
+            // to be removed from the original list anyways
+            if (!bitSet.get(f.getId())) {
+                bitSet.set(f.getId(), true);
+            } else {
+                featureList.remove(f);
+                System.out.println("Found duplicate feature ID: " + f.getId());
+            }
+        }
+
+        return featureList;
     }
 
     @Override
