@@ -47,8 +47,8 @@ import static org.apache.commons.lang.StringUtils.split;
 /**
  * Implementation of FeaturesService interface
  *
- * @since 0.3
  * @author Jason Ferguson
+ * @since 0.3
  */
 @Service("featureService")
 public class FeatureServiceImpl implements FeatureService {
@@ -107,22 +107,24 @@ public class FeatureServiceImpl implements FeatureService {
 
         // first, build a bitset corresponding to the list
         final int listSize = featureList.size();
+        List<Feature> resultList = new ArrayList<Feature>();
         BitSet bitSet = new BitSet(listSize + 1);
         bitSet.set(0, listSize, false);
 
-        for (int i=0; i<featureList.size(); i++) {
+        for (int i = 0; i < featureList.size(); i++) {
             Feature f = featureList.get(i);
             // check if the "slot" is already "filled". If not, fill it. If so, we've got a duplicate that needs
             // to be removed from the original list anyways
-            if (!bitSet.get(f.getId())) {
+            if (bitSet.get(f.getId()) == false) {
                 bitSet.set(f.getId(), true);
+                resultList.add(f);
             } else {
                 featureList.remove(f);
                 System.out.println("Found duplicate feature ID: " + f.getId());
             }
         }
 
-        return featureList;
+        return resultList;
     }
 
     @Override
@@ -131,7 +133,7 @@ public class FeatureServiceImpl implements FeatureService {
         SortedSet<String> results = new TreeSet<String>();
         List<Feature> featureList = featureRepository.getAll();
 
-        for (Feature f: featureList) {
+        for (Feature f : featureList) {
             results.add(f.getFeatureClass());
         }
         return new ArrayList<String>(results);
@@ -256,18 +258,24 @@ public class FeatureServiceImpl implements FeatureService {
                 if (FeatureUtil.isManmadeFeature(splitLine[2])) {
                     // setting this to variables and using the non-default Feature constructor means this is
                     // easier to debug. Yay.
-                    int id = Integer.parseInt(splitLine[0]);
-                    String featureName = StringUtils.left(splitLine[1], 99);
-                    String featureClass = StringUtils.left(splitLine[2], 99);
-                    double lat = Double.parseDouble(splitLine[9]);
-                    double lng = Double.parseDouble(splitLine[10]);
 
-                    Feature feature = new Feature(id, featureName, featureClass, lat, lng, fm);
-                    feature.setFeatureSource("usgs");
+                    // sometimes the USGS state file isn't limited to a single state... god only knows what the problem is
+                    String stateGeoId = splitLine[4];
+                    if (fm.getStateGeoId().equals(stateGeoId)) {
 
-                    featureList.add(feature);
+                        int id = Integer.parseInt(splitLine[0]);
+                        String featureName = StringUtils.left(splitLine[1], 99);
+                        String featureClass = StringUtils.left(splitLine[2], 99);
+                        double lat = Double.parseDouble(splitLine[9]);
+                        double lng = Double.parseDouble(splitLine[10]);
 
-                    counter++;
+                        Feature feature = new Feature(id, featureName, featureClass, lat, lng, fm);
+                        feature.setFeatureSource("usgs");
+
+                        featureList.add(feature);
+
+                        counter++;
+                    }
                 }
 
                 if (counter % 100000 == 0) {
