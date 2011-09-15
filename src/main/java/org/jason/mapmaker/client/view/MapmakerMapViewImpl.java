@@ -40,6 +40,7 @@ import java.util.*;
  * Implementation of the Map View section of the application
  *
  * @author Jason Ferguson
+ * @since 0.1
  */
 @Singleton
 public class MapmakerMapViewImpl extends ViewWithUiHandlers<MapPanelUiHandlers>
@@ -51,8 +52,7 @@ public class MapmakerMapViewImpl extends ViewWithUiHandlers<MapPanelUiHandlers>
 
     private static Binder binder = GWT.create(Binder.class);
 
-    @UiField
-    HTMLPanel mapmakerMapView;
+    @UiField HTMLPanel mapmakerMapView;
 
     private Widget widget;
 
@@ -79,11 +79,11 @@ public class MapmakerMapViewImpl extends ViewWithUiHandlers<MapPanelUiHandlers>
     public void prepareAndInitializeMap(Location location, Map<String, Double> boundingBox, Element e) {
 
         // should create a default map
-         if (location == null) {
-             JavaScriptObject mapOptions = GoogleMapUtil.createMapOptions(null, null);
-             initMap(mapOptions, null, null, null, e);
-             return;
-         }
+        if (location == null) {
+            JavaScriptObject mapOptions = GoogleMapUtil.createMapOptions(null, null);
+            initMap(mapOptions, null, null, null, e);
+            return;
+        }
 
         // create the basic map
         JavaScriptObject mapOptions = GoogleMapUtil.createMapOptions(location.getInternalLat(), location.getInternalLng());
@@ -102,7 +102,7 @@ public class MapmakerMapViewImpl extends ViewWithUiHandlers<MapPanelUiHandlers>
         // reformat the BorderPoint list into List<Map<String, Double>>
         List<Map<String, Double>> mapList = new ArrayList<Map<String, Double>>();
         // TODO: consider having the map created via a factory method
-        for (BorderPoint bp: borderPointList) {
+        for (BorderPoint bp : borderPointList) {
             Map<String, Double> myMap = new HashMap<String, Double>();
             myMap.put("LNG", bp.getLng());
             myMap.put("LAT", bp.getLat());
@@ -115,24 +115,29 @@ public class MapmakerMapViewImpl extends ViewWithUiHandlers<MapPanelUiHandlers>
         // convert the features into markers
         List<Feature> featureList = location.getFeatureList();
         List<Map> featureMapList = new ArrayList<Map>();
-        for (Feature f: featureList) {
-            // This needs to be a Map w/o parameters!
-            Map feature = new HashMap();
-            feature.put("TITLE", f.getName());
-            feature.put("LAT", f.getLat());
-            feature.put("LNG", f.getLng());
+        Map<String, Object> feature = new HashMap<String, Object>();
 
-            StringBuffer contents = new StringBuffer();
-            //var feature = f.@java.util.List::get(I)(i);
-            contents.append("<p><b>").append(f.getName()).append("</b></p>");
-            contents.append("<p><b>Type:</b> ").append(f.getFeatureClass()).append("</p>");
-            contents.append("<p><b>Coordinates (Lat, Lng): </b>(").append(f.getLat()).append(", ").append(f.getLng()).append(")</p>");
-
-            feature.put("CONTENTS", contents.toString());
-
+        if (featureList == null || featureList.isEmpty()) {
+            feature.put("CONTENTS", "<p>No features are currently loaded for the selected location</p>");
             featureMapList.add(feature);
-        }
+        } else {
+            for (Feature f : featureList) {
+                // This needs to be a Map w/o parameters!
+                feature.put("TITLE", f.getName());
+                feature.put("LAT", f.getLat());
+                feature.put("LNG", f.getLng());
 
+                //var feature = f.@java.util.List::get(I)(i);
+                StringBuffer contents = new StringBuffer();
+                contents.append("<p><b>").append(f.getName()).append("</b></p>");
+                contents.append("<p><b>Type:</b> ").append(f.getFeatureClass()).append("</p>");
+                contents.append("<p><b>Coordinates (Lat, Lng): </b>(").append(f.getLat()).append(", ").append(f.getLng()).append(")</p>");
+
+                feature.put("CONTENTS", contents.toString());
+
+                featureMapList.add(feature);
+            }
+        }
         JsArray markerArray = GoogleMapUtil.createMarkerArray(featureMapList);
 
         initMap(mapOptions, mapBounds, borderPolygon, markerArray, e);
