@@ -25,6 +25,7 @@ import java.util.Map;
  * @since 0.4
  * @author Jason Ferguson
  */
+@SuppressWarnings("unused")
 public class GetCountiesByStateResult implements Result {
 
     Map<String, String> result;
