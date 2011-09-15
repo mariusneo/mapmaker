@@ -29,6 +29,9 @@ import java.util.Map;
  */
 public interface FeatureRepository extends GenericRepository2<Feature> {
 
+
+    Feature save(Feature object);
+
     /**
      * Return a list of features of a given type within a bounding box defined by a Map<String, Double>.
      *
