@@ -20,6 +20,7 @@ import org.jason.mapmaker.shared.model.MTFCC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -56,7 +57,13 @@ public class MtfccServiceImpl implements MtfccService {
 
     @Override
     public Map<String, String> getMtfccTypes() {
-        return mtfccRepository.getMtfccTypes();
+        List<MTFCC> mtfccList = mtfccRepository.getImportedMtfccs();
+        Map<String, String> resultMap = new LinkedHashMap<String, String>();
+        for (MTFCC m: mtfccList) {
+            resultMap.put(m.getFeatureClass(), m.getMtfccCode());
+        }
+
+        return resultMap;
     }
 
     @Override
