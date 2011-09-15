@@ -15,7 +15,6 @@ import org.jason.mapmaker.server.actionHandler.featuresMetadata.CountFeaturesMet
 import org.jason.mapmaker.server.actionHandler.featuresMetadata.GetFeaturesMetadataListHandler;
 import org.jason.mapmaker.server.actionHandler.featuresMetadata.ImportFeaturesMetadataHandler;
 import org.jason.mapmaker.server.actionHandler.location.GetCountiesByStateHandler;
-import org.jason.mapmaker.server.actionHandler.location.GetLocationDescriptionsHandler;
 import org.jason.mapmaker.server.actionHandler.location.GetLocationMapByCoordinatesHandler;
 import org.jason.mapmaker.server.actionHandler.shapefile.DeleteSingleShapefileHandler;
 import org.jason.mapmaker.server.actionHandler.shapefile.ImportSingleShapefileHandler;
@@ -33,7 +32,6 @@ import org.jason.mapmaker.shared.action.featuresMetadata.CountFeaturesMetadataAc
 import org.jason.mapmaker.shared.action.featuresMetadata.GetFeaturesMetadataListAction;
 import org.jason.mapmaker.shared.action.featuresMetadata.ImportFeaturesMetadataAction;
 import org.jason.mapmaker.shared.action.location.GetCountiesByStateAction;
-import org.jason.mapmaker.shared.action.location.GetLocationDescriptionsAction;
 import org.jason.mapmaker.shared.action.location.GetLocationMapByCoordinatesAction;
 import org.jason.mapmaker.shared.action.shapefile.DeleteSingleShapefileAction;
 import org.jason.mapmaker.shared.action.shapefile.ImportSingleShapefileAction;
@@ -90,7 +88,6 @@ public class ServerModule extends HandlerModule {
 
         // location
         bindHandler(GetCountiesByStateAction.class, GetCountiesByStateHandler.class);
-        bindHandler(GetLocationDescriptionsAction.class, GetLocationDescriptionsHandler.class);
         bindHandler(GetLocationMapByCoordinatesAction.class, GetLocationMapByCoordinatesHandler.class);
 
         // TODO: Action cleanup... I know I'm not using all of these...
@@ -195,11 +192,6 @@ public class ServerModule extends HandlerModule {
     @Bean
     public GetCountiesByStateHandler getGetCountiesByStateHandler() {
         return new GetCountiesByStateHandler();
-    }
-
-    @Bean
-    public GetLocationDescriptionsHandler getGetLocationDescriptionsHandler() {
-        return new GetLocationDescriptionsHandler();
     }
 
     @Bean
