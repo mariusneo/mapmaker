@@ -104,28 +104,6 @@ public class LocationServiceImpl implements LocationService, PersistenceService<
         return locationRepository.getLocationCounts();
     }
 
-    /**
-     * Takes a List<Object> that is assumed to contain >= 1 Object[2] arrays and converts the values into a Map.
-     * <p/>
-     * The [0] element will be the key, the [1] element will be the value. Obviously, this method can be a bit fragile.
-     *
-     * @param resultList
-     * @return
-     */
-    private Map<String, String> createKeyValueMap(List resultList) {
-
-        Map<String, String> resultMap = new LinkedHashMap<String, String>();
-        for (Object o : resultList) {
-            Object[] o2 = (Object[]) o;
-            String key = (String) o2[0];
-            String value = (String) o2[1];
-
-            resultMap.put(key, value);
-        }
-
-        return resultMap;
-    }
-
     public List<Map<String, String>> getStateAndEquivalentListForMtfcc(String mtfccCode) {
 
         MTFCC m = mtfccService.get(mtfccCode);
