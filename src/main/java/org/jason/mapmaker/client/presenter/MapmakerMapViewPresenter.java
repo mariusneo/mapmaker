@@ -45,7 +45,7 @@ import java.util.Map;
  * @author Jason Ferguson
  * @since 0.1
  */
-@SuppressWarnings({"unused", "unchecked"})
+@SuppressWarnings({"unused"})
 public class MapmakerMapViewPresenter extends PresenterWidget<MapmakerMapViewPresenter.MyView>
         implements MapPanelUiHandlers {
 
@@ -107,25 +107,34 @@ public class MapmakerMapViewPresenter extends PresenterWidget<MapmakerMapViewPre
                 Map<MTFCC, Location> resultMap = result.getResults();
 
                 StringBuffer message = new StringBuffer();
-                message.append("<table>\n");
-                for (MTFCC key : resultMap.keySet()) {
-                    Location l = resultMap.get(key);
-                    message.append("<tr>\n");
-                    message.append("<td><b>").append(key.getFeatureClass()).append("</b></td>\n");
-                    if (l == null) {
-                        message.append("<td>Feature not available</td>\n");
-                    } else {
-                        message.append("<td>").append(resultMap.get(key).getName()).append("<td>\n");
-                    }
-                    message.append("</tr>\n");
-                }
-                message.append("</table>\n");
+                Map<String, Object> map = new HashMap<String, Object>();   // this is a non-generified Map, I need to store Strings and Doubles in it
+                if (resultMap.size() == 0) {
+                    message.append("<p>No borders available for this location");
+                    map.put("TITLE", "Unknown Location");
+                    map.put("LNG", lng);
+                    map.put("LAT", lat);
+                    map.put("CONTENTS", message.toString());
+                } else {
 
-                Map map = new HashMap();   // this is a non-generified Map, I need to store Strings and Doubles in it
-                map.put("TITLE", "Location Details");
-                map.put("LNG", lng);
-                map.put("LAT", lat);
-                map.put("CONTENTS", message.toString());
+                    message.append("<table>\n");
+                    for (MTFCC key : resultMap.keySet()) {
+                        Location l = resultMap.get(key);
+                        message.append("<tr>\n");
+                        message.append("<td><b>").append(key.getFeatureClass()).append("</b></td>\n");
+                        if (l == null) {
+                            message.append("<td>Feature not available</td>\n");
+                        } else {
+                            message.append("<td>").append(resultMap.get(key).getName()).append("<td>\n");
+                        }
+                        message.append("</tr>\n");
+                    }
+                    message.append("</table>\n");
+
+                    map.put("TITLE", "Location Details");
+                    map.put("LNG", lng);
+                    map.put("LAT", lat);
+                    map.put("CONTENTS", message.toString());
+                }
 
                 JavaScriptObject marker = GoogleMapUtil.createMarker(map);
                 getView().addMarkerToMap(gmap, marker);
