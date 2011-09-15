@@ -140,14 +140,14 @@ public class MTFCC implements Serializable, IsSerializable, Comparable<MTFCC> {
 
         MTFCC mtfcc = (MTFCC) o;
 
-        if (id != null ? !id.equals(mtfcc.id) : mtfcc.id != null) return false;
+        if (mtfccCode != null ? !mtfccCode.equals(mtfcc.mtfccCode) : mtfcc.mtfccCode != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        return id != null ? id.hashCode() : 0;
+        return mtfccCode != null ? mtfccCode.hashCode() : 0;
     }
 
     @Override
