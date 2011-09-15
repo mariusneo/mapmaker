@@ -250,14 +250,14 @@ public class MapmakerStackPanelPresenter extends PresenterWidget<MapmakerStackPa
 
                     String stateFP = getPLBValue();
 
-                    dispatch.execute(new GetStateBasedLocationsAction(mtfcc, stateFP), new AsyncCallback<GetStateBasedLocationsResult>() {
+                    dispatch.execute(new GetLocationsByStateAndMtfccAction(stateFP, mtfcc), new AsyncCallback<GetLocationsByStateAndMtfccResult>() {
                         @Override
                         public void onFailure(Throwable caught) {
                             caught.printStackTrace();
                         }
 
                         @Override
-                        public void onSuccess(GetStateBasedLocationsResult result) {
+                        public void onSuccess(GetLocationsByStateAndMtfccResult result) {
                             getView().getTertiaryListBox().setEnabled(true);
                             Map<String, String> resultMap = result.getResult();
                             resultMap.remove(null);
