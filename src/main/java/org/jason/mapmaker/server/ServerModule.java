@@ -96,7 +96,6 @@ public class ServerModule extends HandlerModule {
         bindHandler(GetLocationsByStateAndMtfccAction.class, GetLocationsByStateAndMtfccHandler.class);
         bindHandler(GetMapDataByGeoIdAction.class, GetMapDataByGeoIdHandler.class);
         bindHandler(GetMtfccTypesAction.class, GetMtfccTypesHandler.class);
-        bindHandler(GetStateBasedLocationsAction.class, GetStateBasedLocationsHandler.class);
         bindHandler(GetStatesByMtfccAction.class, GetStatesByMtfccHandler.class);
     }
 
@@ -210,11 +209,6 @@ public class ServerModule extends HandlerModule {
     @Bean
     public GetMtfccTypesHandler getGetMtfccTypesHandler() {
         return new GetMtfccTypesHandler();
-    }
-
-    @Bean
-    public GetStateBasedLocationsHandler getGetStateBasedLocationsHandler() {
-        return new GetStateBasedLocationsHandler();
     }
 
     @Bean
