@@ -19,6 +19,7 @@ import org.hibernate.Query;
 import org.jason.mapmaker.server.repository.FeatureRepository;
 import org.jason.mapmaker.shared.exceptions.RepositoryException;
 import org.jason.mapmaker.shared.model.Feature;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,6 +37,17 @@ public class HibernateFeatureRepository extends HibernateGenericRepository<Featu
 
     public HibernateFeatureRepository() {
         super(Feature.class);
+    }
+
+
+    @Override
+    public Feature save(Feature object) {
+        try {
+            return super.save(object);
+        } catch (DataIntegrityViolationException e) {
+            System.out.println("Caught DataIntegrityViolationException");
+            return null;
+        }
     }
 
     @Override

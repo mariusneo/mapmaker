@@ -22,6 +22,7 @@ import org.hibernate.criterion.Example;
 import org.hibernate.criterion.Projections;
 import org.jason.mapmaker.server.repository.GenericRepository2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.orm.hibernate3.HibernateTransactionManager;
 
@@ -115,7 +116,14 @@ public class HibernateGenericRepository<T> implements GenericRepository2<T> {
     public void saveList(List<T> objectList) {
 
         for (T obj: objectList) {
-            sessionFactory.getCurrentSession().save(obj);
+            try {
+                sessionFactory.getCurrentSession().save(obj);
+            } catch (DataIntegrityViolationException ex) {
+                // okay, so CVE extends RuntimeException, and you aren't supposed to catch RuntimeExceptions. Do
+                // I want to roll back an entire save operation just because the USGS screwed up one particular
+                // id number???
+                System.out.println("Caught DataIntegrityViolationException");
+            }
         }
 //        Session session = sessionFactory.getCurrentSession();
 //        Transaction tx = session.beginTransaction();
