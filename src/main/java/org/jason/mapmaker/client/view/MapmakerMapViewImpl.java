@@ -33,6 +33,7 @@ import org.jason.mapmaker.client.util.GoogleMapUtil;
 import org.jason.mapmaker.shared.model.BorderPoint;
 import org.jason.mapmaker.shared.model.Feature;
 import org.jason.mapmaker.shared.model.Location;
+import org.jason.mapmaker.shared.model.comparator.BorderPointIdComparator;
 
 import java.util.*;
 
@@ -92,16 +93,10 @@ public class MapmakerMapViewImpl extends ViewWithUiHandlers<MapPanelUiHandlers>
         List<BorderPoint> borderPointList = location.getBorderPointList();
 
         // borderPointList needs to be sorted by ID to render correctly
-        Collections.sort(borderPointList, new Comparator<BorderPoint>() {
-            @Override
-            public int compare(BorderPoint o1, BorderPoint o2) {
-                return o1.getId().compareTo(o2.getId());
-            }
-        });
+        Collections.sort(borderPointList, new BorderPointIdComparator());
 
         // reformat the BorderPoint list into List<Map<String, Double>>
         List<Map<String, Double>> mapList = new ArrayList<Map<String, Double>>();
-        // TODO: consider having the map created via a factory method
         for (BorderPoint bp : borderPointList) {
             Map<String, Double> myMap = new HashMap<String, Double>();
             myMap.put("LNG", bp.getLng());
