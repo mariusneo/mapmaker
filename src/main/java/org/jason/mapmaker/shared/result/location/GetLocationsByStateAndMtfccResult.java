@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.jason.mapmaker.shared.result;
+package org.jason.mapmaker.shared.result.location;
 
 
 import com.gwtplatform.dispatch.shared.Result;

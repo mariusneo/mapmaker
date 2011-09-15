@@ -13,10 +13,10 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.jason.mapmaker.shared.action;
+package org.jason.mapmaker.shared.action.location;
 
 import com.gwtplatform.dispatch.shared.UnsecuredActionImpl;
-import org.jason.mapmaker.shared.result.GetLocationsByStateAndMtfccResult;
+import org.jason.mapmaker.shared.result.location.GetLocationsByStateAndMtfccResult;
 
 /**
  * GetLocationsByStateAndMtfccAction.java

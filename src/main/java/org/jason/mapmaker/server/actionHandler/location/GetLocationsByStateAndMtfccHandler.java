@@ -13,13 +13,13 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.jason.mapmaker.server.actionHandler;
+package org.jason.mapmaker.server.actionHandler.location;
 
 import com.gwtplatform.dispatch.server.ExecutionContext;
 import com.gwtplatform.dispatch.server.actionhandler.AbstractActionHandler;
 import org.jason.mapmaker.server.service.LocationService;
-import org.jason.mapmaker.shared.action.GetLocationsByStateAndMtfccAction;
-import org.jason.mapmaker.shared.result.GetLocationsByStateAndMtfccResult;
+import org.jason.mapmaker.shared.action.location.GetLocationsByStateAndMtfccAction;
+import org.jason.mapmaker.shared.result.location.GetLocationsByStateAndMtfccResult;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Map;

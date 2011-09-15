@@ -35,7 +35,9 @@ import org.jason.mapmaker.client.presenter.help.DisplayHelpPresenter;
 import org.jason.mapmaker.client.presenter.shapefileMetadata.ManageShapefileMetadataPresenter;
 import org.jason.mapmaker.client.view.StackPanelUiHandlers;
 import org.jason.mapmaker.shared.action.*;
+import org.jason.mapmaker.shared.action.location.GetLocationsByStateAndMtfccAction;
 import org.jason.mapmaker.shared.result.*;
+import org.jason.mapmaker.shared.result.location.GetLocationsByStateAndMtfccResult;
 import org.jason.mapmaker.shared.util.GeographyUtils;
 import org.jason.mapmaker.shared.util.MtfccUtil;
 
