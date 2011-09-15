@@ -163,16 +163,6 @@ public interface LocationService {
     Map<String, String> getCountiesForState(String stateGeoId);
 
     /**
-     * Return a Map<String, Location> containing the String MTFCC mapped to the Location for that MTFCC
-     * (or null if no locations are in the repository for that MTFCC)
-     *
-     * @param lng       double representing the longitude
-     * @param lat       double representing the latitude
-     * @return          Map<String, Location>
-     */
-    Map<String, Location> getLocationDescriptionsForCoordinates(double lng, double lat);
-
-    /**
      * Return a Map<MTFCC, Location> containing the MTFCC mapped to the location for a given set of coordinates
      *
      * @param lng       double representing longitude
