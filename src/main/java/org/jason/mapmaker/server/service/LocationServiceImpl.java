@@ -167,18 +167,6 @@ public class LocationServiceImpl implements LocationService, PersistenceService<
 
     }
 
-    public void deleteByMtfcc(String mtfccCode) {
-
-        MTFCC m = mtfccService.get(mtfccCode);
-        Location example = new Location();
-        example.setMtfcc(m);
-
-        List<Location> locationList = locationRepository.getByExample(example);
-        for (Location l : locationList) {
-            locationRepository.delete(l);
-        }
-    }
-
     public Location getByGeoIdAndMtfcc(String geoId, String mtfccCode) {
         return locationRepository.getByGeoIdAndMtfcc(geoId, mtfccCode);
     }

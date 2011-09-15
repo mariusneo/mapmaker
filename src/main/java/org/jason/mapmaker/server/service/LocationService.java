@@ -73,13 +73,6 @@ public interface LocationService {
     void remove(Location l) throws ServiceException;
 
     /**
-     * Delete locations by a given MTFCC code
-     *
-     * @param mtfccCode String representing the mtfccCode code for the location
-     */
-    void deleteByMtfcc(String mtfccCode);
-
-    /**
      * Remove locations with a given state geoid code and mtfcc code
      *
      * @param stateGeoId String representing the state geoid (usually the same as the FIPS55 code)
