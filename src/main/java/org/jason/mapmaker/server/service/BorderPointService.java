@@ -39,13 +39,5 @@ public interface BorderPointService {
 
     void saveList(List<BorderPoint> borderPointList) throws ServiceException;
 
-    /**
-     * Delete BorderPoint objects based on the geoId and mtfccCode fields of their Location component.
-     * @param geoId
-     * @param mtfccCode
-     * @throws ServiceException
-     */
-    void deleteByGeoIdAndMtfcc(String geoId, String mtfccCode) throws ServiceException;
-
     Map<String, Double> getBoundsByLocation(Location l) throws ServiceException;
 }

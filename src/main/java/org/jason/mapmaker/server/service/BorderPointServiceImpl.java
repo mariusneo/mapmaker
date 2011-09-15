@@ -64,18 +64,6 @@ public class BorderPointServiceImpl implements BorderPointService {
         }
     }
 
-    // TODO: Again, this method may be pointless... we need to let the cascade do the work
-    public void deleteByGeoIdAndMtfcc(String geoId, String mtfccCode) throws ServiceException{
-
-        Location l = locationService.getByGeoIdAndMtfcc(geoId, mtfccCode);
-        try {
-            borderPointRepository.deleteByLocation(l);
-        } catch (RepositoryException e) {
-            log.debug("Exception: ", e);
-            throw new ServiceException(e);
-        }
-    }
-
     public Map<String, Double> getBoundsByLocation(Location l) throws ServiceException {
         try {
             return borderPointRepository.getBoundsByLocation(l);
