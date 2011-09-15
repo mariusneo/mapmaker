@@ -90,6 +90,7 @@ public class HibernateLocationRepository extends HibernateGenericRepository<Loca
         Criteria smCriteria = locationCriteria.createCriteria("shapefileMetadata");
         smCriteria.add(Restrictions.ne("currentStatus", GeographyUtils.Status.NOT_AVAILABLE));
 
+        locationCriteria.addOrder(Order.asc("mtfcc"));
         List<Location> results = locationCriteria.list();
 
         return results;
