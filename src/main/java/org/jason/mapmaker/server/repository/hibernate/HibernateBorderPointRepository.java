@@ -62,9 +62,4 @@ public class HibernateBorderPointRepository extends HibernateGenericRepository<B
 
     }
 
-    // TODO: This function _may_ be pointless. If we do a delete on the location, the CascadeType.ALL _should_ take care of the borderpoints
-    @Override
-    public void deleteByLocation(Location L) throws RepositoryException {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
 }

@@ -37,11 +37,4 @@ public interface BorderPointRepository extends GenericRepository2<BorderPoint> {
      */
     Map<String, Double> getBoundsByLocation(Location l) throws RepositoryException;
 
-    /**
-     * Delete all BorderPoint objects for a given Location (in case a cascade doesn't handle this...)
-     *
-     * @param L
-     * @throws RepositoryException
-     */
-    void deleteByLocation(Location L) throws RepositoryException;
 }
