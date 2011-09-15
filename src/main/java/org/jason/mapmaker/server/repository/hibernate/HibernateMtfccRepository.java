@@ -24,9 +24,7 @@ import org.jason.mapmaker.shared.model.MTFCC;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Hibernate implementation of MTFCC Repository
@@ -42,42 +40,16 @@ public class HibernateMtfccRepository extends HibernateGenericRepository<MTFCC> 
         super(MTFCC.class);
     }
 
-    @Override
     @Transactional(readOnly = true)
-    public Map<String, String> getMtfccTypes() {
+    public List<MTFCC> getImportedMtfccs() {
 
-        // TODO: CONVERT THIS METHOD TO USE HIBERNATE MAP SYNTAX
+        String hql = "SELECT DISTINCT L.mtfcc from Location L where L.mtfcc.superClass='Tabulation Area' ORDER BY L.mtfcc.mtfccCode";
+        Query query = sessionFactory.getCurrentSession().createQuery(hql);
+        List<MTFCC> mtfccList = query.list();
 
-        // doing this as hql instead of criteria because I'm not a huge fan of the unique result transformer, which
-        // gets everything and then throws out the dupes. Why not let the DB server do the work?
-
-        // get all the IN USE mtfcc codes
-        String strQuery = "SELECT DISTINCT L.mtfcc.mtfccCode from Location L";
-        Query query = sessionFactory.getCurrentSession().createQuery(strQuery);
-        List<String> mtfccCodeList = (List<String>) query.list();
-
-        // if the Location repository is empty (i.e. the first time the app is run w/ empty db tables), the app will
-        // throw an exception when an empty collection is passed to the query below.
-        if (mtfccCodeList.isEmpty()) {
-            return new LinkedHashMap<String, String>();
-        }
-
-        // get the mtfcc code and feature class from the MTFCC repository based on the in-use MTFCCs
-        String strQuery2 = "SELECT M.mtfccCode, M.featureClass from MTFCC M where M.superClass = 'Tabulation Area' and M.mtfccCode in :codeList";
-        Query query2 = sessionFactory.getCurrentSession().createQuery(strQuery2);
-        query2.setParameterList("codeList", mtfccCodeList);
-        List resultList = query2.list();
-
-        Map<String, String> resultMap = new LinkedHashMap<String, String>(); // want to preserve the insert order since its alpha
-        for (Object o : resultList) {
-            Object[] o2 = (Object[]) o;
-            String key = (String) o2[1];     // map description to mtfcc code
-            String value = (String) o2[0];
-            resultMap.put(key, value); // dear god this is ugly
-        }
-
-        return resultMap;
+        return mtfccList;
     }
+
 
     @Override
     // TODO: have ehcache create a cache of this method call
@@ -90,8 +62,4 @@ public class HibernateMtfccRepository extends HibernateGenericRepository<MTFCC> 
         return mtfccCriteria.list();
     }
 
-    @Override
-    public Map<MTFCC, Long> getMtfccFeatureCount() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
 }

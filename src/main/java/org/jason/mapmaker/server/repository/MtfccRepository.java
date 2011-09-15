@@ -18,7 +18,6 @@ package org.jason.mapmaker.server.repository;
 import org.jason.mapmaker.shared.model.MTFCC;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Interface for MTFCC Repository
@@ -28,19 +27,8 @@ import java.util.Map;
  */
 public interface MtfccRepository extends GenericRepository2<MTFCC> {
 
-    /**
-     * A Map<String, String> of all MTFCC types mapped MTFCC Code<->Name
-     *
-     * @return
-     */
-    Map<String, String> getMtfccTypes();
+    List<MTFCC> getImportedMtfccs();
 
-    /**
-     * Return a Map of MTFCC types (starting with G) and the number of Features of that type
-     *
-     * @return  a Map<MTFCC, Long>
-     */
-    Map<MTFCC, Long> getMtfccFeatureCount();
 
     /**
      * Overriden getAll()
