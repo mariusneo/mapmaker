@@ -27,6 +27,11 @@ import java.util.List;
  */
 public interface MtfccRepository extends GenericRepository2<MTFCC> {
 
+    /**
+     * Returns a List of all MTFCC objects where associated Location objects have been imported
+     *
+     * @return  List<MTFCC>
+     */
     List<MTFCC> getImportedMtfccs();
 
 
