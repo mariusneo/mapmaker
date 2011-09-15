@@ -91,7 +91,6 @@ public class ServerModule extends HandlerModule {
         bindHandler(GetLocationMapByCoordinatesAction.class, GetLocationMapByCoordinatesHandler.class);
 
         // TODO: Action cleanup... I know I'm not using all of these...
-        bindHandler(GetAvailableLocationsCountAction.class, GetAvailableFeaturesCountHandler.class);
         bindHandler(GetCountyBasedLocationsAction.class, GetCountyBasedLocationsHandler.class);
         bindHandler(GetFeatureClassesAction.class, GetFeatureClassesHandler.class);
         bindHandler(GetLocationsAction.class, GetLocationsHandler.class);
@@ -176,11 +175,6 @@ public class ServerModule extends HandlerModule {
     @Bean
     public DeleteSingleFeatureHandler getDeleteSingleFeatureHandler() {
         return new DeleteSingleFeatureHandler();
-    }
-
-    @Bean
-    public GetAvailableFeaturesCountHandler getGetAvailableFeaturesCountHandler() {
-        return new GetAvailableFeaturesCountHandler();
     }
 
     @Bean
