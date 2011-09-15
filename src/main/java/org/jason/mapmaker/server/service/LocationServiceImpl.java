@@ -396,12 +396,11 @@ public class LocationServiceImpl implements LocationService, PersistenceService<
             // if we don't have ANY results, just populate w/ null. (This probably shouldn't happen anymore)
             if (locationListMap.get(m).size() == 0) {
                 locationMap.put(m, null);
-            } else if (locationListMap.get(m).size() == 1) {    // no need to do the complicated geometry checks, just populate the end state map
-                locationMap.put(m, locationListMap.get(m).get(0));
             } else {
-                // hooo-boy, we have more than one potential Location the coordinates could fall into, so we have to do
-                // the geometry checks
-                for (Location candidateLocation: locationListMap.get(m)) {
+                // Even if there is only one potential location, it has to be checked because the user may click on
+                // on a location that hasn't been imported, but still falls within the square of another location. If
+                // there is more than one candidate, we have to figure out the right one.
+                for (Location candidateLocation : locationListMap.get(m)) {
                     if (isCoordinateInLocation(lng, lat, candidateLocation)) {
                         locationMap.put(m, candidateLocation);
                         break;      // short-circuit remaining processing since we found the right one
