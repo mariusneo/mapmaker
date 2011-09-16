@@ -106,16 +106,16 @@ public class MapmakerMapViewPresenter extends PresenterWidget<MapmakerMapViewPre
             public void onSuccess(GetLocationMapByCoordinatesResult result) {
                 Map<MTFCC, Location> resultMap = result.getResults();
 
-                StringBuffer message = new StringBuffer();
                 Map<String, Object> map = new HashMap<String, Object>();   // this is a non-generified Map, I need to store Strings and Doubles in it
                 if (resultMap.size() == 0) {
-                    message.append("<p>No borders available for this location");
+                    StringBuffer message = new StringBuffer();
+                    message.append("<p>No borders available for this location</p>");
                     map.put("TITLE", "Unknown Location");
                     map.put("LNG", lng);
                     map.put("LAT", lat);
                     map.put("CONTENTS", message.toString());
                 } else {
-
+                    StringBuffer message = new StringBuffer();
                     message.append("<table>\n");
                     for (MTFCC key : resultMap.keySet()) {
                         Location l = resultMap.get(key);
