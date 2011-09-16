@@ -157,7 +157,7 @@ public class MapmakerMapViewImpl extends ViewWithUiHandlers<MapPanelUiHandlers>
                 var marker = markerArray[i];
                 marker.setMap(map);
                 $wnd.google.maps.event.addListener(marker, 'click', function() {
-                    infoWindow.setContent(marker.content);
+                    infoWindow.setContent(this.content);
                     infoWindow.open(map, this);
                 });
             }
