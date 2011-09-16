@@ -19,12 +19,11 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiTemplate;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Singleton;
-import com.gwtplatform.mvp.client.View;
+import com.gwtplatform.mvp.client.ViewImpl;
 import org.jason.mapmaker.client.presenter.MapmakerDisclaimerViewPresenter;
 
 /**
@@ -35,11 +34,14 @@ import org.jason.mapmaker.client.presenter.MapmakerDisclaimerViewPresenter;
  *
  * The stack panel extends GWT's {@link com.google.gwt.user.client.ui.Composite} while implenting
  * GWT-Platform's {@link com.gwtplatform.mvp.client.View} in order to get the best of both worlds.
- * 
+ *
+ * @since 0.1
  * @author Jason Ferguson
+ * @see org.jason.mapmaker.client.presenter.MapmakerDisclaimerViewPresenter
  */
 @Singleton
-public class MapmakerDisclaimerViewImpl extends Composite implements MapmakerDisclaimerViewPresenter.MyView, View, IsWidget {
+public class MapmakerDisclaimerViewImpl extends ViewImpl
+        implements MapmakerDisclaimerViewPresenter.MyView, IsWidget {
 
     @UiTemplate("MapmakerDisclaimerView.ui.xml")
     interface Binder extends UiBinder<HTMLPanel, MapmakerDisclaimerViewImpl> {}
@@ -50,26 +52,11 @@ public class MapmakerDisclaimerViewImpl extends Composite implements MapmakerDis
 
 
     public MapmakerDisclaimerViewImpl() {
-        initWidget(binder.createAndBindUi(this));
+        mapmakerDisclaimerView = binder.createAndBindUi(this);
     }
 
     @Override
     public Widget asWidget() {
-        return mapmakerDisclaimerView.asWidget();
-    }
-
-    @Override
-    public void addToSlot(Object o, Widget widget) {
-
-    }
-
-    @Override
-    public void removeFromSlot(Object o, Widget widget) {
-
-    }
-
-    @Override
-    public void setInSlot(Object o, Widget widget) {
-
+        return mapmakerDisclaimerView;
     }
 }
