@@ -44,6 +44,8 @@ import java.util.Map;
  *
  * @author Jason Ferguson
  * @since 0.1
+ * @see org.jason.mapmaker.client.view.MapmakerMapViewImpl
+ * @see org.jason.mapmaker.client.view.MapPanelUiHandlers
  */
 @SuppressWarnings({"unused"})
 public class MapmakerMapViewPresenter extends PresenterWidget<MapmakerMapViewPresenter.MyView>
@@ -61,10 +63,28 @@ public class MapmakerMapViewPresenter extends PresenterWidget<MapmakerMapViewPre
          */
         void prepareAndInitializeMap(Location location, Map<String, Double> boundingBox, Element e);
 
-        void getLocationDescriptions(JavaScriptObject map, double lng, double lat);
+        /**
+         * Display a marker and an attached infowindow displaying what borders are available for the location
+         * that the user clicked on
+         *
+         * @param map   JavaScriptObject representing the Google Maps API v3 Map object
+         * @param lng   double representing the longitude clicked on
+         * @param lat   double representing the latitude clicked on
+         */
+        void getLocationDescription(JavaScriptObject map, double lng, double lat);
 
+        /**
+         * Trigger a Javascript alert with the given message
+         *
+         * @param alertMessage      String with the message to display
+         */
         void doAlertMessage(String alertMessage);
 
+        /**
+         * Add a given marker to a map
+         * @param map       JavaScriptObject representing the Google Maps API v3 Map object
+         * @param marker    JavaScriptObject representing the Google Maps API v3 Marker object
+         */
         void addMarkerToMap(JavaScriptObject map, JavaScriptObject marker);
 
     }
@@ -94,7 +114,7 @@ public class MapmakerMapViewPresenter extends PresenterWidget<MapmakerMapViewPre
         }));
     }
 
-    public void doGetLocationDescriptions(final JavaScriptObject gmap, final double lng, final double lat) {
+    public void doGetLocationDescription(final JavaScriptObject gmap, final double lng, final double lat) {
 
         dispatch.execute(new GetLocationMapByCoordinatesAction(lng, lat), new AsyncCallback<GetLocationMapByCoordinatesResult>() {
             @Override
