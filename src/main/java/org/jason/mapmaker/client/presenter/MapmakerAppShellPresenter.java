@@ -35,12 +35,12 @@ import org.jason.mapmaker.shared.result.shapefileMetadata.CountShapefileMetadata
 
 
 /**
- * MapmakerAppShellPresenter.java
- * <p/>
- * Main Presenter class for the entire application. This should be the only class that has a proxy; all other
- * presenters, which necessary, should extend PresenterWidget<View> instead.
+ * Main Presenter class for the Mapmaker application. This should be the only class that has a proxy; all other
+ * presenters, which necessary, should extend <code>PresenterWidget</code> instead.
  *
+ * @since 0.1
  * @author Jason Ferguson
+ * @see org.jason.mapmaker.client.view.MapmakerAppShellView
  */
 public class MapmakerAppShellPresenter extends Presenter<MapmakerAppShellPresenter.MyView, MapmakerAppShellPresenter.MyProxy> {
 
