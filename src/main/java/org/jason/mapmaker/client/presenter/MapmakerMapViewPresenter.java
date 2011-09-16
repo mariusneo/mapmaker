@@ -149,6 +149,7 @@ public class MapmakerMapViewPresenter extends PresenterWidget<MapmakerMapViewPre
                         message.append("</tr>\n");
                     }
                     message.append("</table>\n");
+                    message.append("<p><i>Note: more features may be available for import<br/> via the Manage Borders feature</i></p>");
 
                     map.put("TITLE", "Location Details");
                     map.put("LNG", lng);
