@@ -21,9 +21,11 @@ import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
 
 /**
- * MapmakerDisclaimerViewPresenter.java
+ * <code>PresenterWidget</code> for the Disclaimer section of the application interface
  *
+ * @since 0.1
  * @author Jason Ferguson
+ * @see org.jason.mapmaker.client.view.MapmakerDisclaimerViewImpl
  */
 public class MapmakerDisclaimerViewPresenter extends PresenterWidget<MapmakerDisclaimerViewPresenter.MyView> {
 
