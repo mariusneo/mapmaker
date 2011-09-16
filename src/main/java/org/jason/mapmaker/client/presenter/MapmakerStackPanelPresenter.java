@@ -134,7 +134,7 @@ public class MapmakerStackPanelPresenter extends PresenterWidget<MapmakerStackPa
                                        DisplayHelpPresenter displayHelpPresenter,
                                        ManageShapefileMetadataPresenter manageShapefileMetadataPresenter,
                                        ManageFeaturesMetadataPresenter manageFeaturesMetadataPresenter,
-                                        ManageDataVersionsPresenter manageDataVersionsPresenter) {
+                                       ManageDataVersionsPresenter manageDataVersionsPresenter) {
         super(eventBus, view);
         this.dispatch = dispatchAsync;
         this.displayHelpPresenter = displayHelpPresenter;
@@ -182,170 +182,25 @@ public class MapmakerStackPanelPresenter extends PresenterWidget<MapmakerStackPa
 
             @Override
             public void onChange(ChangeEvent event) {
-                getView().getPrimaryListBox().clear();
-                getView().getSecondaryListBox().clear();
-                getView().getTertiaryListBox().clear();
-
-                populatePrimaryListBox();
-                getView().getSecondaryListBox().addItem("-- Select A State --");
-
-                // if a county-based feature is selected, enable the county box
-                int mtfccValue = getView().getBorderTypeListBox().getSelectedIndex();
-                String mtfcc = getView().getBorderTypeListBox().getValue(mtfccValue);
-
-                if (MtfccUtil.countyBasedMtfccs.contains(mtfcc)) {
-                    getView().getSecondaryListBox().setEnabled(true);
-                } else {
-                    getView().getSecondaryListBox().setEnabled(false);
-                }
-
-                getView().getPrimaryListBox().setEnabled(true);
+                doChangeBorderTypeListBox();
             }
         });
 
         getView().getPrimaryListBox().addChangeHandler(new ChangeHandler() {
             @Override
             public void onChange(ChangeEvent event) {
-
-                getView().getSecondaryListBox().clear();
-                getView().getTertiaryListBox().clear();
-
-                // as usual, determine the mtfcc from the BTLB
-                String mtfcc = getBTLBValue();
-
-                // make sure that if it's just a state, we don't do anything
-                if (mtfcc.equals(GeographyUtils.MTFCC.STATE)) {
-                    return; // exit onChange() so that we don't process via any call to GeographyUtils.isStateBasedMtfcc()
-                }
-
-                if (mtfcc.equals(GeographyUtils.MTFCC.COUNTY)) {
-
-                    // okay, I'm violating DRY. Hate me if you want.
-
-                    String stateFP = getPLBValue();
-
-                    dispatch.execute(new GetLocationsByStateAndMtfccAction(stateFP, GeographyUtils.MTFCC.COUNTY), new AsyncCallback<GetLocationsByStateAndMtfccResult>() {
-                        @Override
-                        public void onFailure(Throwable throwable) {
-                            getView().getSecondaryListBox().setEnabled(false);
-                            throwable.printStackTrace();
-                        }
-
-                        @Override
-                        public void onSuccess(GetLocationsByStateAndMtfccResult result) {
-
-                            getView().getSecondaryListBox().clear();
-                            getView().getSecondaryListBox().addItem("-- Select County --");
-                            Map<String, String> resultMap = result.getResult();
-                            resultMap.remove(null);
-                            for (String key : resultMap.keySet()) {
-                                getView().getSecondaryListBox().addItem(resultMap.get(key), key);
-                            }
-                            getView().getSecondaryListBox().setEnabled(true);
-
-                        }
-                    });
-
-                    return;
-                }
-
-                // if it's a state-based mtfcc, populate the TLB with the location names
-                if (GeographyUtils.isStateBasedMtfcc(mtfcc)) {
-
-                    String stateFP = getPLBValue();
-
-                    dispatch.execute(new GetLocationsByStateAndMtfccAction(stateFP, mtfcc), new AsyncCallback<GetLocationsByStateAndMtfccResult>() {
-                        @Override
-                        public void onFailure(Throwable caught) {
-                            caught.printStackTrace();
-                        }
-
-                        @Override
-                        public void onSuccess(GetLocationsByStateAndMtfccResult result) {
-                            getView().getTertiaryListBox().setEnabled(true);
-                            Map<String, String> resultMap = result.getResult();
-                            resultMap.remove(null);
-                            resultMap.remove(getPLBValue());
-                            for (String key : resultMap.keySet()) {
-                                getView().getTertiaryListBox().addItem(resultMap.get(key), key);
-                            }
-                        }
-                    });
-
-                    return;
-                }
-
-                if (GeographyUtils.isCountyBasedMtfcc(mtfcc)) {
-
-                    String stateFP = getPLBValue();
-
-                    dispatch.execute(new GetLocationsByStateAndMtfccAction(stateFP, GeographyUtils.MTFCC.COUNTY), new AsyncCallback<GetLocationsByStateAndMtfccResult>() {
-                        @Override
-                        public void onFailure(Throwable throwable) {
-                            getView().getSecondaryListBox().setEnabled(false);
-                            throwable.printStackTrace();
-                        }
-
-                        @Override
-                        public void onSuccess(GetLocationsByStateAndMtfccResult result) {
-
-                            getView().getSecondaryListBox().clear();
-                            getView().getSecondaryListBox().addItem("-- Select County --");
-                            Map<String, String> resultMap = result.getResult();
-                            resultMap.remove(null);
-                            for (String key : resultMap.keySet()) {
-                                getView().getSecondaryListBox().addItem(resultMap.get(key), key);
-                            }
-                            getView().getSecondaryListBox().setEnabled(true);
-
-                        }
-                    });
-
-                    return; // exit function to ensure that we don't process via isCountyBasedMtfcc()
-                }
-
+                doChangePrimaryListBox();
             }
         });
 
         getView().getSecondaryListBox().addChangeHandler(new ChangeHandler() {
             @Override
             public void onChange(ChangeEvent event) {
-
-                // as usual, determine the mtfcc from the BTLB
-                String mtfcc = getBTLBValue();
-
-
-                // if the mtfcc is a county based feature but is not a county...
-                if (!mtfcc.equals(GeographyUtils.MTFCC.COUNTY) && GeographyUtils.isCountyBasedMtfcc(mtfcc)) {
-
-                    // get the state and county FIPS codes
-                    String geoId = getSLBValue();
-                    String stateFP = geoId.substring(0,2);
-                    String countyFP = geoId.substring(2);
-
-                    dispatch.execute(new GetLocationsByStateAndCountyAndMtfccAction(mtfcc, stateFP, countyFP), new AsyncCallback<GetLocationsByStateAndCountyAndMtfccResult>() {
-                        @Override
-                        public void onFailure(Throwable throwable) {
-                            throwable.printStackTrace();
-                        }
-
-                        @Override
-                        public void onSuccess(GetLocationsByStateAndCountyAndMtfccResult result) {
-
-                            getView().getTertiaryListBox().clear();
-                            getView().getTertiaryListBox().addItem("-- Select Feature --");
-                            Map<String, String> resultMap = result.getResult();
-                            for (String fp : resultMap.keySet()) {
-                                getView().getTertiaryListBox().addItem(resultMap.get(fp), fp);
-                            }
-                        }
-                    });
-
-                    getView().getTertiaryListBox().setEnabled(true);
-                }
+                doChangeSecondaryListBox();
             }
         });
     }
+
 
     public void populateBorderTypeListBox() {
 
@@ -428,7 +283,7 @@ public class MapmakerStackPanelPresenter extends PresenterWidget<MapmakerStackPa
             public void onSuccess(GetFeatureClassesResult getFeatureClassesResult) {
 
                 getView().getFeaturesListBox().clear(); // just in case, we don't want to keep appending to the existing
-                getView().getFeaturesListBox().addItem("-- Select Feature --","-1");
+                getView().getFeaturesListBox().addItem("-- Select Feature --", "-1");
                 List<String> result = getFeatureClassesResult.getResult();
                 for (String fc : result) {
                     getView().getFeaturesListBox().addItem(fc);
@@ -538,5 +393,161 @@ public class MapmakerStackPanelPresenter extends PresenterWidget<MapmakerStackPa
     private String getTLBValue() {
         int index = getView().getTertiaryListBox().getSelectedIndex();
         return getView().getTertiaryListBox().getValue(index);
+    }
+
+    private void doChangeBorderTypeListBox() {
+        getView().getPrimaryListBox().clear();
+        getView().getSecondaryListBox().clear();
+        getView().getTertiaryListBox().clear();
+
+        populatePrimaryListBox();
+        getView().getSecondaryListBox().addItem("-- Select A State --");
+
+        // if a county-based feature is selected, enable the county box
+        int mtfccValue = getView().getBorderTypeListBox().getSelectedIndex();
+        String mtfcc = getView().getBorderTypeListBox().getValue(mtfccValue);
+
+        if (MtfccUtil.countyBasedMtfccs.contains(mtfcc)) {
+            getView().getSecondaryListBox().setEnabled(true);
+        } else {
+            getView().getSecondaryListBox().setEnabled(false);
+        }
+
+        getView().getPrimaryListBox().setEnabled(true);
+    }
+
+    private void doChangePrimaryListBox() {
+
+        getView().getSecondaryListBox().clear();
+        getView().getTertiaryListBox().clear();
+
+        // as usual, determine the mtfcc from the BTLB
+        String mtfcc = getBTLBValue();
+
+        // make sure that if it's just a state, we don't do anything
+        if (mtfcc.equals(GeographyUtils.MTFCC.STATE)) {
+            return; // exit onChange() so that we don't process via any call to GeographyUtils.isStateBasedMtfcc()
+        }
+
+        if (mtfcc.equals(GeographyUtils.MTFCC.COUNTY)) {
+
+            // okay, I'm violating DRY. Hate me if you want.
+
+            String stateFP = getPLBValue();
+
+            dispatch.execute(new GetLocationsByStateAndMtfccAction(stateFP, GeographyUtils.MTFCC.COUNTY), new AsyncCallback<GetLocationsByStateAndMtfccResult>() {
+                @Override
+                public void onFailure(Throwable throwable) {
+                    getView().getSecondaryListBox().setEnabled(false);
+                    throwable.printStackTrace();
+                }
+
+                @Override
+                public void onSuccess(GetLocationsByStateAndMtfccResult result) {
+
+                    getView().getSecondaryListBox().clear();
+                    getView().getSecondaryListBox().addItem("-- Select County --");
+                    Map<String, String> resultMap = result.getResult();
+                    resultMap.remove(null);
+                    for (String key : resultMap.keySet()) {
+                        getView().getSecondaryListBox().addItem(resultMap.get(key), key);
+                    }
+                    getView().getSecondaryListBox().setEnabled(true);
+
+                }
+            });
+
+            return;
+        }
+
+        // if it's a state-based mtfcc, populate the TLB with the location names
+        if (GeographyUtils.isStateBasedMtfcc(mtfcc)) {
+
+            String stateFP = getPLBValue();
+
+            dispatch.execute(new GetLocationsByStateAndMtfccAction(stateFP, mtfcc), new AsyncCallback<GetLocationsByStateAndMtfccResult>() {
+                @Override
+                public void onFailure(Throwable caught) {
+                    caught.printStackTrace();
+                }
+
+                @Override
+                public void onSuccess(GetLocationsByStateAndMtfccResult result) {
+                    getView().getTertiaryListBox().setEnabled(true);
+                    Map<String, String> resultMap = result.getResult();
+                    resultMap.remove(null);
+                    resultMap.remove(getPLBValue());
+                    for (String key : resultMap.keySet()) {
+                        getView().getTertiaryListBox().addItem(resultMap.get(key), key);
+                    }
+                }
+            });
+
+            return;
+        }
+
+        if (GeographyUtils.isCountyBasedMtfcc(mtfcc)) {
+
+            String stateFP = getPLBValue();
+
+            dispatch.execute(new GetLocationsByStateAndMtfccAction(stateFP, GeographyUtils.MTFCC.COUNTY), new AsyncCallback<GetLocationsByStateAndMtfccResult>() {
+                @Override
+                public void onFailure(Throwable throwable) {
+                    getView().getSecondaryListBox().setEnabled(false);
+                    throwable.printStackTrace();
+                }
+
+                @Override
+                public void onSuccess(GetLocationsByStateAndMtfccResult result) {
+
+                    getView().getSecondaryListBox().clear();
+                    getView().getSecondaryListBox().addItem("-- Select County --");
+                    Map<String, String> resultMap = result.getResult();
+                    resultMap.remove(null);
+                    for (String key : resultMap.keySet()) {
+                        getView().getSecondaryListBox().addItem(resultMap.get(key), key);
+                    }
+                    getView().getSecondaryListBox().setEnabled(true);
+
+                }
+            });
+
+            return; // exit function to ensure that we don't process via isCountyBasedMtfcc()
+        }
+    }
+
+    private void doChangeSecondaryListBox() {
+        // as usual, determine the mtfcc from the BTLB
+        String mtfcc = getBTLBValue();
+
+
+        // if the mtfcc is a county based feature but is not a county...
+        if (!mtfcc.equals(GeographyUtils.MTFCC.COUNTY) && GeographyUtils.isCountyBasedMtfcc(mtfcc)) {
+
+            // get the state and county FIPS codes
+            String geoId = getSLBValue();
+            String stateFP = geoId.substring(0, 2);
+            String countyFP = geoId.substring(2);
+
+            dispatch.execute(new GetLocationsByStateAndCountyAndMtfccAction(mtfcc, stateFP, countyFP), new AsyncCallback<GetLocationsByStateAndCountyAndMtfccResult>() {
+                @Override
+                public void onFailure(Throwable throwable) {
+                    throwable.printStackTrace();
+                }
+
+                @Override
+                public void onSuccess(GetLocationsByStateAndCountyAndMtfccResult result) {
+
+                    getView().getTertiaryListBox().clear();
+                    getView().getTertiaryListBox().addItem("-- Select Feature --");
+                    Map<String, String> resultMap = result.getResult();
+                    for (String fp : resultMap.keySet()) {
+                        getView().getTertiaryListBox().addItem(resultMap.get(fp), fp);
+                    }
+                }
+            });
+
+            getView().getTertiaryListBox().setEnabled(true);
+        }
     }
 }
