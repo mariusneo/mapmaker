@@ -319,6 +319,8 @@ public class MapmakerStackPanelPresenter extends PresenterWidget<MapmakerStackPa
     @Override
     public void onRedrawMap() {
 
+        getView().getRedrawMapButton().setEnabled(false);
+
         // figure out which MTFCC the user wants to see
         int mtfccValue = getView().getBorderTypeListBox().getSelectedIndex();
         if (mtfccValue == -1) {
