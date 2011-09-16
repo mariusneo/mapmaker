@@ -50,7 +50,7 @@ import java.util.Map;
  * Presenter for the StackPanelView
  * <p/>
  * This class is responsible for handling the interaction with the model for the MapmakerStackPanelView, which is
- * the most complicated one in the app. Everything is set up in the onBind() method, including:
+ * the most complicated one in the app. Everything is set up in the <code>onBind()</code> method, including:
  * <p/>
  * - registering the handler for disabling the Redraw Map button (one of those things that sounds minor but isn't)
  * - populating the borderTypeListBox with the available border types that have been uploaded
@@ -61,6 +61,8 @@ import java.util.Map;
  *
  * @author Jason Ferguson
  * @since 0.1
+ * @see org.jason.mapmaker.client.view.MapmakerStackPanelView
+ * @see org.jason.mapmaker.client.view.StackPanelUiHandlers
  */
 public class MapmakerStackPanelPresenter extends PresenterWidget<MapmakerStackPanelPresenter.MyView>
         implements StackPanelUiHandlers {
