@@ -208,7 +208,6 @@ public class ShapefileUtil {
 
         Coordinate[] coordinates = simplifiedGeometry.getCoordinates();
 
-        // TODO: Does the simplifier throw out duplicates? Is this the cause of the weird artifacts I've seen?
         Set<BorderPoint> borderPointSet = new LinkedHashSet<BorderPoint>(simplifiedGeometry.getNumPoints());
         for (Coordinate c : coordinates) {
             BorderPoint bp = new BorderPoint();
