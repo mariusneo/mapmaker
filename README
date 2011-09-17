@@ -1,0 +1,8 @@
+Welcome to the Mapmaker README. I bet you're here looking for the installation information.
+
+However, this being the year 2011, I put it in the wiki, not the README. The wiki can be accessed at this URL:
+
+https://github.com/dartmanx/mapmaker/wiki
+
+The code is licensed under the Apache 2.0 license. Rather than put a copy in the root directory, all files have the
+license in their header.
