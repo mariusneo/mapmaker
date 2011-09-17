@@ -18,6 +18,7 @@ package org.jason.mapmaker.server.service;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.MultiPolygon;
+import com.vividsolutions.jts.simplify.TopologyPreservingSimplifier;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.FileDataStore;
 import org.geotools.data.FileDataStoreFinder;
@@ -30,7 +31,6 @@ import org.jason.mapmaker.shared.exceptions.ServiceException;
 import org.jason.mapmaker.shared.model.BorderPoint;
 import org.jason.mapmaker.shared.model.Location;
 import org.jason.mapmaker.shared.model.ShapefileMetadata;
-import org.jason.mapmaker.shared.util.GeographyUtils;
 import org.opengis.feature.simple.SimpleFeature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -181,8 +181,8 @@ public class ShapefileServiceImpl implements ShapefileService {
             MultiPolygon multiPolygon = (MultiPolygon) feature.getDefaultGeometry();
             Geometry geometry = multiPolygon.getBoundary();
 
-            // Use the TopologyPreservingSimplifier to create a simplified version of the geometry
-            Geometry simplifiedGeometry = GeographyUtils.simplifyGeometry(multiPolygon.getBoundary(), 0.0001);
+            // Use the geotools TopologyPreservingSimplifier to create a simplified version of the geometry
+            Geometry simplifiedGeometry = TopologyPreservingSimplifier.simplify(multiPolygon, 0.0001);
             log.info("Geometry for " + feature.getAttribute("NAME10") + " simplified from " + multiPolygon.getBoundary().getNumPoints()
                     + " points to " + simplifiedGeometry.getNumPoints() + " points.");
 
