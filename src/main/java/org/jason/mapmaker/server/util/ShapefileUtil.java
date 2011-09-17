@@ -16,6 +16,7 @@
 package org.jason.mapmaker.server.util;
 
 import com.vividsolutions.jts.geom.*;
+import com.vividsolutions.jts.simplify.TopologyPreservingSimplifier;
 import org.apache.commons.compress.archivers.ArchiveException;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureSource;
@@ -36,7 +37,6 @@ import org.jason.mapmaker.shared.model.BorderPoint;
 import org.jason.mapmaker.shared.model.Feature;
 import org.jason.mapmaker.shared.model.Location;
 import org.jason.mapmaker.shared.model.ShapefileMetadata;
-import org.jason.mapmaker.shared.util.GeographyUtils;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.slf4j.Logger;
@@ -204,7 +204,7 @@ public class ShapefileUtil {
 
     public List<BorderPoint> getBorderPointsFromGeometry(Geometry geometry, double tolerance, Location location) {
 
-        Geometry simplifiedGeometry = GeographyUtils.simplifyGeometry(geometry, tolerance);
+        Geometry simplifiedGeometry = TopologyPreservingSimplifier.simplify(geometry, tolerance);
 
         Coordinate[] coordinates = simplifiedGeometry.getCoordinates();
 
