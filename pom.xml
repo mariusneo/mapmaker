@@ -389,7 +389,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>gwt-maven-plugin</artifactId>
-                <version>2.2.0</version>
+                <version>2.3.0-1</version>
                 <executions>
                     <execution>
                         <goals>
@@ -403,6 +403,7 @@
                 <!-- Plugin configuration. There are many available options, see gwt-maven-plugin
              documentation at codehaus.org -->
                 <configuration>
+                    <module>org.jason.mapmaker.Mapmaker</module>
                     <debugSuspend>false</debugSuspend>
                     <!--<extraJvmArgs>-javaagent:F:\Programming\Tools\JRebel\jrebel.jar</extraJvmArgs>-->
                     <runTarget>mapmaker.html</runTarget>
