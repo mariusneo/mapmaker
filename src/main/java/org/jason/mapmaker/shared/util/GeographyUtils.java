@@ -307,17 +307,6 @@ public class GeographyUtils {
     public static String getMtfccForPrettyName(String prettyName) {
         return prettyNameToMtfccMap.get(prettyName);
     }
-    /**
-     * Simplify a Geometry by reducing the number of points (technically, by increasing the distance between points to
-     * whatever the tolerance is).
-     *
-     * @param geometry  Geometry object to simplify
-     * @param tolerance minimum distance between two points
-     * @return simplified Geometry
-     */
-    public static Geometry simplifyGeometry(Geometry geometry, double tolerance) {
-        return TopologyPreservingSimplifier.simplify(geometry, tolerance);
-    }
 
     public class MTFCC {
         public static final String STATE = "G4000";
